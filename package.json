@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "url": "https://github.com/r-argentina-programa/kahoot-clone"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "start": "node server.js"
   },
   "author": "",
@@ -12,5 +15,9 @@
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "jest": "^26.6.1"
   }
 }
