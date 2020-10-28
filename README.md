@@ -5,6 +5,7 @@ Kahoot clone using React, Node.js and Socket.io.
 ## Installation
 
 ```
+npm install # Install root dependencies
 npm run server-install # Install server-side dependencies
 npm run client-install # Install client-side dependencies
 ```
