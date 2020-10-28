@@ -3,6 +3,7 @@ import './App.css';
 import Lobby from './components/Lobby';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Trivia from './components/Trivia';
+
 function App() {
   return (
     <div className="App">
