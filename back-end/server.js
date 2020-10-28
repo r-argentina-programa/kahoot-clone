@@ -10,9 +10,22 @@ const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 const io = socketIO(server);
 
+function updatePlayerList() {
+  io.of('/').clients((error, clients) => {
+    if (error) throw error;
+    io.emit('players', clients);
+  })
+};
+
+
 io.on('connection', (socket) => {
   console.log('Client connected');
-  socket.on('disconnect', () => console.log('Client disconnected'));
+  updatePlayerList()
+  
+  socket.on('disconnect', () => {
+    console.log('Client disconnected')
+    updatePlayerList()
+  });
 });
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
