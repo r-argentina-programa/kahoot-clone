@@ -8,7 +8,7 @@ const Trivia = () => {
     <div>
       <Countdown />
       <br />
-      <Questions />
+      <Questions question="This is a question" />
       <Alert variant="warning">First option</Alert>
       <Alert variant="warning">Second option</Alert>
       <Alert variant="warning">Third option</Alert>
