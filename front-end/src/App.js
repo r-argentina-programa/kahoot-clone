@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'development') {
   ENDPOINT = 'http://localhost:5000';
 } else if (process.env.NODE_ENV === 'production') {
   console.log('production');
-  ENDPOINT = 'chat-aplicacion-practica.herokuapp.com';
+  ENDPOINT = 'inmental-kahoot-clone.herokuapp.com';
 }
 
 const socket = socketIO(ENDPOINT);
