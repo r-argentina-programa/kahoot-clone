@@ -12,7 +12,7 @@ const socket = socketIO.connect('http://localhost:5000');
 
 function App() {
   const [players, setPlayers] = useState([]);
-  const [triviaData, setTriviaData] = useState('');
+  const [triviaData, setTriviaData] = useState({options:[]});
   // Esto corre una sola vez al montarse el componente (cuando abris el browser y vas a localhost:3000).
   // y tambien corre una sola vez al desmontarse (al salir de la pagina).
   useEffect(() => {
