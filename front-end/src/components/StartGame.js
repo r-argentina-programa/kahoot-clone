@@ -5,8 +5,6 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { Link } from 'react-router-dom';
 
 const StartGame = (props) => {
-
-
   const popover = (
     <Popover id="popover-basic">
       <Popover.Title as="h3">Game Status</Popover.Title>
@@ -19,7 +17,7 @@ const StartGame = (props) => {
     <div>
       <OverlayTrigger trigger="click" placement="right" overlay={popover}>
         <Link to="/Trivia">
-          <Button>Start Game</Button>
+          <Button onClick={() => props.socket.emit('new game')}>Start Game</Button>
         </Link>
       </OverlayTrigger>
     </div>

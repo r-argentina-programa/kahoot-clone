@@ -6,21 +6,24 @@ import Countdown from './Countdown';
 
 const Trivia = (props) => {
   const socket = props.socket;
-  socket.emit('next question');
-  const [triviaData, setTriviaData] = useState('');
-  socket.on('question', (triviaData) => {
-    const newTriviaData = triviaData;
-    setTriviaData(newTriviaData);
-  });
+
   return (
     <div>
       <Countdown />
       <br />
-      <Questions triviaData={triviaData} />
-      <Alert variant="warning">{triviaData.options[0]}</Alert>
-      <Alert variant="warning">{triviaData.options[1]}</Alert>
-      <Alert variant="warning">{triviaData.options[2]}</Alert>
-      <Alert variant="warning">{triviaData.options[3]}</Alert>
+      <Questions triviaData={props.triviaData} />
+      <Alert onClick={() => props.socket.emit('answer', 0)} variant="warning">
+        {props.triviaData.options}
+      </Alert>
+      <Alert onClick={() => props.socket.emit('answer', 1)} variant="warning">
+        {props.triviaData.options}
+      </Alert>
+      <Alert onClick={() => props.socket.emit('answer', 2)} variant="warning">
+        {props.triviaData.options}
+      </Alert>
+      <Alert onClick={() => props.socket.emit('answer', 3)} variant="warning">
+        {props.triviaData.options}
+      </Alert>
       <br />
       <StopGame />
     </div>

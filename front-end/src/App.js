@@ -26,16 +26,23 @@ function App() {
     });
   }, []); // este array que paso como segundo parametro es lo que hace que el useEffect corra una sola vez.
 
+  const [triviaData, setTriviaData] = useState('');
+  socket.on('question', (triviaData) => {
+    const newTriviaData = triviaData;
+    console.log(triviaData);
+    setTriviaData(newTriviaData);
+  });
+
   return (
     <div className="App">
       <Router>
         <Switch>
           <Route exact path="/">
             {/* Aca hago que el componente lobby reciba la lista de jugadores */}
-            <Lobby socket={socket} players={players} />
+            <Lobby data={triviaData} socket={socket} players={players} />
           </Route>
           <Route path="/trivia">
-            <Trivia socket={socket} />
+            <Trivia data={triviaData} socket={socket} />
           </Route>
         </Switch>
       </Router>
