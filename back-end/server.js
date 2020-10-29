@@ -23,10 +23,14 @@ const trivia = [
   }
 ];
 
+let players = {};
+
 function updatePlayerList() {
   io.of('/').clients((error, clients) => {
     if (error) throw error;
     io.emit('players', clients);
+    players = {};
+    clients.forEach(client => players[client] = {score: 0})
   })
 };
 
@@ -36,18 +40,27 @@ io.on('connection', (socket) => {
   updatePlayerList()
 
   let counter = 0;
-  socket.on('next question', () => {
+
+  function showNextQuestion() {
     if (counter === trivia.length){
       io.of('/').emit('game ended', 'GAME ENDED!')
     }
     else{
       io.of('/').emit('question', {question: trivia[counter].question, options: trivia[counter].options});
-      counter ++;
     }
+  }
+
+  socket.on('answer', (data) => {
+    if (data === trivia[counter].correct){
+      players[socket.client.id].score += 1;
+    }
+    counter ++;
+    showNextQuestion();
   });
 
   socket.on('new game', () => {
     counter = 0;
+    showNextQuestion()
   });
   
   socket.on('disconnect', () => {
