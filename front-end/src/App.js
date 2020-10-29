@@ -12,7 +12,7 @@ const socket = socketIO.connect('http://localhost:5000');
 
 function App() {
   const [players, setPlayers] = useState([]);
-
+  const [triviaData, setTriviaData] = useState('');
   // Esto corre una sola vez al montarse el componente (cuando abris el browser y vas a localhost:3000).
   // y tambien corre una sola vez al desmontarse (al salir de la pagina).
   useEffect(() => {
@@ -24,14 +24,13 @@ function App() {
       const newPlayers = [...playersData];
       setPlayers(newPlayers);
     });
-  }, []); // este array que paso como segundo parametro es lo que hace que el useEffect corra una sola vez.
 
-  const [triviaData, setTriviaData] = useState('');
-  socket.on('question', (triviaData) => {
-    const newTriviaData = triviaData;
-    console.log(triviaData);
-    setTriviaData(newTriviaData);
-  });
+    socket.on('question', (triviaData) => {
+      const newTriviaData = triviaData;
+      console.log(triviaData);
+      setTriviaData(newTriviaData);
+    });
+  }, []); // este array que paso como segundo parametro es lo que hace que el useEffect corra una sola vez.
 
   return (
     <div className="App">
@@ -39,10 +38,10 @@ function App() {
         <Switch>
           <Route exact path="/">
             {/* Aca hago que el componente lobby reciba la lista de jugadores */}
-            <Lobby data={triviaData} socket={socket} players={players} />
+            <Lobby triviaData={triviaData} socket={socket} players={players} />
           </Route>
           <Route path="/trivia">
-            <Trivia data={triviaData} socket={socket} />
+            <Trivia triviaData={triviaData} socket={socket} />
           </Route>
         </Switch>
       </Router>
