@@ -1,13 +1,16 @@
-import React from 'react';
-import StartGame from './StartGame';
-import Players from './Players';
-import StopGame from './StopGame';
-const Lobby = () => {
+import StartGame from "./StartGame";
+import Players from "./Players";
+import StopGame from "./StopGame";
+
+// Este componente Lobby recibe la lista de jugadores y se la pasa al componente Players
+const Lobby = ({ players }) => {
+  console.log("Lobby component:", players);
+
   return (
     <div>
       <StartGame />
       <br />
-      <Players />
+      <Players players={players} />
       <br />
       <br />
       <br />
