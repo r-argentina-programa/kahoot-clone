@@ -8,11 +8,21 @@ import './App.css';
 
 // Traje la conexion del socket aca porque este componente no se desmonta nunca, siempre esta presente. El unico
 // momento en donde se desmonta es cuando salis de la pagina.
-const socket = socketIO.connect('http://localhost:5000');
+let ENDPOINT;
+
+if (process.env.NODE_ENV === 'development') {
+  console.log('development');
+  ENDPOINT = 'http://localhost:5000';
+} else if (process.env.NODE_ENV === 'production') {
+  console.log('production');
+  ENDPOINT = 'chat-aplicacion-practica.herokuapp.com';
+}
+
+const socket = socketIO(ENDPOINT);
 
 function App() {
   const [players, setPlayers] = useState([]);
-  const [triviaData, setTriviaData] = useState({options:[]});
+  const [triviaData, setTriviaData] = useState({ options: [] });
   // Esto corre una sola vez al montarse el componente (cuando abris el browser y vas a localhost:3000).
   // y tambien corre una sola vez al desmontarse (al salir de la pagina).
   useEffect(() => {
