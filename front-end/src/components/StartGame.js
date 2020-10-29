@@ -4,7 +4,9 @@ import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { Link } from 'react-router-dom';
 
-const StartGame = () => {
+const StartGame = (props) => {
+
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Title as="h3">Game Status</Popover.Title>

@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import StopGame from './StopGame';
 import Questions from './Questions';
 import Countdown from './Countdown';
-const Trivia = () => {
+
+const Trivia = (props) => {
+  const socket = props.socket;
+  socket.emit('next question');
+  const [triviaData, setTriviaData] = useState('');
+  socket.on('question', (triviaData) => {
+    const newTriviaData = triviaData;
+    setTriviaData(newTriviaData);
+  });
   return (
     <div>
       <Countdown />
       <br />
-      <Questions question="This is a question" />
-      <Alert variant="warning">First option</Alert>
-      <Alert variant="warning">Second option</Alert>
-      <Alert variant="warning">Third option</Alert>
-      <Alert variant="warning">Fourth option</Alert>
+      <Questions triviaData={triviaData} />
+      <Alert variant="warning">{triviaData.options[0]}</Alert>
+      <Alert variant="warning">{triviaData.options[1]}</Alert>
+      <Alert variant="warning">{triviaData.options[2]}</Alert>
+      <Alert variant="warning">{triviaData.options[3]}</Alert>
       <br />
       <StopGame />
     </div>

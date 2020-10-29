@@ -1,16 +1,16 @@
-import StartGame from "./StartGame";
-import Players from "./Players";
-import StopGame from "./StopGame";
+import StartGame from './StartGame';
+import Players from './Players';
+import StopGame from './StopGame';
 
 // Este componente Lobby recibe la lista de jugadores y se la pasa al componente Players
-const Lobby = ({ players }) => {
-  console.log("Lobby component:", players);
+const Lobby = (props) => {
+  console.log('Lobby component:', props.players);
 
   return (
     <div>
-      <StartGame />
+      <StartGame socket={props.socket} />
       <br />
-      <Players players={players} />
+      <Players players={props.players} />
       <br />
       <br />
       <br />
