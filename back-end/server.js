@@ -13,7 +13,7 @@ const io = socketIO(server);
 const trivia = [
   {
     question: "Which is the biggest planet in the Solar System?",
-    options: ["Venus", "Jupiter", "Mercurio", "Mars"],
+    options: ["Venus", "Jupiter", "Mercury", "Mars"],
     correct: 1,
   },
   {
@@ -43,11 +43,30 @@ io.on('connection', (socket) => {
 
   function showNextQuestion() {
     if (counter === trivia.length){
-      io.of('/').emit('game ended', 'GAME ENDED!')
+      io.of('/').emit('game ended', calculatePodium(players))
     }
     else{
       io.of('/').emit('question', {question: trivia[counter].question, options: trivia[counter].options});
     }
+  }
+
+  function calculatePodium(players) {
+    let sortedArray = []
+    let podium = {}
+
+    for (player in players){
+      sortedArray.push([player, players[player].score])
+    }
+    
+    sortedArray.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+
+    for (let i = 0; i < (sortedArray.length > 3 ? 3 : sortedArray.length); i++) {
+      podium[i] = {name:sortedArray[i][0], score:sortedArray[i][1]}
+    }
+
+    return podium; 
   }
 
   socket.on('answer', (data) => {
