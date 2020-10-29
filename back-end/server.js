@@ -62,6 +62,11 @@ io.on('connection', (socket) => {
     counter = 0;
     showNextQuestion()
   });
+
+  socket.on('next question', () => {
+    counter ++;
+    showNextQuestion();
+  })
   
   socket.on('disconnect', () => {
     console.log('Client disconnected')
