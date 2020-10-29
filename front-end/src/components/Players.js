@@ -10,7 +10,7 @@ const Players = () => {
   useEffect(() => {
     socket.on('players', (data) => {
       console.log(data);
-      const newState = [...state, ...data];
+      const newState = data;
       setState(newState);
       return () => {
         setState([]);
