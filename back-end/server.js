@@ -5,7 +5,7 @@ const socketIO = require('socket.io');
 const PORT = process.env.PORT || 5000;
 
 const app = express();
-app.use(express.static('front-end/build'));
+app.use(express.static('back-end/public'));
 const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 const io = socketIO(server);
@@ -13,12 +13,17 @@ const io = socketIO(server);
 const trivia = [
   {
     question: 'Which is the biggest planet in the Solar System?',
-    options: ['Venus', 'Jupiter', 'Mercury', 'Mars'],
+    options: ['Venus', 'JUPITER', 'Mercury', 'Mars'],
     correct: 1,
   },
   {
     question: 'Which is the largest animal?',
-    options: ['Cow', 'Dog', 'Mosquito', 'Whale'],
+    options: ['Cow', 'Dog', 'Mosquito', 'WHALE'],
+    correct: 3,
+  },
+  {
+    question: 'Which is the largest number?',
+    options: ['1', '2', '3', '1000000'],
     correct: 3,
   },
 ];
