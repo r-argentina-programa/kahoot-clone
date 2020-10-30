@@ -10,8 +10,7 @@
     "client-install": "cd front-end && npm install",
     "start-server": "nodemon -e js,jsx,html back-end/server.js",
     "start-client": "cd front-end && npm start",
-    "build-client": "cd front-end && npm run build",
-    "heroku-postbuild": "cd front-end && npm install && npm run build"
+    "build-client": "cd front-end && npm run build"
   },
   "repository": {
     "type": "git",
@@ -26,6 +25,7 @@
   "homepage": "https://github.com/r-argentina-programa/kahoot-clone#readme",
   "devDependencies": {
     "concurrently": "^5.3.0",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "serve": "^11.3.2"
   }
 }
