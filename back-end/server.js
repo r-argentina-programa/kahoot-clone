@@ -30,7 +30,7 @@ function updatePlayerList() {
     if (error) throw error;
     io.emit('players', clients);
     players = {};
-    clients.forEach((client) => (players[client] = { score: 0 }));
+    clients.forEach((client) => (players[client] = { score: 0, gameFinished: false }));
   });
 }
 
@@ -42,6 +42,7 @@ io.on('connection', (socket) => {
 
   function showNextQuestion() {
     if (counter === trivia.length) {
+      players[socket.client.id].gameFinished = true;
       socket.emit('game ended', calculatePodium(players));
     } else {
       if (counter === 0) {
@@ -78,11 +79,13 @@ io.on('connection', (socket) => {
   }
 
   socket.on('answer', (data) => {
-    if (data === trivia[counter].correct) {
-      players[socket.client.id].score += 1;
+    if (!players[socket.client.id].gameFinished) {
+      if (data === trivia[counter].correct) {
+        players[socket.client.id].score += 1;
+      }
+      counter++;
+      showNextQuestion();
     }
-    counter++;
-    showNextQuestion();
   });
 
   socket.on('new game', () => {
