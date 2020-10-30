@@ -1,14 +1,18 @@
-import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import React from 'react';
 
-const Players = () => {
+// Este componente recibe la lista de jugadores (un array) y los renderea adecuadamente.
+const Players = (props) => {
+  console.log('Players component:', props.players);
+
   return (
     <div>
       <ListGroup>
-        <ListGroup.Item variant="light">Fabricio</ListGroup.Item>
-        <ListGroup.Item variant="dark">Hernan</ListGroup.Item>
-        <ListGroup.Item variant="light">Leonel</ListGroup.Item>
-        <ListGroup.Item variant="dark">Nicolas</ListGroup.Item>
+        {props.players.map((player, index) => (
+          <ListGroup.Item key={`player-${index + 1}`} variant="dark">
+            {player}
+          </ListGroup.Item>
+        ))}
       </ListGroup>
     </div>
   );

@@ -1,11 +1,12 @@
 import React from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 
-const Questions = () => {
+const Questions = (props) => {
   return (
     <div>
       <Jumbotron>
-        <h1>Which color was San Martin's white horse?</h1>
+        {console.log(props.triviaData.question)}
+        <h1>{props.triviaData.question}</h1>
       </Jumbotron>
     </div>
   );
