@@ -46,7 +46,12 @@ io.on('connection', (socket) => {
       socket.emit('game ended', calculatePodium(players))
     }
     else{
-      io.of('/').emit('question', {question: trivia[counter].question, options: trivia[counter].options});
+      if(counter === 0){
+        io.of('/').emit('question', {question: trivia[counter].question, options: trivia[counter].options});
+      }
+      else{
+        socket.emit('question', {question: trivia[counter].question, options: trivia[counter].options});
+      }
     }
   }
 
