@@ -12,15 +12,15 @@ const io = socketIO(server);
 
 const trivia = [
   {
-    question: "Which is the biggest planet in the Solar System?",
-    options: ["Venus", "Jupiter", "Mercury", "Mars"],
+    question: 'Which is the biggest planet in the Solar System?',
+    options: ['Venus', 'Jupiter', 'Mercury', 'Mars'],
     correct: 1,
   },
   {
-    question: "Which is the largest animal?",
-    options: ["Cow", "Dog", "Mosquito", "Whale"],
+    question: 'Which is the largest animal?',
+    options: ['Cow', 'Dog', 'Mosquito', 'Whale'],
     correct: 3,
-  }
+  },
 ];
 
 let players = {};
@@ -30,71 +30,74 @@ function updatePlayerList() {
     if (error) throw error;
     io.emit('players', clients);
     players = {};
-    clients.forEach(client => players[client] = {score: 0})
-  })
-};
-
+    clients.forEach((client) => (players[client] = { score: 0 }));
+  });
+}
 
 io.on('connection', (socket) => {
   console.log('Client connected');
-  updatePlayerList()
+  updatePlayerList();
 
   let counter = 0;
 
   function showNextQuestion() {
-    if (counter === trivia.length){
-      socket.emit('game ended', calculatePodium(players))
-    }
-    else{
-      if(counter === 0){
-        io.of('/').emit('question', {question: trivia[counter].question, options: trivia[counter].options});
-      }
-      else{
-        socket.emit('question', {question: trivia[counter].question, options: trivia[counter].options});
+    if (counter === trivia.length) {
+      socket.emit('game ended', calculatePodium(players));
+    } else {
+      if (counter === 0) {
+        io.of('/').emit('question', {
+          question: trivia[counter].question,
+          options: trivia[counter].options,
+        });
+      } else {
+        socket.emit('question', {
+          question: trivia[counter].question,
+          options: trivia[counter].options,
+        });
       }
     }
   }
 
   function calculatePodium(players) {
-    let sortedArray = []
-    let podium = {}
+    let sortedArray = [];
+    let podium = {};
 
-    for (player in players){
-      sortedArray.push([player, players[player].score])
+    for (player in players) {
+      sortedArray.push([player, players[player].score]);
     }
-    
-    sortedArray.sort(function(a, b) {
-        return b[1] - a[1];
+
+    sortedArray.sort(function (a, b) {
+      return b[1] - a[1];
     });
 
     for (let i = 0; i < (sortedArray.length > 3 ? 3 : sortedArray.length); i++) {
-      podium[i] = {name:sortedArray[i][0], score:sortedArray[i][1]}
+      podium[i] = { name: sortedArray[i][0], score: sortedArray[i][1] };
     }
 
-    return podium; 
+    return podium;
   }
 
   socket.on('answer', (data) => {
-    if (data === trivia[counter].correct){
+    if (data === trivia[counter].correct) {
       players[socket.client.id].score += 1;
     }
-    counter ++;
+    counter++;
     showNextQuestion();
   });
 
   socket.on('new game', () => {
     counter = 0;
-    showNextQuestion()
+    showNextQuestion();
   });
 
   socket.on('next question', () => {
-    counter ++;
+    counter++;
     showNextQuestion();
-  })
-  
+  });
+
   socket.on('disconnect', () => {
-    console.log('Client disconnected')
-    updatePlayerList()
+    console.log('Client disconnected');
+    updatePlayerList();
   });
 });
 
