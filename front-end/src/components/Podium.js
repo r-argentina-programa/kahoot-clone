@@ -1,13 +1,14 @@
 import React from 'react';
 import Image from 'react-bootstrap/Image';
 import podiumImg from '../assets/podium.jpg';
+import StopGame from './StopGame';
 import '../styles/Podium.css';
 const Podium = (props) => {
   return (
     <div>
       {Object.entries(props.ranking).map(([keyValue, value]) => {
         return (
-          <h1>
+          <h1 key={keyValue}>
             {[value.name]} has {[value.score]} points
           </h1>
         );
@@ -20,6 +21,8 @@ const Podium = (props) => {
         {props.ranking[2].name} has {props.ranking[2].score} points and is in 3rd place
       </h3> */}
       <Image className="podiumImg" src={podiumImg} fluid></Image>
+      <br />
+      <StopGame />
     </div>
   );
 };
