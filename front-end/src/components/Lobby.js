@@ -1,6 +1,8 @@
+import React from 'react';
 import StartGame from './StartGame';
 import Players from './Players';
 import StopGame from './StopGame';
+
 import React from 'react';
 //Este componente Lobby recibe la lista de jugadores y se la pasa al componente Players
 const Lobby = (props) => {
@@ -14,9 +16,9 @@ const Lobby = (props) => {
   // });
   return (
     <div>
-      <StartGame firstRound={props.triviaData} socket={props.socket} />
+      <StartGame />
       <br />
-      <Players players={props.players} />
+      <Players />
       <br />
       <br />
       <br />
