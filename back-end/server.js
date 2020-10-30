@@ -5,7 +5,7 @@ const socketIO = require('socket.io');
 const PORT = process.env.PORT || 5000;
 
 const app = express();
-app.use(express.static('back-end/public'));
+app.use(express.static('front-end/build'));
 const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 const io = socketIO(server);
@@ -17,10 +17,10 @@ const trivia = [
     correct: 1,
   },
   {
-    question: "Which is the largest animal?",
-    options: ["Cow", "Dog", "Mosquito", "Whale"],
+    question: 'Which is the largest animal?',
+    options: ['Cow', 'Dog', 'Mosquito', 'Whale'],
     correct: 3,
-  }
+  },
 ];
 
 let players = {};
@@ -30,14 +30,13 @@ function updatePlayerList() {
     if (error) throw error;
     io.emit('players', clients);
     players = {};
-    clients.forEach(client => players[client] = {score: 0})
-  })
-};
-
+    clients.forEach((client) => (players[client] = { score: 0 }));
+  });
+}
 
 io.on('connection', (socket) => {
   console.log('Client connected');
-  updatePlayerList()
+  updatePlayerList();
 
   let counter = 0;
 
@@ -75,26 +74,26 @@ io.on('connection', (socket) => {
   }
 
   socket.on('answer', (data) => {
-    if (data === trivia[counter].correct){
+    if (data === trivia[counter].correct) {
       players[socket.client.id].score += 1;
     }
-    counter ++;
+    counter++;
     showNextQuestion();
   });
 
   socket.on('new game', () => {
     counter = 0;
-    showNextQuestion()
+    showNextQuestion();
   });
 
   socket.on('next question', () => {
-    counter ++;
+    counter++;
     showNextQuestion();
-  })
-  
+  });
+
   socket.on('disconnect', () => {
-    console.log('Client disconnected')
-    updatePlayerList()
+    console.log('Client disconnected');
+    updatePlayerList();
   });
 });
 
