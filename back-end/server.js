@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
 
   function showNextQuestion() {
     if (counter === trivia.length){
-      io.of('/').emit('game ended', calculatePodium(players))
+      socket.emit('game ended', calculatePodium(players))
     }
     else{
       io.of('/').emit('question', {question: trivia[counter].question, options: trivia[counter].options});
