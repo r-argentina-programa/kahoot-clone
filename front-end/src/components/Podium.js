@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'react-bootstrap/Image';
 import podiumImg from '../assets/podium.jpg';
-import StopGame from './StopGame';
 const Podium = (props) => {
   return (
     <div>

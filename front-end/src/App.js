@@ -54,6 +54,7 @@ function App() {
           <Podium socket={socket} players={players} ranking={podium} />
         </Route>
       </Switch>
+      <Router></Router>
     </div>
   );
 }
