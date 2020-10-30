@@ -9,7 +9,14 @@ const Countdown = () => {
     return () => clearInterval(timer);
   }, [counter]);
 
-  return <Alert variant="danger">You have {counter} seconds left</Alert>;
+
+
+  return (
+    <Alert variant="danger">
+      {counter ? `You have ${counter} seconds left` : 'You dont have any more time' && {}}
+    </Alert>
+  );
+
 };
 
 export default Countdown;
