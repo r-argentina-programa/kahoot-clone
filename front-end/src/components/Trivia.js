@@ -6,6 +6,10 @@ import Countdown from './Countdown';
 import '../styles/Trivia.css';
 
 const Trivia = (props) => {
+  const onGameEnd = props.onGameEnd;
+  props.socket.on('game ended', (podium) => {
+    onGameEnd(podium);
+  });
   return (
     <div>
       <Countdown />
