@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const StopGame = () => {
   return (
     <Link to="/">
-      <Button variant="danger">Stop game</Button>
+      <Button variant="danger">Go back to the Lobby</Button>
     </Link>
   );
 };
