@@ -3,16 +3,13 @@ import Alert from 'react-bootstrap/Alert';
 import StopGame from './StopGame';
 import Questions from './Questions';
 import Countdown from './Countdown';
-
 import '../styles/Trivia.css';
 
 const Trivia = (props) => {
-
   return (
     <div>
       <Countdown />
       <br />
-
       <Questions triviaData={props.triviaData} />
       <Alert className="answer" onClick={() => props.socket.emit('answer', 0)} variant="warning">
         {props.triviaData.options[0]}
@@ -26,7 +23,6 @@ const Trivia = (props) => {
       <Alert className="answer" onClick={() => props.socket.emit('answer', 3)} variant="warning">
         {props.triviaData.options[3]}
       </Alert>
-
       <br />
       <StopGame />
     </div>
