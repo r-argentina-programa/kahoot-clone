@@ -10,7 +10,7 @@
     "client-install": "cd front-end && npm install",
     "start-server": "nodemon -e js,jsx,html back-end/server.js",
     "start-client": "cd front-end && npm start",
-    "build-client": "cd front-end && npm run build"
+    "build-client": "cd front-end && npm run build && mv build ../back-end/build"
   },
   "repository": {
     "type": "git",
