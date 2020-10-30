@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
       return b[1] - a[1];
     });
 
-    for (let i = 0; i < (sortedArray.length > 3 ? 3 : sortedArray.length); i++) {
+    for (let i = 0; i < sortedArray.length; i++) {
       podium[i] = { name: sortedArray[i][0], score: sortedArray[i][1] };
     }
 
