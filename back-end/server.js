@@ -1,12 +1,17 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
-app.use(express.static('back-end/public'));
+app.use(express.static(path.join(__dirname, 'build')));
 const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const io = socketIO(server);
 
