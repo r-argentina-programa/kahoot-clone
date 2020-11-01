@@ -1,10 +1,9 @@
-import StartGame from './StartGame';
-import Players from './Players';
-import StopGame from './StopGame';
-import React from 'react';
-//Este componente Lobby recibe la lista de jugadores y se la pasa al componente Players
+import StartGame from "./StartGame";
+import Players from "./Players";
+import StopGame from "./StopGame";
+import React from "react";
+
 const Lobby = (props) => {
-  console.log('Lobby component:', props.players);
   // const socket = props.socket;
   // const [triviaData, setTriviaData] = useState('');
   // socket.on('question', (triviaData) => {

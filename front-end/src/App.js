@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import socketIO from 'socket.io-client';
-import Lobby from './components/Lobby';
-import Trivia from './components/Trivia';
-import Podium from './components/Podium';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import socketIO from "socket.io-client";
+import Lobby from "./components/Lobby";
+import Trivia from "./components/Trivia";
+import Podium from "./components/Podium";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
-// Traje la conexion del socket aca porque este componente no se desmonta nunca, siempre esta presente. El unico
-// momento en donde se desmonta es cuando salis de la pagina.
 let ENDPOINT;
 
-if (process.env.NODE_ENV === 'development') {
-  console.log('development');
-  ENDPOINT = 'http://localhost:5000';
-} else if (process.env.NODE_ENV === 'production') {
-  console.log('production');
-  ENDPOINT = 'inmental-kahoot-clone.herokuapp.com';
+if (process.env.NODE_ENV === "development") {
+  ENDPOINT = "http://localhost:5000";
+} else if (process.env.NODE_ENV === "production") {
+  ENDPOINT = "inmental-kahoot-clone.herokuapp.com";
 }
 
 const socket = socketIO(ENDPOINT);
@@ -27,38 +23,35 @@ function App() {
   const [triviaData, setTriviaData] = useState({ options: [] });
   const [podium, setPodium] = useState([]);
   const history = useHistory();
-  // Esto corre una sola vez al montarse el componente (cuando abris el browser y vas a localhost:3000).
-  // y tambien corre una sola vez al desmontarse (al salir de la pagina).
-  useEffect(() => {
-    console.log('Esta linea corre una sola vez');
 
-    // Esto setea la conexion
-    socket.on('players', (playersData) => {
-      console.log('from App component:', playersData);
+  useEffect(() => {
+    socket.on("players", (playersData) => {
       const newPlayers = [...playersData];
       setPlayers(newPlayers);
     });
 
-    socket.on('question', (triviaData) => {
+    socket.on("question", (triviaData) => {
       const newTriviaData = triviaData;
-      console.log(triviaData);
       setTriviaData(newTriviaData);
     });
-  }, []); // este array que paso como segundo parametro es lo que hace que el useEffect corra una sola vez.
+  }, []);
 
   const onGameEnd = (result) => {
     setPodium(result);
-    history.push('/podium');
+    history.push("/podium");
   };
   return (
     <div className="App">
       <Switch>
         <Route exact path="/">
-          {/* Aca hago que el componente lobby reciba la lista de jugadores */}
           <Lobby triviaData={triviaData} socket={socket} players={players} />
         </Route>
         <Route path="/trivia">
-          <Trivia onGameEnd={onGameEnd} triviaData={triviaData} socket={socket} />
+          <Trivia
+            onGameEnd={onGameEnd}
+            triviaData={triviaData}
+            socket={socket}
+          />
         </Route>
         <Route path="/podium">
           <Podium socket={socket} players={players} ranking={podium} />
