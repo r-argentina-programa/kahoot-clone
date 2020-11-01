@@ -1,10 +1,7 @@
-import ListGroup from 'react-bootstrap/ListGroup';
-import React from 'react';
+import ListGroup from "react-bootstrap/ListGroup";
+import React from "react";
 
-// Este componente recibe la lista de jugadores (un array) y los renderea adecuadamente.
 const Players = (props) => {
-  console.log('Players component:', props.players);
-
   return (
     <div>
       <ListGroup>
