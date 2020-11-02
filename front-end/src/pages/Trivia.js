@@ -1,13 +1,14 @@
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
-import StopGame from './StopGame';
-import Questions from './Questions';
-import Countdown from './Countdown';
+import StopGame from '../components/StopGame';
+import Questions from '../components/Questions';
+import Countdown from '../components/Countdown';
 import '../styles/Trivia.css';
 
 const Trivia = (props) => {
+  const socket = props.socket;
   const onGameEnd = props.onGameEnd;
-  props.socket.on('game ended', (podium) => {
+  socket.on('game ended', (podium) => {
     onGameEnd(podium);
   });
   return (
@@ -28,7 +29,7 @@ const Trivia = (props) => {
         {props.triviaData.options[3]}
       </Alert>
       <br />
-      <StopGame />
+      <StopGame socket={socket} />
     </div>
   );
 };
