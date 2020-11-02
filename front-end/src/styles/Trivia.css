@@ -3,5 +3,5 @@
 }
 
 .clicked {
-  
+  pointer-events: none;
 }

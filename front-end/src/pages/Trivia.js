@@ -10,6 +10,7 @@ const Trivia = (props) => {
   const [isClicked1, setIsClicked1] = useState(false);
   const [isClicked2, setIsClicked2] = useState(false);
   const [isClicked3, setIsClicked3] = useState(false);
+  const [isDisabled, setIsDisabled] = useState('');
   const socket = props.socket;
   const onGameEnd = props.onGameEnd;
   socket.on('game ended', (podium) => {
@@ -20,7 +21,7 @@ const Trivia = (props) => {
     setIsClicked1(false);
     setIsClicked2(false);
     setIsClicked3(false);
-
+    setIsDisabled('');
     return () => {};
   }, [props.triviaData]);
   return (
@@ -29,9 +30,10 @@ const Trivia = (props) => {
       <br />
       <Questions triviaData={props.triviaData} />
       <Alert
-        className="answer"
+        className={`answer ${isDisabled}`}
         onClick={() => {
           setIsClicked0(true);
+          setIsDisabled('clicked');
           socket.emit('answer', 0);
         }}
         variant={isClicked0 ? 'success' : 'warning'}
@@ -39,9 +41,10 @@ const Trivia = (props) => {
         {props.triviaData.options[0]}
       </Alert>
       <Alert
-        className="answer"
+        className={`answer ${isDisabled}`}
         onClick={() => {
           setIsClicked1(true);
+          setIsDisabled('clicked');
           socket.emit('answer', 1);
         }}
         variant={isClicked1 ? 'success' : 'warning'}
@@ -49,9 +52,10 @@ const Trivia = (props) => {
         {props.triviaData.options[1]}
       </Alert>
       <Alert
-        className="answer"
+        className={`answer ${isDisabled}`}
         onClick={() => {
           setIsClicked2(true);
+          setIsDisabled('clicked');
           socket.emit('answer', 2);
         }}
         variant={isClicked2 ? 'success' : 'warning'}
@@ -59,9 +63,10 @@ const Trivia = (props) => {
         {props.triviaData.options[2]}
       </Alert>
       <Alert
-        className="answer"
+        className={`answer ${isDisabled}`}
         onClick={() => {
           setIsClicked3(true);
+          setIsDisabled('clicked');
           socket.emit('answer', 3);
         }}
         variant={isClicked3 ? 'success' : 'warning'}
