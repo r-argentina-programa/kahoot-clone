@@ -42,7 +42,7 @@ const Trivia = (props) => {
         className="answer"
         onClick={() => {
           setIsClicked1(true);
-          socket.emit('answer', 0);
+          socket.emit('answer', 1);
         }}
         variant={isClicked1 ? 'success' : 'warning'}
       >
@@ -52,7 +52,7 @@ const Trivia = (props) => {
         className="answer"
         onClick={() => {
           setIsClicked2(true);
-          socket.emit('answer', 0);
+          socket.emit('answer', 2);
         }}
         variant={isClicked2 ? 'success' : 'warning'}
       >
@@ -62,7 +62,7 @@ const Trivia = (props) => {
         className="answer"
         onClick={() => {
           setIsClicked3(true);
-          socket.emit('answer', 0);
+          socket.emit('answer', 3);
         }}
         variant={isClicked3 ? 'success' : 'warning'}
       >
