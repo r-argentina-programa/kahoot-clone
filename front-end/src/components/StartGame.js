@@ -6,7 +6,9 @@ const StartGame = (props) => {
   return (
     <div>
       <Link to="/Trivia">
-        <Button onClick={() => props.socket.emit('new game')}>Start Game</Button>
+        <Button className="startGame" onClick={() => props.socket.emit('new game')}>
+          Start Game
+        </Button>
       </Link>
     </div>
   );

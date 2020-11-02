@@ -30,7 +30,7 @@ const Trivia = (props) => {
       <br />
       <Questions triviaData={props.triviaData} />
       <Alert
-        className={`answer ${isDisabled}`}
+        className={`answer ${isDisabled} answer0`}
         onClick={() => {
           setIsClicked0(true);
           setIsDisabled('clicked');
@@ -41,7 +41,7 @@ const Trivia = (props) => {
         {props.triviaData.options[0]}
       </Alert>
       <Alert
-        className={`answer ${isDisabled}`}
+        className={`answer ${isDisabled} answer1`}
         onClick={() => {
           setIsClicked1(true);
           setIsDisabled('clicked');
@@ -52,7 +52,7 @@ const Trivia = (props) => {
         {props.triviaData.options[1]}
       </Alert>
       <Alert
-        className={`answer ${isDisabled}`}
+        className={`answer ${isDisabled} answer2`}
         onClick={() => {
           setIsClicked2(true);
           setIsDisabled('clicked');
@@ -63,7 +63,7 @@ const Trivia = (props) => {
         {props.triviaData.options[2]}
       </Alert>
       <Alert
-        className={`answer ${isDisabled}`}
+        className={`answer ${isDisabled} answer3`}
         onClick={() => {
           setIsClicked3(true);
           setIsDisabled('clicked');
