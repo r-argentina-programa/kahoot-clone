@@ -40,61 +40,63 @@ function updatePlayerList() {
     if (error) throw error;
     io.emit('players', clients);
     players = {};
-    clients.forEach((client) => (players[client] = { score: 0, gameFinished: false }));
+    clients.forEach((client) => (players[client] = { score: 0, answered: false }));
   });
 }
+
+function calculatePodium(players) {
+  let sortedArray = [];
+  let podium = {};
+
+  for (player in players) {
+    sortedArray.push([player, players[player].score]);
+  }
+
+  sortedArray.sort(function (a, b) {
+    return b[1] - a[1];
+  });
+
+  for (let i = 0; i < sortedArray.length; i++) {
+    podium[i] = { name: sortedArray[i][0], score: sortedArray[i][1] };
+  }
+
+  return podium;
+}
+
+let counter = 0;
 
 io.on('connection', (socket) => {
   console.log('Client connected');
   updatePlayerList();
 
-  let counter = 0;
-
   function showNextQuestion() {
+    for (const key in players) {
+      players[key].answered = false;
+    }
     if (counter === trivia.length) {
-      players[socket.client.id].gameFinished = true;
-      socket.emit('game ended', calculatePodium(players));
+      players[socket.client.id].answered = false;
+      io.of('/').emit('game ended', calculatePodium(players));
     } else {
-      if (counter === 0) {
-        io.of('/').emit('question', {
-          question: trivia[counter].question,
-          options: trivia[counter].options,
-        });
-      } else {
-        socket.emit('question', {
-          question: trivia[counter].question,
-          options: trivia[counter].options,
-        });
-      }
+      io.emit('question', {
+        question: trivia[counter].question,
+        options: trivia[counter].options,
+      });
     }
-  }
-
-  function calculatePodium(players) {
-    let sortedArray = [];
-    let podium = {};
-
-    for (player in players) {
-      sortedArray.push([player, players[player].score]);
-    }
-
-    sortedArray.sort(function (a, b) {
-      return b[1] - a[1];
-    });
-
-    for (let i = 0; i < sortedArray.length; i++) {
-      podium[i] = { name: sortedArray[i][0], score: sortedArray[i][1] };
-    }
-
-    return podium;
   }
 
   socket.on('answer', (data) => {
-    if (!players[socket.client.id].gameFinished) {
+    if (!players[socket.client.id].answered) {
+      players[socket.client.id].answered = true;
       if (data === trivia[counter].correct) {
         players[socket.client.id].score += 1;
       }
-      counter++;
-      showNextQuestion();
+      if (
+        Object.values(players).filter((elem) => elem.answered === true).length ===
+        Object.keys(players).length
+      ) {
+        counter++;
+        showNextQuestion();
+      }
     }
   });
 
