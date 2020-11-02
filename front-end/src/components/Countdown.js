@@ -10,7 +10,7 @@ const Countdown = () => {
   }, [counter]);
 
   return (
-    <Alert variant="danger">
+    <Alert className="counter" variant="danger">
       {counter ? `You have ${counter} seconds left` : 'You dont have any more time'}
     </Alert>
   );
