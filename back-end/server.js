@@ -103,6 +103,7 @@ io.on('connection', (socket) => {
   socket.on('new game', () => {
     counter = 0;
     showNextQuestion();
+    io.emit('toTrivia');
   });
 
   socket.on('next question', () => {
