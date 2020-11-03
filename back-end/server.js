@@ -1,19 +1,20 @@
 require('dotenv').config();
+
 const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
+const uuid = require('uuid');
 
 const PORT = process.env.PORT || 5000;
-
 const app = express();
-app.use(express.static(path.join(__dirname, 'build')));
 const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+const io = socketIO(server);
+
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-
-const io = socketIO(server);
 
 const trivia = [
   {
@@ -33,24 +34,25 @@ const trivia = [
   },
 ];
 
-let players = {};
+let rooms = {};
+let socketsInLobby = [];
 
-function updatePlayerList() {
-  io.of('/').clients((error, clients) => {
-    if (error) throw error;
-    io.emit('players', clients);
-    players = {};
-    clients.forEach((client) => (players[client] = { score: 0, answered: false }));
-  });
+function joinRoom(socket, room) {
+  room.sockets.push(socket);
 }
 
-function calculatePodium(players) {
+function updateLobbyList(sockets) {
+  const socketsIds = sockets.map((socket) => socket.id);
+  io.emit('players', socketsIds);
+}
+
+function calculatePodium(sockets) {
   let sortedArray = [];
   let podium = {};
 
-  for (player in players) {
-    sortedArray.push([player, players[player].score]);
-  }
+  sockets.forEach((socket) => {
+    sortedArray.push([socket.id, socket.score]);
+  });
 
   sortedArray.sort(function (a, b) {
     return b[1] - a[1];
@@ -63,58 +65,139 @@ function calculatePodium(players) {
   return podium;
 }
 
-let counter = 0;
+function showNextQuestion({ id: roomId, sockets, counter }) {
+  if (counter === trivia.length) {
+    io.to(roomId).emit('game ended', calculatePodium(sockets));
+  } else {
+    sockets.forEach((socket) => {
+      socket.answered = false;
+    });
+
+    io.to(roomId).emit('question', {
+      question: trivia[counter].question,
+      options: trivia[counter].options,
+    });
+  }
+}
+
+function getAllSockets() {
+  return Object.values(io.sockets.sockets);
+}
+
+function joinRoom(sockets) {
+  const room = {
+    id: uuid.v4(),
+    sockets,
+    counter: 0,
+  };
+
+  sockets.forEach((socket) => socket.join(room.id));
+
+  return room;
+}
+
+function leaveRoom(socket) {
+  for (roomId in rooms) {
+    const room = rooms[roomId];
+    if (room.sockets.includes(socket)) {
+      socket.leave(roomId);
+      room.sockets = room.sockets.filter((skt) => skt !== socket);
+      if (room.sockets.length === 0) {
+        delete rooms[roomId];
+      }
+    }
+  }
+}
+
+function getSocketsInRooms() {
+  if (Object.keys(rooms).length === 0) {
+    return null;
+  }
+
+  const playersInRooms = [];
+
+  for (roomId in rooms) {
+    playersInRooms.push(...rooms[roomId].sockets);
+  }
+
+  return playersInRooms;
+}
+
+function getSocketsInLobby(socketsConnected, socketsInRooms) {
+  if (!socketsConnected || !socketsInRooms) {
+    return null;
+  }
+
+  return socketsConnected.filter((socket) => !socketsInRooms.includes(socket));
+}
+
+function findRoom(socket) {
+  for (roomId in rooms) {
+    const room = rooms[roomId];
+    if (room.sockets.includes(socket)) {
+      return room;
+    }
+  }
+}
+
+function initScores(sockets) {
+  sockets.forEach((socket) => {
+    socket.score = 0;
+  });
+}
 
 io.on('connection', (socket) => {
   console.log('Client connected');
-  updatePlayerList();
 
-  function showNextQuestion() {
-    for (const key in players) {
-      players[key].answered = false;
-    }
-    if (counter === trivia.length) {
-      players[socket.client.id].answered = false;
-      io.of('/').emit('game ended', calculatePodium(players));
-    } else {
-      io.emit('question', {
-        question: trivia[counter].question,
-        options: trivia[counter].options,
-      });
-    }
+  const socketsInRooms = getSocketsInRooms();
+
+  if (!socketsInRooms) {
+    socketsInLobby = getAllSockets();
+    updateLobbyList(socketsInLobby);
+  } else {
+    const socketsConnected = getAllSockets();
+    socketsInLobby = getSocketsInLobby(socketsConnected, socketsInRooms);
+    updateLobbyList(socketsInLobby);
   }
 
-  socket.on('answer', (data) => {
-    if (!players[socket.client.id].answered) {
-      players[socket.client.id].answered = true;
-      if (data === trivia[counter].correct) {
-        players[socket.client.id].score += 1;
-      }
-      if (
-        Object.values(players).filter((elem) => elem.answered === true).length ===
-        Object.keys(players).length
-      ) {
-        counter++;
-        showNextQuestion();
-      }
-    }
-  });
-
   socket.on('new game', () => {
-    counter = 0;
-    showNextQuestion();
-    io.emit('toTrivia');
+    const room = joinRoom(socketsInLobby);
+    rooms[room.id] = room;
+    initScores(room.sockets);
+    showNextQuestion(room);
+    io.to(room.id).emit('toTrivia');
   });
 
-  socket.on('next question', () => {
-    counter++;
-    showNextQuestion();
+  socket.on('answer', (index) => {
+    const room = findRoom(socket);
+
+    socket.answered = true;
+
+    if (index === trivia[room.counter].correct) {
+      socket.score += 1;
+    }
+
+    const everyoneAnswered = room.sockets.every((socket) => socket.answered === true);
+
+    if (everyoneAnswered) {
+      room.counter++;
+      showNextQuestion(room);
+    }
   });
 
   socket.on('disconnect', () => {
     console.log('Client disconnected');
-    updatePlayerList();
+    leaveRoom(socket);
+
+    const socketsInRooms = getSocketsInRooms();
+
+    if (!socketsInRooms) {
+      socketsInLobby = getAllSockets();
+      updateLobbyList(socketsInLobby);
+    } else {
+      const socketsConnected = getAllSockets();
+      socketsInLobby = getSocketsInLobby(socketsConnected, socketsInRooms);
+      updateLobbyList(socketsInLobby);
+    }
   });
 });
-
-setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
