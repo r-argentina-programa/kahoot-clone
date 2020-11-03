@@ -138,6 +138,8 @@ function findRoom(socket) {
       return room;
     }
   }
+
+  return null;
 }
 
 function initScores(sockets) {
@@ -182,6 +184,25 @@ io.on('connection', (socket) => {
     if (everyoneAnswered) {
       room.counter++;
       showNextQuestion(room);
+    }
+  });
+
+  socket.on('exit', () => {
+    const room = findRoom(socket);
+
+    if (room) {
+      leaveRoom(socket);
+    }
+
+    const socketsInRooms = getSocketsInRooms();
+
+    if (!socketsInRooms) {
+      socketsInLobby = getAllSockets();
+      updateLobbyList(socketsInLobby);
+    } else {
+      const socketsConnected = getAllSockets();
+      socketsInLobby = getSocketsInLobby(socketsConnected, socketsInRooms);
+      updateLobbyList(socketsInLobby);
     }
   });
 
