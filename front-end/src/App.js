@@ -5,6 +5,7 @@ import socketIO from 'socket.io-client';
 import Lobby from './pages/Lobby';
 import Trivia from './pages/Trivia';
 import Podium from './pages/Podium';
+import CreateTrivia from './components/CreateTrivia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -47,6 +48,9 @@ function App() {
   return (
     <div className="App">
       <Switch>
+        <Route path="/add-trivia">
+          <CreateTrivia />
+        </Route>
         <Route exact path="/">
           <Lobby triviaData={triviaData} socket={socket} players={players} />
         </Route>
