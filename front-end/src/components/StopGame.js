@@ -11,7 +11,7 @@ const StopGame = (props) => {
 
   return (
     <Link to="/">
-      <Button onClick={emitDisconnect(socket)} variant="danger">
+      <Button className="stopGame" onChange={emitDisconnect(socket)} variant="danger">
         Go back to the Lobby
       </Button>
     </Link>
