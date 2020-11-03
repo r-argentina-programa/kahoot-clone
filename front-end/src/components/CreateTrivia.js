@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { useForm } from 'react-hook-form';
 
 const CreateTrivia = () => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit} = useForm();
   const onSubmit = (data) => console.log(data);
   return (
     <div>
