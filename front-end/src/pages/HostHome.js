@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const HostHome = () => {
   return (
     <div>
-      <Link basename="/host" to="/chooseTrivia">
+      <Link to="/host/chooseTrivia">
         <Button variant="info">Create/start trivia</Button>
       </Link>
     </div>
