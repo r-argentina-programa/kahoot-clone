@@ -6,6 +6,8 @@ import Lobby from './pages/Lobby';
 import Trivia from './pages/Trivia';
 import Podium from './pages/Podium';
 import CreateTrivia from './components/CreateTrivia';
+import HostHome from './pages/HostHome';
+import HostChooseTrivia from './pages/HostChooseTrivia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -48,9 +50,6 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/add-trivia">
-          <CreateTrivia />
-        </Route>
         <Route exact path="/">
           <Lobby triviaData={triviaData} socket={socket} players={players} />
         </Route>
@@ -59,6 +58,15 @@ function App() {
         </Route>
         <Route path="/podium">
           <Podium socket={socket} players={players} ranking={podium} />
+        </Route>
+        <Route path="/host">
+          <HostHome />
+        </Route>
+        <Route path="/add-trivia">
+          <CreateTrivia />
+        </Route>
+        <Route basename="/host" to="/chooseTrivia">
+          <HostChooseTrivia />
         </Route>
       </Switch>
       <Router></Router>
