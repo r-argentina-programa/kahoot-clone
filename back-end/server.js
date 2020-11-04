@@ -11,6 +11,7 @@ const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 const io = socketIO(server);
 
 app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.urlencoded());
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -55,7 +56,7 @@ const trivia2 = [
 const triviaList = { trivia1, trivia2 };
 
 function generatePIN() {
-  return Math.floor(Math.random() * 10000000);
+  return Math.floor(Math.random() * 10);
 }
 
 function connectToTrivia(triviaId, io) {
@@ -74,7 +75,7 @@ app.get('/trivialist', (req, res) => {
   res.json({ triviaList: Object.keys(triviaList), pin: generatePIN() });
 });
 
-app.get('/trivia/:triviaid', (req, res) => {
-  const triviaId = req.params.id;
+app.get('/trivia/:pin', (req, res) => {
+  const triviaId = req.params.pin;
   connectToTrivia(triviaId, io);
 });
