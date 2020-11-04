@@ -34,6 +34,26 @@ const trivia = [
   },
 ];
 
+const trivia2 = [
+  {
+    question: 'Which is the biggest country?',
+    options: ['Uruguay', 'BRAZIL', 'Paraguay', 'Peru'],
+    correct: 1,
+  },
+  {
+    question: 'What is the color of the sky?',
+    options: ['Yellow', 'Green', 'BLUE', 'Pink'],
+    correct: 2,
+  },
+  {
+    question: 'Which animal is the fastest?',
+    options: ['CHEETAH', 'Turtle', 'Sloth', 'Dog'],
+    correct: 0,
+  },
+];
+
+const triviaList = { trivia1, trivia2 };
+
 let rooms = {};
 let socketsInLobby = [];
 
