@@ -13,13 +13,9 @@ const UserHome = () => {
     });
   };
 
-  const sendPin = (event) => {
-    event.preventDefault();
-    console.log(pin);
-  };
   return (
     <div>
-      <form method="POST" action="/pin" onSubmit={sendPin}>
+      <form method="POST" action="/pin">
         <div>
           <input
             type="text"

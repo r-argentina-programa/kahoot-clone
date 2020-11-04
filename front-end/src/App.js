@@ -55,7 +55,7 @@ function App() {
         <Route exact path="/">
           <Lobby triviaData={triviaData} socket={socket} players={players} />
         </Route>
-        <Route path="/trivia">
+        <Route exact path="/trivia">
           <Trivia onGameEnd={onGameEnd} triviaData={triviaData} socket={socket} />
         </Route>
         <Route path="/podium">
