@@ -23,10 +23,10 @@ const UserHome = () => {
         <div>
           <input
             type="text"
-            placeholder="Nombre"
+            placeholder="Paste your PIN here"
             className="form-control"
             onChange={handleInputChange}
-            name="nombre"
+            name="pin"
           ></input>
         </div>
         <Button type="submit" variant="primary">
