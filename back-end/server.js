@@ -13,10 +13,6 @@ const io = socketIO(server);
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.urlencoded());
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
 const trivia1 = [
   {
     question: 'Which is the biggest planet in the Solar System?',
@@ -56,7 +52,7 @@ const trivia2 = [
 const triviaList = { trivia1, trivia2 };
 
 function generatePIN() {
-  return Math.floor(Math.random() * 10);
+  return Math.floor(Math.random() * 100000);
 }
 
 function connectToTrivia(triviaId, io) {
