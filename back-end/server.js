@@ -11,11 +11,7 @@ const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 const io = socketIO(server);
 
 app.use(express.static(path.join(__dirname, 'build')));
-app.use(express.urlencoded());
-
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+app.use(express.urlencoded({ extended: true }));
 
 const trivia1 = [
   {
@@ -59,8 +55,8 @@ function generatePIN() {
   return Math.floor(Math.random() * 10);
 }
 
-function connectToTrivia(triviaId, io) {
-  const namespace = io.of(`/${triviaId}`);
+function hostKahoot(kahootId) {
+  const namespace = io.of(`/${kahootId}`);
 
   return namespace.on('connection', (socket) => {
     console.log('Client connected');
@@ -72,10 +68,16 @@ function connectToTrivia(triviaId, io) {
 }
 
 app.get('/trivialist', (req, res) => {
-  res.json({ triviaList: Object.keys(triviaList), pin: generatePIN() });
+  res.json({ triviaList, pin: generatePIN() });
 });
 
-app.get('/trivia/:pin', (req, res) => {
-  const triviaId = req.params.pin;
-  connectToTrivia(triviaId, io);
+app.get('/connect', (req, res) => {
+  console.log('hey!');
+  const kahootId = uuid.v4();
+  hostKahoot(kahootId);
+  res.json({ pin: kahootId });
+});
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
