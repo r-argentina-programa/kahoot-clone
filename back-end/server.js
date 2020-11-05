@@ -60,6 +60,13 @@ function connectToTrivia(pin, io, selectedTrivia) {
   namespace.counter = 0;
   namespace.players = {};
 
+  function showNextQuestion(namespace) {
+    namespace.emit('question', {
+      question: triviaList[selectedTrivia][namespace.counter].question,
+      options: triviaList[selectedTrivia][namespace.counter].options,
+    });
+  }
+
   return namespace.on('connection', (socket) => {
     console.log('Client connected');
 
@@ -70,6 +77,11 @@ function connectToTrivia(pin, io, selectedTrivia) {
     if (!socket.host) {
       socket.join('gameroom');
     }
+
+    socket.on('next-question', () => {
+      namespace.counter++;
+      showNextQuestion(namespace);
+    });
 
     socket.on('disconnect', () => {
       console.log('Client disconnected');
