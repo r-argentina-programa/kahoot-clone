@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 // import socketIO from 'socket.io-client';
@@ -25,6 +25,7 @@ import './App.css';
 // const socket = socketIO(ENDPOINT);
 
 function App() {
+  const [trivia, setTrivia] = useState(null);
   // const [players, setPlayers] = useState([]);
   // const [triviaData, setTriviaData] = useState({ options: [] });
   // const [podium, setPodium] = useState([]);
@@ -69,10 +70,10 @@ function App() {
           <CreateTrivia />
         </Route>
         <Route path="/host/chooseTrivia">
-          <HostChooseTrivia />
+          <HostChooseTrivia onClickTriviaButton={(selectedTrivia) => setTrivia(selectedTrivia)} />
         </Route>
         <Route path="/host/lobby">
-          <HostLobby />
+          <HostLobby trivia={trivia} />
         </Route>
         <Route exact path="/user">
           <UserHome />
