@@ -12,10 +12,6 @@ const Trivia = (props) => {
   const [isClicked3, setIsClicked3] = useState(false);
   const [isDisabled, setIsDisabled] = useState('');
   const socket = props.socket;
-  const onGameEnd = props.onGameEnd;
-  socket.on('game ended', (podium) => {
-    onGameEnd(podium);
-  });
   useEffect(() => {
     setIsClicked0(false);
     setIsClicked1(false);
