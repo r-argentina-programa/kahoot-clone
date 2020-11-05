@@ -1,54 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import { useLocation } from 'react-router-dom';
 import '../styles/HostLobby.css';
-import Trivia from './Trivia';
+// import Trivia from './Trivia';
 import socketIO from 'socket.io-client';
+import Players from '../components/Players';
 const HostLobby = (props) => {
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState({});
   const [triviaData, setTriviaData] = useState({ options: [] });
-  console.log(props.trivia);
   const data = useLocation();
   const pin = data.state;
-  console.log(pin);
-  useEffect(() => {
-    fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
-      const socket = socketIO(`/${pin}`);
-      setSocket(socketIO(`/${pin}`));
-      socket.on('/players', (data) => {
-        console.log('esto viene del socket', data);
-      });
-      socket.on('/admin', (data) => {
-        console.log('el admin es', data);
-      });
-      socket.on('/playerlist', (data) => {
-        console.log('los players son', data);
-      });
-    });
-    socket.on('question', (triviaData) => {
-      const newTriviaData = triviaData;
-      setTriviaData(newTriviaData);
-    });
-  }, [triviaData]);
 
+  // useEffect(() => {
+  //   fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
+  //     const socket = socketIO(`/${pin}`);
+  //     setSocket(socket);
+  //   });
+  // });
+
+  // useEffect(() => {
+  //   console.log(socket);
+  //   socket.on('question', (triviaData) => {
+  //     const newTriviaData = triviaData;
+  //     setTriviaData(newTriviaData);
+  //   });
+  // }, [socket, triviaData]);
+
+  const question = {
+    question: 'Which is the biggest country?',
+    options: ['Uruguay', 'BRAZIL', 'Paraguay', 'Peru'],
+  };
+
+  useEffect(() => {
+    const setConnection = async () => {
+      await fetch(`/trivia/${pin}/${props.trivia}`);
+      const newSocket = socketIO(`/${pin}`);
+      setSocket(newSocket);
+      socket.on('question', (triviaData) => {
+        const newTriviaData = triviaData;
+        setTriviaData(newTriviaData);
+      });
+    };
+    if (!socket) {
+      setConnection();
+    }
+  }, [pin, props.trivia, socket, triviaData]);
+  console.log(triviaData);
   return (
     <div>
       <div className="container">
         <Alert variant="dark">The pin is {pin}</Alert>
-        <Button variant="primary">
-          <Trivia socket={socket} triviaData={triviaData} />
-        </Button>
+
+        {/* <Trivia socket={socket} triviaData={question} /> */}
       </div>
       <br />
       <br />
       <br />
       <br />
       <div>
+        <Players players={['abc', 'asd', 123, 456]} />
+        {/* <Alert variant="dark">Players</Alert>
         <Alert variant="dark">Players</Alert>
         <Alert variant="dark">Players</Alert>
-        <Alert variant="dark">Players</Alert>
-        <Alert variant="dark">Players</Alert>
+        <Alert variant="dark">Players</Alert> */}
       </div>
     </div>
   );
