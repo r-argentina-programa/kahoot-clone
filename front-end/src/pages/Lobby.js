@@ -1,21 +1,13 @@
-import StartGame from '../components/StartGame';
-import Players from '../components/Players';
-import StopGame from '../components/StopGame';
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
-const Lobby = (props) => {
+const Lobby = () => {
   return (
-    <div>
-      <StartGame firstRound={props.triviaData} socket={props.socket} />
-      <br />
-      <Players players={props.players} />
-      <br />
-      <br />
-      <br />
-      <br />
-      <StopGame socket={props.socket} />
-    </div>
+    <React.Fragment>
+      <Link to="#">
+        <button>Start</button>
+      </Link>
+    </React.Fragment>
   );
 };
-
 export default Lobby;

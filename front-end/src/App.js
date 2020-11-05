@@ -1,85 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import socketIO from 'socket.io-client';
-import Lobby from './pages/Lobby';
-import Trivia from './pages/Trivia';
-import Podium from './pages/Podium';
-import CreateTrivia from './components/CreateTrivia';
-import HostHome from './pages/HostHome';
-import HostChooseTrivia from './pages/HostChooseTrivia';
-import HostLobby from './pages/HostLobby';
-import UserHome from './pages/UserHome';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import Home from "./pages/Home";
+import NewKahoot from "./pages/NewKahoot";
+import HostKahoot from "./pages/HostKahoot";
+import Lobby from "./pages/Lobby";
+import "./App.css";
 
-let ENDPOINT;
-
-if (process.env.NODE_ENV === 'development') {
-  ENDPOINT = 'http://localhost:5000';
-} else if (process.env.NODE_ENV === 'production') {
-  ENDPOINT = 'inmental-kahoot-clone.herokuapp.com';
-}
-
-const socket = socketIO(ENDPOINT);
-
-function App() {
-  const [players, setPlayers] = useState([]);
-  const [triviaData, setTriviaData] = useState({ options: [] });
-  const [podium, setPodium] = useState([]);
-  const history = useHistory();
-
-  useEffect(() => {
-    socket.on('players', (playersData) => {
-      const newPlayers = [...playersData];
-      setPlayers(newPlayers);
-    });
-
-    socket.on('question', (triviaData) => {
-      const newTriviaData = triviaData;
-      setTriviaData(newTriviaData);
-    });
-
-    socket.on('toTrivia', () => {
-      history.push('/trivia');
-    });
-  }, [history]);
-
-  const onGameEnd = (result) => {
-    setPodium(result);
-    history.push('/podium');
-  };
-  return (
-    <div className="App">
-      <Switch>
-        <Route exact path="/">
-          <Lobby triviaData={triviaData} socket={socket} players={players} />
-        </Route>
-        <Route path="/trivia">
-          <Trivia onGameEnd={onGameEnd} triviaData={triviaData} socket={socket} />
-        </Route>
-        <Route path="/podium">
-          <Podium socket={socket} players={players} ranking={podium} />
-        </Route>
-        <Route exact path="/host">
-          <HostHome />
-        </Route>
-        <Route path="/add-trivia">
-          <CreateTrivia />
-        </Route>
-        <Route path="/host/chooseTrivia">
-          <HostChooseTrivia />
-        </Route>
-        <Route path="/host/lobby">
-          <HostLobby />
-        </Route>
-        <Route path="/user">
-          <UserHome />
-        </Route>
-      </Switch>
-      <Router></Router>
-    </div>
-  );
-}
+const App = () => (
+  <React.Fragment>
+    <Switch>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      <Route exact path="/newKahoot">
+        <NewKahoot />
+      </Route>
+      <Route path="/newKahoot/hostKahoot">
+        <HostKahoot />
+      </Route>
+      <Route to="lobby/:lobbyId">
+        <Lobby />
+      </Route>
+      <Route>
+        <Redirect to="/" />
+      </Route>
+    </Switch>
+  </React.Fragment>
+);
 
 export default App;
