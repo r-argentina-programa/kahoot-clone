@@ -52,14 +52,24 @@ const trivia2 = [
 const triviaList = { trivia1, trivia2 };
 
 function generatePIN() {
-  return Math.floor(Math.random() * 100000);
+  return Math.floor(Math.random() * 10);
 }
 
-function connectToTrivia(triviaId, io) {
-  const namespace = io.of(`/${triviaId}`);
+function connectToTrivia(pin, io, selectedTrivia) {
+  const namespace = io.of(`/${pin}`);
+  namespace.counter = 0;
+  namespace.players = {};
 
   return namespace.on('connection', (socket) => {
     console.log('Client connected');
+
+    if (Object.keys(namespace.clients().connected).length === 1) {
+      socket.host = true;
+    }
+
+    if (!socket.host) {
+      socket.join('gameroom');
+    }
 
     socket.on('disconnect', () => {
       console.log('Client disconnected');
@@ -71,7 +81,9 @@ app.get('/trivialist', (req, res) => {
   res.json({ triviaList: Object.keys(triviaList), pin: generatePIN() });
 });
 
-app.get('/trivia/:pin', (req, res) => {
-  const triviaId = req.params.pin;
-  connectToTrivia(triviaId, io);
+app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
+  const pin = req.params.pin;
+  const selectedTrivia = req.params.selectedTrivia;
+  connectToTrivia(pin, io, selectedTrivia);
+  res.json({});
 });
