@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { useLocation } from 'react-router-dom';
 import '../styles/HostLobby.css';
-// import Trivia from './Trivia';
+//import Trivia from './Trivia';
 import socketIO from 'socket.io-client';
 import Players from '../components/Players';
 const HostLobby = (props) => {
@@ -26,11 +26,11 @@ const HostLobby = (props) => {
   //   });
   // }, [socket, triviaData]);
 
-  const question = {
-    question: 'Which is the biggest country?',
-    options: ['Uruguay', 'BRAZIL', 'Paraguay', 'Peru'],
-  };
-
+  // const question = {
+  //   question: 'Which is the biggest country?',
+  //   options: ['Uruguay', 'BRAZIL', 'Paraguay', 'Peru'],
+  // };
+  // este es el mock del objeto que vendria del back que me pasaste
   useEffect(() => {
     const setConnection = async () => {
       await fetch(`/trivia/${pin}/${props.trivia}`);
@@ -51,7 +51,7 @@ const HostLobby = (props) => {
       <div className="container">
         <Alert variant="dark">The pin is {pin}</Alert>
 
-        {/* <Trivia socket={socket} triviaData={question} /> */}
+        {/* <Trivia socket={socket} triviaData={question} />  esto lo dejo comentado para que puedas hacer lo de players*/}
       </div>
       <br />
       <br />
