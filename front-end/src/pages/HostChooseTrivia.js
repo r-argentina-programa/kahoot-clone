@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import '../styles/HostChooseTrivia.css';
-const HostChooseTrivia = () => {
+const HostChooseTrivia = (props) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
@@ -32,9 +32,21 @@ const HostChooseTrivia = () => {
     return <div>Loading...</div>;
   } else {
     const object = items.map((item, i) => (
-      <Button key={i + 1} className="triviaButton" variant="dark">
-        {item}
-      </Button>
+      <Link
+        to={{
+          pathname: '/host/lobby',
+          state: pin,
+        }}
+      >
+        <Button
+          key={i + 1}
+          onClick={() => props.onClickTriviaButton(item)}
+          className="triviaButton"
+          variant="dark"
+        >
+          {item}
+        </Button>
+      </Link>
     ));
     return (
       <div>
