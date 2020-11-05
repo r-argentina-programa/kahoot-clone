@@ -52,7 +52,7 @@ const trivia2 = [
 const triviaList = { trivia1, trivia2 };
 
 function generatePIN() {
-  return Math.floor(Math.random() * 10);
+  return Math.floor(Math.random() * 100000);
 }
 
 function connectToTrivia(triviaId, io) {

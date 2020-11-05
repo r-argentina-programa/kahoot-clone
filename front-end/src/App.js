@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import socketIO from 'socket.io-client';
-import Lobby from './pages/Lobby';
-import Trivia from './pages/Trivia';
-import Podium from './pages/Podium';
+// import Lobby from './pages/Lobby';
+// import Trivia from './pages/Trivia';
+// import Podium from './pages/Podium';
 import CreateTrivia from './components/CreateTrivia';
 import HostHome from './pages/HostHome';
 import HostChooseTrivia from './pages/HostChooseTrivia';
@@ -24,35 +24,35 @@ if (process.env.NODE_ENV === 'development') {
 const socket = socketIO(ENDPOINT);
 
 function App() {
-  const [players, setPlayers] = useState([]);
-  const [triviaData, setTriviaData] = useState({ options: [] });
-  const [podium, setPodium] = useState([]);
-  const history = useHistory();
+  // const [players, setPlayers] = useState([]);
+  // const [triviaData, setTriviaData] = useState({ options: [] });
+  // const [podium, setPodium] = useState([]);
+  // const history = useHistory();
 
-  useEffect(() => {
-    socket.on('players', (playersData) => {
-      const newPlayers = [...playersData];
-      setPlayers(newPlayers);
-    });
+  // useEffect(() => {
+  //   socket.on('players', (playersData) => {
+  //     const newPlayers = [...playersData];
+  //     setPlayers(newPlayers);
+  //   });
 
-    socket.on('question', (triviaData) => {
-      const newTriviaData = triviaData;
-      setTriviaData(newTriviaData);
-    });
+  //   socket.on('question', (triviaData) => {
+  //     const newTriviaData = triviaData;
+  //     setTriviaData(newTriviaData);
+  //   });
 
-    socket.on('toTrivia', () => {
-      history.push('/trivia');
-    });
-  }, [history]);
+  //   socket.on('toTrivia', () => {
+  //     history.push('/trivia');
+  //   });
+  // }, [history]);
 
-  const onGameEnd = (result) => {
-    setPodium(result);
-    history.push('/podium');
-  };
+  // const onGameEnd = (result) => {
+  //   setPodium(result);
+  //   history.push('/podium');
+  // };
   return (
     <div className="App">
       <Switch>
-        <Route exact path="/">
+        {/* <Route exact path="/">
           <Lobby triviaData={triviaData} socket={socket} players={players} />
         </Route>
         <Route exact path="/trivia">
@@ -60,9 +60,9 @@ function App() {
         </Route>
         <Route path="/podium">
           <Podium socket={socket} players={players} ranking={podium} />
-        </Route>
+        </Route> */}
         <Route exact path="/host">
-          <HostHome />
+          <HostHome socket={socket} />
         </Route>
         <Route path="/add-trivia">
           <CreateTrivia />
