@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
-import socketIO from 'socket.io-client';
+// import socketIO from 'socket.io-client';
 // import Lobby from './pages/Lobby';
 // import Trivia from './pages/Trivia';
 // import Podium from './pages/Podium';
@@ -10,18 +10,19 @@ import HostHome from './pages/HostHome';
 import HostChooseTrivia from './pages/HostChooseTrivia';
 import HostLobby from './pages/HostLobby';
 import UserHome from './pages/UserHome';
+import UserLobby from './pages/UserLobby';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-let ENDPOINT;
+// let ENDPOINT;
 
-if (process.env.NODE_ENV === 'development') {
-  ENDPOINT = 'http://localhost:5000';
-} else if (process.env.NODE_ENV === 'production') {
-  ENDPOINT = 'inmental-kahoot-clone.herokuapp.com';
-}
+// if (process.env.NODE_ENV === 'development') {
+//   ENDPOINT = 'http://localhost:5000';
+// } else if (process.env.NODE_ENV === 'production') {
+//   ENDPOINT = 'inmental-kahoot-clone.herokuapp.com';
+// }
 
-const socket = socketIO(ENDPOINT);
+// const socket = socketIO(ENDPOINT);
 
 function App() {
   // const [players, setPlayers] = useState([]);
@@ -62,7 +63,7 @@ function App() {
           <Podium socket={socket} players={players} ranking={podium} />
         </Route> */}
         <Route exact path="/host">
-          <HostHome socket={socket} />
+          <HostHome />
         </Route>
         <Route path="/add-trivia">
           <CreateTrivia />
@@ -73,10 +74,13 @@ function App() {
         <Route path="/host/lobby">
           <HostLobby />
         </Route>
-        <Route path="/user">
+        <Route exact path="/user">
           <UserHome />
         </Route>
       </Switch>
+      <Route path="/user/lobby">
+        <UserLobby />
+      </Route>
       <Router></Router>
     </div>
   );
