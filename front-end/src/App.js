@@ -4,6 +4,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 // import socketIO from 'socket.io-client';
 // import Lobby from './pages/Lobby';
 // import Trivia from './pages/Trivia';
+import Home from './pages/Home';
 import Podium from './pages/Podium';
 import CreateTrivia from './components/CreateTrivia';
 import HostHome from './pages/HostHome';
@@ -17,9 +18,9 @@ import './App.css';
 
 let BASE_URL;
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   BASE_URL = 'inmental-kahoot-clone.herokuapp.com';
-} else if (process.env.NODE_ENV === "development") {
+} else if (process.env.NODE_ENV === 'development') {
   BASE_URL = 'http://localhost:5000';
 }
 
@@ -41,6 +42,9 @@ function App() {
   return (
     <div className="App">
       <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
         <Route path="/podium">
           <Podium socket={socketUser} ranking={podium} />
         </Route>
