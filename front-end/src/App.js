@@ -94,10 +94,10 @@ function App() {
         <UserLobby setSocketUser={setSocketUser} setTriviaDataUser={setTriviaDataUser} />
       </Route>
       <Route path="/user/trivia">
-        <Trivia socket={socketUser} triviaData={triviaDataUser} />
+        <Trivia socket={socketUser} onGameEnd={onGameEnd} triviaData={triviaDataUser} />
       </Route>
       <Route path="/host/trivia">
-        <Trivia socket={socket} triviaData={triviaData} />
+        <Trivia socket={socket} onGameEnd={onGameEnd} triviaData={triviaData} />
       </Route>
     </div>
   );
