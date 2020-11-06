@@ -5,67 +5,42 @@ import '../styles/HostLobby.css';
 import socketIO from 'socket.io-client';
 import Players from '../components/Players';
 import Button from 'react-bootstrap/esm/Button';
+
 const HostLobby = (props) => {
   const [players, setPlayers] = useState([]);
-  // const [socket, setSocket] = useState(null);
-  // const [triviaData, setTriviaData] = useState({ options: [] });
   const data = useLocation();
   const pin = data.state;
-
-  // useEffect(() => {
-  //   fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
-  //     const socket = socketIO(`/${pin}`);
-  //     setSocket(socket);
-  //   });
-  // });
-
-  // useEffect(() => {
-  //   console.log(socket);
-  //   socket.on('question', (triviaData) => {
-  //     const newTriviaData = triviaData;
-  //     setTriviaData(newTriviaData);
-  //   });
-  // }, [socket, triviaData]);
-
-  // const question = {
-  //   question: 'Which is the biggest country?',
-  //   options: ['Uruguay', 'BRAZIL', 'Paraguay', 'Peru'],
-  // };
-  // este es el mock del objeto que vendria del back que me pasaste
+  const { socket, setTriviaData } = props;
 
   useEffect(() => {
-    fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
-      const socket = socketIO(`/${pin}`);
-      props.setSocket(socket);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pin, props.trivia]);
-
-  useEffect(() => {
-    if (props.socket) {
-      props.socket.emit('next-question');
-      props.socket.on('question', (triviaData) => {
-        const newTriviaData = triviaData;
-        props.setTriviaData(newTriviaData);
-        console.log(triviaData);
-      });
-      props.socket.on('playerlist', (players) => {
-        const newPlayers = players;
-        setPlayers(newPlayers);
-        console.log(players);
+    if (!props.socket) {
+      console.log('fetching...');
+      fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
+        const socket = socketIO(`/${pin}`);
+        props.setSocket(socket);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.socket]);
+  }, [pin, props]);
 
-  console.log(props.triviaData);
+  useEffect(() => {
+    if (socket) {
+      socket.on('question', (triviaData) => {
+        const newTriviaData = triviaData;
+        setTriviaData(newTriviaData);
+      });
+      socket.on('playerlist', (players) => {
+        const newPlayers = players;
+        setPlayers(newPlayers);
+      });
+    }
+  }, [socket, setTriviaData]);
 
   return (
     <div>
       <div className="container">
         <Alert variant="dark">The pin is {pin}</Alert>
         <Link to="/host/trivia">
-          <Button>Start Game</Button>
+          <Button onClick={() => props.socket.emit('start-game')}>Start Game</Button>
         </Link>
       </div>
       <br />
@@ -74,13 +49,32 @@ const HostLobby = (props) => {
       <br />
       <div>
         <Players players={players} />
-        {/* <Alert variant="dark">Players</Alert>
-        <Alert variant="dark">Players</Alert>
-        <Alert variant="dark">Players</Alert>
-        <Alert variant="dark">Players</Alert> */}
       </div>
     </div>
   );
 };
 
 export default HostLobby;
+
+// useEffect(() => {
+//   fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
+//     const socket = socketIO(`/${pin}`);
+//     setSocket(socket);
+//   });
+// });
+
+// useEffect(() => {
+//   console.log(socket);
+//   socket.on('question', (triviaData) => {
+//     const newTriviaData = triviaData;
+//     setTriviaData(newTriviaData);
+//   });
+// }, [socket, triviaData]);
+
+// const question = {
+//   question: 'Which is the biggest country?',
+//   options: ['Uruguay', 'BRAZIL', 'Paraguay', 'Peru'],
+// };
+
+// const [socket, setSocket] = useState(null);
+// const [triviaData, setTriviaData] = useState({ options: [] });

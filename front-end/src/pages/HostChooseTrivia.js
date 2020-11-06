@@ -13,19 +13,19 @@ const HostChooseTrivia = (props) => {
     fetch('/trivialist')
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+
         setIsLoaded(true);
-        console.log('loading set');
+
         setItems(result.triviaList);
         setPin(result.pin);
-        console.log('result set');
+
       })
       .catch((error) => {
         setIsLoaded(true);
         setError(error);
       });
   }, []);
-  console.log(items, pin, isLoaded, error);
+
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -33,6 +33,7 @@ const HostChooseTrivia = (props) => {
   } else {
     const object = items.map((item, i) => (
       <Link
+        key={`item-${i + 1}`}
         to={{
           pathname: '/host/lobby',
           state: pin,

@@ -88,7 +88,10 @@ function App() {
         </Route>
       </Switch>
       <Route path="/user/lobby">
-        <UserLobby />
+        <UserLobby setTriviaData={setTriviaData} />
+      </Route>
+      <Route path="/user/trivia">
+        <Trivia socket={socket} triviaData={triviaData} />
       </Route>
       <Route path="/host/trivia">
         <Trivia socket={socket} triviaData={triviaData} />
