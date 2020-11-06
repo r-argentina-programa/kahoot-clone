@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '../styles/HostLobby.css';
-// import Trivia from './Trivia';
+import Trivia from './Trivia';
 import socketIO from 'socket.io-client';
 import Players from '../components/Players';
+import Button from 'react-bootstrap/esm/Button';
 const HostLobby = (props) => {
   const [players, setPlayers] = useState([]);
-  const [socket, setSocket] = useState(null);
-  const [triviaData, setTriviaData] = useState({ options: [] });
+  // const [socket, setSocket] = useState(null);
+  // const [triviaData, setTriviaData] = useState({ options: [] });
   const data = useLocation();
   const pin = data.state;
 
@@ -36,34 +37,35 @@ const HostLobby = (props) => {
   useEffect(() => {
     fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
       const socket = socketIO(`/${pin}`);
-      setSocket(socket);
+      props.setSocket(socket);
     });
   }, [pin, props.trivia]);
 
   useEffect(() => {
-    if (socket) {
-      socket.emit('next-question');
-      socket.on('question', (triviaData) => {
+    if (props.socket) {
+      props.socket.emit('next-question');
+      props.socket.on('question', (triviaData) => {
         const newTriviaData = triviaData;
-        setTriviaData(newTriviaData);
+        props.setTriviaData(newTriviaData);
         console.log(triviaData);
       });
-      socket.on('playerlist', (players) => {
+      props.socket.on('playerlist', (players) => {
         const newPlayers = players;
         setPlayers(newPlayers);
         console.log(players);
       });
     }
-  }, [socket]);
+  }, [props.socket]);
 
-  console.log(triviaData);
+  console.log(props.triviaData);
 
   return (
     <div>
       <div className="container">
         <Alert variant="dark">The pin is {pin}</Alert>
-
-        {/* <Trivia socket={socket} triviaData={triviaData} /> */}
+        <Link to="/host/trivia">
+          <Button>Start Game</Button>
+        </Link>
       </div>
       <br />
       <br />

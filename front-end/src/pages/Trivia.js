@@ -4,6 +4,7 @@ import StopGame from '../components/StopGame';
 import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
 import '../styles/Trivia.css';
+import Button from 'react-bootstrap/esm/Button';
 
 const Trivia = (props) => {
   const [isClicked0, setIsClicked0] = useState(false);
@@ -24,6 +25,7 @@ const Trivia = (props) => {
     <div>
       <Countdown />
       <br />
+      <Button onClick={() => socket.emit('next-question')}>Next Question</Button>
       <Questions triviaData={props.triviaData} />
       <Alert
         className={`answer ${isDisabled} answer0`}

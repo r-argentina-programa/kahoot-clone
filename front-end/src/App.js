@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 // import socketIO from 'socket.io-client';
 // import Lobby from './pages/Lobby';
@@ -11,6 +11,7 @@ import HostChooseTrivia from './pages/HostChooseTrivia';
 import HostLobby from './pages/HostLobby';
 import UserHome from './pages/UserHome';
 import UserLobby from './pages/UserLobby';
+import Trivia from './pages/Trivia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -26,6 +27,8 @@ import './App.css';
 
 function App() {
   const [trivia, setTrivia] = useState(null);
+  const [socket, setSocket] = useState(null);
+  const [triviaData, setTriviaData] = useState({ options: [] });
   // const [players, setPlayers] = useState([]);
   // const [triviaData, setTriviaData] = useState({ options: [] });
   // const [podium, setPodium] = useState([]);
@@ -73,7 +76,12 @@ function App() {
           <HostChooseTrivia onClickTriviaButton={(selectedTrivia) => setTrivia(selectedTrivia)} />
         </Route>
         <Route path="/host/lobby">
-          <HostLobby trivia={trivia} />
+          <HostLobby
+            trivia={trivia}
+            setSocket={setSocket}
+            setTriviaData={setTriviaData}
+            socket={socket}
+          />
         </Route>
         <Route exact path="/user">
           <UserHome />
@@ -82,7 +90,9 @@ function App() {
       <Route path="/user/lobby">
         <UserLobby />
       </Route>
-      <Router></Router>
+      <Route path="/host/trivia">
+        <Trivia socket={socket} triviaData={triviaData} />
+      </Route>
     </div>
   );
 }
