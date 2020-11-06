@@ -96,6 +96,7 @@ app.get('/trivialist', (req, res) => {
 app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
   const pin = req.params.pin;
   const selectedTrivia = req.params.selectedTrivia;
+  console.log('pin y trivia son', pin, selectedTrivia);
   connectToTrivia(pin, io, selectedTrivia);
   res.json({});
 });
