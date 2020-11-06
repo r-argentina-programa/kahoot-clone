@@ -60,6 +60,12 @@ function connectToTrivia(pin, io, selectedTrivia) {
   namespace.counter = 0;
   namespace.players = {};
 
+  function updatePlayerList(namespace, players) {
+    const playerList = Object.keys(namespace.adapter.rooms['gameroom'].sockets);
+    playerList.forEach((elem) => (players[elem] = { score: 0, answered: false }));
+    namespace.emit('playerlist', playerList);
+  }
+
   function showNextQuestion(namespace) {
     namespace.emit('question', {
       question: triviaList[selectedTrivia][namespace.counter].question,
@@ -76,14 +82,16 @@ function connectToTrivia(pin, io, selectedTrivia) {
 
     if (!socket.host) {
       socket.join('gameroom');
+      updatePlayerList(namespace, namespace.players);
     }
 
     socket.on('next-question', () => {
-      namespace.counter++;
       showNextQuestion(namespace);
+      namespace.counter++;
     });
 
     socket.on('disconnect', () => {
+      updatePlayerList(namespace, namespace.players);
       console.log('Client disconnected');
     });
   });
@@ -96,7 +104,6 @@ app.get('/trivialist', (req, res) => {
 app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
   const pin = req.params.pin;
   const selectedTrivia = req.params.selectedTrivia;
-  console.log('pin y trivia son', pin, selectedTrivia);
   connectToTrivia(pin, io, selectedTrivia);
   res.json({});
 });
