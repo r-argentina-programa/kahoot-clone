@@ -7,6 +7,10 @@ import '../styles/Trivia.css';
 import Button from 'react-bootstrap/esm/Button';
 
 const Trivia = (props) => {
+  const onGameEnd = props.onGameEnd;
+  props.socket.on('podium', (podium) => {
+    onGameEnd(podium);
+  });
   const [isClicked0, setIsClicked0] = useState(false);
   const [isClicked1, setIsClicked1] = useState(false);
   const [isClicked2, setIsClicked2] = useState(false);

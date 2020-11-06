@@ -10,13 +10,13 @@ const UserLobby = (props) => {
   const pin = data.state.pin;
   console.log(data.state.pin);
   const socket = socketIO(`/${pin}`);
-  props.setSocketUser(socket);
   console.log(socket);
 
   useEffect(() => {
     socket.on('question', (data) => {
       console.log(data);
-      props.setTriviaData(data);
+      props.setSocketUser(socket);
+      props.setTriviaDataUser(data);
       history.push('/user/trivia');
     });
   }, [socket, history, props]);

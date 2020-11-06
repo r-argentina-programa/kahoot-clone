@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 // import socketIO from 'socket.io-client';
 // import Lobby from './pages/Lobby';
 // import Trivia from './pages/Trivia';
-// import Podium from './pages/Podium';
+import Podium from './pages/Podium';
 import CreateTrivia from './components/CreateTrivia';
 import HostHome from './pages/HostHome';
 import HostChooseTrivia from './pages/HostChooseTrivia';
@@ -30,9 +30,11 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [socketUser, setSocketUser] = useState(null);
   const [triviaData, setTriviaData] = useState({ options: [] });
+  const [triviaDataUser, setTriviaDataUser] = useState({ options: [] });
   // const [players, setPlayers] = useState([]);
   // const [triviaData, setTriviaData] = useState({ options: [] });
-  // const [podium, setPodium] = useState([]);
+  const [podium, setPodium] = useState([]);
+  const history = useHistory();
   // const history = useHistory();
 
   // useEffect(() => {
@@ -51,10 +53,10 @@ function App() {
   //   });
   // }, [history]);
 
-  // const onGameEnd = (result) => {
-  //   setPodium(result);
-  //   history.push('/podium');
-  // };
+  const onGameEnd = (result) => {
+    setPodium(result);
+    history.push('/podium');
+  };
   return (
     <div className="App">
       <Switch>
@@ -63,10 +65,10 @@ function App() {
         </Route>
         <Route exact path="/trivia">
           <Trivia onGameEnd={onGameEnd} triviaData={triviaData} socket={socket} />
-        </Route>
-        <Route path="/podium">
-          <Podium socket={socket} players={players} ranking={podium} />
         </Route> */}
+        <Route path="/podium">
+          <Podium socket={socketUser} ranking={podium} />
+        </Route>
         <Route exact path="/host">
           <HostHome />
         </Route>
@@ -89,10 +91,10 @@ function App() {
         </Route>
       </Switch>
       <Route path="/user/lobby">
-        <UserLobby setSocketUser={setSocketUser} setTriviaData={setTriviaData} />
+        <UserLobby setSocketUser={setSocketUser} setTriviaDataUser={setTriviaDataUser} />
       </Route>
       <Route path="/user/trivia">
-        <Trivia socket={socketUser} triviaData={triviaData} />
+        <Trivia socket={socketUser} triviaData={triviaDataUser} />
       </Route>
       <Route path="/host/trivia">
         <Trivia socket={socket} triviaData={triviaData} />
