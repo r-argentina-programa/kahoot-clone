@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { Link, useLocation } from 'react-router-dom';
 import '../styles/HostLobby.css';
-import Trivia from './Trivia';
 import socketIO from 'socket.io-client';
 import Players from '../components/Players';
 import Button from 'react-bootstrap/esm/Button';
@@ -39,6 +38,7 @@ const HostLobby = (props) => {
       const socket = socketIO(`/${pin}`);
       props.setSocket(socket);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pin, props.trivia]);
 
   useEffect(() => {
@@ -55,6 +55,7 @@ const HostLobby = (props) => {
         console.log(players);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.socket]);
 
   console.log(props.triviaData);
