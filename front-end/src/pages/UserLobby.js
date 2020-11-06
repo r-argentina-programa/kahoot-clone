@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Alert from 'react-bootstrap/esm/Alert';
 import Card from 'react-bootstrap/Card';
 import socketIO from 'socket.io-client';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 const UserLobby = (props) => {
+  const history = useHistory();
   const data = useLocation();
   const pin = data.state.pin;
   console.log(data.state.pin);
   const socket = socketIO(`/${pin}`);
   console.log(socket);
+
+  useEffect(() => {
+    socket.on('question', (data) => {
+      console.log(data);
+      props.setTriviaData(data);
+      history.push('/user/trivia');
+    });
+  }, [socket, history, props]);
   return (
     <div>
       <div className="container">

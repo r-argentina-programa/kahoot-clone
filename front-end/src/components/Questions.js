@@ -5,7 +5,6 @@ const Questions = (props) => {
   return (
     <div>
       <Jumbotron>
-        {console.log(props.triviaData.question)}
         <h1>{props.triviaData.question}</h1>
       </Jumbotron>
     </div>

@@ -67,6 +67,11 @@ function connectToTrivia(pin, io, selectedTrivia) {
   }
 
   function showNextQuestion(namespace) {
+    console.log('trivia elegida: ', triviaList[selectedTrivia]);
+    console.log('counter:', namespace.counter);
+    console.log('pregunta:', triviaList[selectedTrivia][0]);
+    console.log('valor de question:', triviaList[selectedTrivia][0].question);
+
     namespace.emit('question', {
       question: triviaList[selectedTrivia][namespace.counter].question,
       options: triviaList[selectedTrivia][namespace.counter].options,
@@ -86,8 +91,12 @@ function connectToTrivia(pin, io, selectedTrivia) {
     }
 
     socket.on('next-question', () => {
-      showNextQuestion(namespace);
       namespace.counter++;
+      showNextQuestion(namespace);
+    });
+
+    socket.on('start-game', () => {
+      showNextQuestion(namespace);
     });
 
     socket.on('disconnect', () => {
@@ -104,6 +113,7 @@ app.get('/trivialist', (req, res) => {
 app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
   const pin = req.params.pin;
   const selectedTrivia = req.params.selectedTrivia;
+  console.log(selectedTrivia);
   connectToTrivia(pin, io, selectedTrivia);
   res.json({});
 });
