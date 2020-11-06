@@ -23,7 +23,7 @@ const UserLobby = (props) => {
         console.log(newSocketUser);
       } else {
         newSocketUser = socketIO(`${BASE_URL}/${pin}`);
-        console.log('user, production')
+        console.log('user, production');
         console.log(newSocketUser);
       }
 
