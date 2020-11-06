@@ -67,10 +67,33 @@ function connectToTrivia(pin, io, selectedTrivia) {
   }
 
   function showNextQuestion(namespace) {
-    namespace.emit('question', {
-      question: triviaList[selectedTrivia][namespace.counter].question,
-      options: triviaList[selectedTrivia][namespace.counter].options,
+    if (namespace.counter === triviaList[selectedTrivia].length) {
+      namespace.emit('podium', calculatePodium(namespace.players));
+    } else {
+      namespace.emit('question', {
+        question: triviaList[selectedTrivia][namespace.counter].question,
+        options: triviaList[selectedTrivia][namespace.counter].options,
+      });
+    }
+  }
+
+  function calculatePodium(players) {
+    let sortedArray = [];
+    let podium = {};
+
+    for (player in players) {
+      sortedArray.push([player, players[player].score]);
+    }
+
+    sortedArray.sort(function (a, b) {
+      return b[1] - a[1];
     });
+
+    for (let i = 0; i < sortedArray.length; i++) {
+      podium[i] = { name: sortedArray[i][0], score: sortedArray[i][1] };
+    }
+
+    return podium;
   }
 
   return namespace.on('connection', (socket) => {
@@ -94,6 +117,7 @@ function connectToTrivia(pin, io, selectedTrivia) {
     });
 
     socket.on('start-game', () => {
+      namespace.counter = 0;
       showNextQuestion(namespace);
     });
 
