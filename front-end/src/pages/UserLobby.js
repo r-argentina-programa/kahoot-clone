@@ -9,13 +9,24 @@ const UserLobby = (props) => {
   const data = useLocation();
   const pin = data.state.pin;
   console.log(data.state.pin);
-  const { setSocketUser } = props;
-  const { socketUser } = props;
+  const { setSocketUser, socketUser, BASE_URL } = props;
+  console.log(BASE_URL);
 
   useEffect(() => {
     if (!socketUser) {
       console.log('socket set');
-      const newSocketUser = socketIO(`/${pin}`);
+
+      let newSocketUser;
+      if (BASE_URL === 'http://localhost:5000') {
+        newSocketUser = socketIO(`/${pin}`);
+        console.log('user, development');
+        console.log(newSocketUser);
+      } else {
+        newSocketUser = socketIO(`${BASE_URL}/${pin}`);
+        console.log('user, production')
+        console.log(newSocketUser);
+      }
+
       setSocketUser(newSocketUser);
     }
 
@@ -27,7 +38,7 @@ const UserLobby = (props) => {
         history.push('/user/trivia');
       });
     }
-  }, [history, props, setSocketUser, pin, socketUser]);
+  }, [history, props, setSocketUser, pin, socketUser, BASE_URL]);
   return (
     <div>
       <div className="container">
