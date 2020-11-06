@@ -28,6 +28,7 @@ import './App.css';
 function App() {
   const [trivia, setTrivia] = useState(null);
   const [socket, setSocket] = useState(null);
+  const [socketUser, setSocketUser] = useState(null);
   const [triviaData, setTriviaData] = useState({ options: [] });
   // const [players, setPlayers] = useState([]);
   // const [triviaData, setTriviaData] = useState({ options: [] });
@@ -88,10 +89,10 @@ function App() {
         </Route>
       </Switch>
       <Route path="/user/lobby">
-        <UserLobby setTriviaData={setTriviaData} />
+        <UserLobby setSocketUser={setSocketUser} setTriviaData={setTriviaData} />
       </Route>
       <Route path="/user/trivia">
-        <Trivia socket={socket} triviaData={triviaData} />
+        <Trivia socket={socketUser} triviaData={triviaData} />
       </Route>
       <Route path="/host/trivia">
         <Trivia socket={socket} triviaData={triviaData} />

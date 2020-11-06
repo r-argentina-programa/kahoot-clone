@@ -10,6 +10,7 @@ const UserLobby = (props) => {
   const pin = data.state.pin;
   console.log(data.state.pin);
   const socket = socketIO(`/${pin}`);
+  props.setSocketUser(socket);
   console.log(socket);
 
   useEffect(() => {
