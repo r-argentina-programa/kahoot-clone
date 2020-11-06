@@ -1,15 +1,13 @@
 import React, { useState, useEffect, createContext } from "react";
 import socketIO from "socket.io-client";
 
-export const ConnectionContext = createContext();
+export const PlayerConnectionContext = createContext();
 
-export const ConnectionProvider = ({ children }) => {
+export const PlayerConnectionProvider = ({ children, pin }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const setConnection = async () => {
-      const response = await fetch(`/connect`);
-      const { pin } = await response.json();
       const newSocket = socketIO(`/${pin}`);
       setSocket(newSocket);
     };
@@ -23,14 +21,14 @@ export const ConnectionProvider = ({ children }) => {
         socket.disconnect();
       }
     };
-  }, [socket]);
+  }, [socket, pin]);
 
   return (
     <React.Fragment>
       {socket ? (
-        <ConnectionContext.Provider value={socket}>
+        <PlayerConnectionContext.Provider value={socket}>
           {children}
-        </ConnectionContext.Provider>
+        </PlayerConnectionContext.Provider>
       ) : (
         "Loading..."
       )}
