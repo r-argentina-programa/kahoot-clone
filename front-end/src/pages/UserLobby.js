@@ -9,16 +9,25 @@ const UserLobby = (props) => {
   const data = useLocation();
   const pin = data.state.pin;
   console.log(data.state.pin);
-  const socket = socketIO(`/${pin}`);
-  console.log(socket);
+  const { setSocketUser } = props;
+  const { socketUser } = props;
 
   useEffect(() => {
-    socket.on('question', (data) => {
-      console.log(data);
-      props.setTriviaData(data);
-      history.push('/user/trivia');
-    });
-  }, [socket, history, props]);
+    if (!socketUser) {
+      console.log('socket set');
+      const newSocketUser = socketIO(`/${pin}`);
+      setSocketUser(newSocketUser);
+    }
+
+    if (socketUser) {
+      console.log('listening...');
+      socketUser.on('question', (data) => {
+        console.log(data);
+        props.setTriviaDataUser(data);
+        history.push('/user/trivia');
+      });
+    }
+  }, [history, props, setSocketUser, pin, socketUser]);
   return (
     <div>
       <div className="container">

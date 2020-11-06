@@ -12,27 +12,37 @@ const Trivia = (props) => {
   const [isClicked2, setIsClicked2] = useState(false);
   const [isClicked3, setIsClicked3] = useState(false);
   const [isDisabled, setIsDisabled] = useState('');
-  const socket = props.socket;
+
+  const onGameEnd = props.onGameEnd;
+  const { socketUser, socketHost } = props;
+  console.log('trivia', socketHost);
+
   useEffect(() => {
+    if (socketUser) {
+      socketUser.on('podium', (podium) => {
+        onGameEnd(podium);
+      });
+    }
     setIsClicked0(false);
     setIsClicked1(false);
     setIsClicked2(false);
     setIsClicked3(false);
     setIsDisabled('');
     return () => {};
-  }, [props.triviaData]);
+  }, [onGameEnd, socketUser]);
   return (
     <div>
       <Countdown />
       <br />
-      <Button onClick={() => socket.emit('next-question')}>Next Question</Button>
+      <Button onClick={() => socketHost.emit('next-question')}>Next Question</Button>
       <Questions triviaData={props.triviaData} />
       <Alert
         className={`answer ${isDisabled} answer0`}
         onClick={() => {
           setIsClicked0(true);
           setIsDisabled('clicked');
-          socket.emit('answer', 0);
+          socketUser.emit('answer', 0);
+          console.log(socketUser);
         }}
         variant={isClicked0 ? 'success' : 'warning'}
       >
@@ -43,7 +53,8 @@ const Trivia = (props) => {
         onClick={() => {
           setIsClicked1(true);
           setIsDisabled('clicked');
-          socket.emit('answer', 1);
+          socketUser.emit('answer', 1);
+          console.log(socketUser);
         }}
         variant={isClicked1 ? 'success' : 'warning'}
       >
@@ -54,7 +65,8 @@ const Trivia = (props) => {
         onClick={() => {
           setIsClicked2(true);
           setIsDisabled('clicked');
-          socket.emit('answer', 2);
+          socketUser.emit('answer', 2);
+          console.log(socketUser);
         }}
         variant={isClicked2 ? 'success' : 'warning'}
       >
@@ -65,16 +77,19 @@ const Trivia = (props) => {
         onClick={() => {
           setIsClicked3(true);
           setIsDisabled('clicked');
-          socket.emit('answer', 3);
+          socketUser.emit('answer', 3);
+          console.log(socketUser);
         }}
         variant={isClicked3 ? 'success' : 'warning'}
       >
         {props.triviaData.options[3]}
       </Alert>
       <br />
-      <StopGame socket={socket} />
+      <StopGame socket={socketHost} />
     </div>
   );
 };
 
 export default Trivia;
+
+// viste como se conectaron dos mas, hay un problema con los eventos, sep algun useEffect seguro

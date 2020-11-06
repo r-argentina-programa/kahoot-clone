@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 // import socketIO from 'socket.io-client';
 // import Lobby from './pages/Lobby';
 // import Trivia from './pages/Trivia';
-// import Podium from './pages/Podium';
+import Podium from './pages/Podium';
 import CreateTrivia from './components/CreateTrivia';
 import HostHome from './pages/HostHome';
 import HostChooseTrivia from './pages/HostChooseTrivia';
@@ -15,57 +15,27 @@ import Trivia from './pages/Trivia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-// let ENDPOINT;
-
-// if (process.env.NODE_ENV === 'development') {
-//   ENDPOINT = 'http://localhost:5000';
-// } else if (process.env.NODE_ENV === 'production') {
-//   ENDPOINT = 'inmental-kahoot-clone.herokuapp.com';
-// }
-
-// const socket = socketIO(ENDPOINT);
-
 function App() {
   const [trivia, setTrivia] = useState(null);
   const [socket, setSocket] = useState(null);
+  const [socketUser, setSocketUser] = useState(null);
   const [triviaData, setTriviaData] = useState({ options: [] });
-  // const [players, setPlayers] = useState([]);
-  // const [triviaData, setTriviaData] = useState({ options: [] });
-  // const [podium, setPodium] = useState([]);
-  // const history = useHistory();
+  const [triviaDataUser, setTriviaDataUser] = useState({ options: [] });
+  const [podium, setPodium] = useState([]);
+  const history = useHistory();
+  console.log('En App, socketUser:', socketUser);
 
-  // useEffect(() => {
-  //   socket.on('players', (playersData) => {
-  //     const newPlayers = [...playersData];
-  //     setPlayers(newPlayers);
-  //   });
+  const onGameEnd = (result) => {
+    setPodium(result);
+    history.push('/podium');
+  };
 
-  //   socket.on('question', (triviaData) => {
-  //     const newTriviaData = triviaData;
-  //     setTriviaData(newTriviaData);
-  //   });
-
-  //   socket.on('toTrivia', () => {
-  //     history.push('/trivia');
-  //   });
-  // }, [history]);
-
-  // const onGameEnd = (result) => {
-  //   setPodium(result);
-  //   history.push('/podium');
-  // };
   return (
     <div className="App">
       <Switch>
-        {/* <Route exact path="/">
-          <Lobby triviaData={triviaData} socket={socket} players={players} />
-        </Route>
-        <Route exact path="/trivia">
-          <Trivia onGameEnd={onGameEnd} triviaData={triviaData} socket={socket} />
-        </Route>
         <Route path="/podium">
-          <Podium socket={socket} players={players} ranking={podium} />
-        </Route> */}
+          <Podium socket={socketUser} ranking={podium} />
+        </Route>
         <Route exact path="/host">
           <HostHome />
         </Route>
@@ -88,16 +58,63 @@ function App() {
         </Route>
       </Switch>
       <Route path="/user/lobby">
-        <UserLobby setTriviaData={setTriviaData} />
+        <UserLobby
+          setSocketUser={setSocketUser}
+          socketUser={socketUser}
+          setTriviaDataUser={setTriviaDataUser}
+        />
       </Route>
       <Route path="/user/trivia">
-        <Trivia socket={socket} triviaData={triviaData} />
+        <Trivia
+          socket={socketUser}
+          socketUser={socketUser}
+          onGameEnd={onGameEnd}
+          triviaData={triviaDataUser}
+        />
       </Route>
       <Route path="/host/trivia">
-        <Trivia socket={socket} triviaData={triviaData} />
+        <Trivia socketHost={socket} onGameEnd={onGameEnd} triviaData={triviaData} />
       </Route>
     </div>
   );
 }
 
 export default App;
+
+// const [players, setPlayers] = useState([]);
+// const [triviaData, setTriviaData] = useState({ options: [] });
+
+/* <Route exact path="/">
+          <Lobby triviaData={triviaData} socket={socket} players={players} />
+        </Route>
+        <Route exact path="/trivia">
+          <Trivia onGameEnd={onGameEnd} triviaData={triviaData} socket={socket} />
+        </Route> */
+
+// const history = useHistory();
+
+// useEffect(() => {
+//   socket.on('players', (playersData) => {
+//     const newPlayers = [...playersData];
+//     setPlayers(newPlayers);
+//   });
+
+//   socket.on('question', (triviaData) => {
+//     const newTriviaData = triviaData;
+//     setTriviaData(newTriviaData);
+//   });
+
+//   socket.on('toTrivia', () => {
+//     history.push('/trivia');
+//   });
+// }, [history]);
+
+// let ENDPOINT;
+
+// if (process.env.NODE_ENV === 'development') {
+//   ENDPOINT = 'http://localhost:5000';
+// } else if (process.env.NODE_ENV === 'production') {
+//   ENDPOINT = 'inmental-kahoot-clone.herokuapp.com';
+// }
+
+// const socket = socketIO(ENDPOINT);
