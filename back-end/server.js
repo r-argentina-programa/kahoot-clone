@@ -88,10 +88,23 @@ function connectToTrivia(pin, io, selectedTrivia) {
     socket.on('next-question', () => {
       namespace.counter++;
       showNextQuestion(namespace);
+      for (const key in namespace.players) {
+        namespace.players[key].answered = false;
+      }
     });
 
     socket.on('start-game', () => {
       showNextQuestion(namespace);
+    });
+
+    socket.on('answer', (data) => {
+      const player = Object.keys(socket.client.sockets)[1];
+      if (!namespace.players[player].answered) {
+        namespace.players[player].answered = true;
+        if (data === triviaList[selectedTrivia][namespace.counter].correct) {
+          namespace.players[player].score += 1;
+        }
+      }
     });
 
     socket.on('disconnect', () => {
@@ -108,7 +121,6 @@ app.get('/trivialist', (req, res) => {
 app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
   const pin = req.params.pin;
   const selectedTrivia = req.params.selectedTrivia;
-  console.log(selectedTrivia);
   connectToTrivia(pin, io, selectedTrivia);
   res.json({});
 });
