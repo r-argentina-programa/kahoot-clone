@@ -52,7 +52,7 @@ const trivia2 = [
 const triviaList = { trivia1, trivia2 };
 
 function generatePIN() {
-  return Math.floor(Math.random() * 10);
+  return Math.floor(100000 + Math.random() * 900000);
 }
 
 function hostKahoot(kahootId) {
@@ -73,7 +73,7 @@ app.get('/trivialist', (req, res) => {
 
 app.get('/connect', (req, res) => {
   console.log('hey!');
-  const kahootId = uuid.v4();
+  const kahootId = generatePIN();
   hostKahoot(kahootId);
   res.json({ pin: kahootId });
 });

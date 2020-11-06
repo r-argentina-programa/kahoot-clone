@@ -1,21 +1,14 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ConnectionContext } from "./ConnectionProvider";
 
 const Lobby = () => {
   const socket = useContext(ConnectionContext);
-
-  useEffect(() => {
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, [socket]);
+  const pin = socket.json.nsp.split("/")[1];
 
   return (
     <React.Fragment>
-      <div>Pin:</div>
+      <div>Pin: {pin}</div>
       <Link to="#">
         <button>Start</button>
       </Link>

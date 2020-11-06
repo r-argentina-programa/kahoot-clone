@@ -20,8 +20,6 @@ export const ConnectionProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    console.log("hey");
-
     const setConnection = async () => {
       const response = await fetch(`/connect`);
       const { pin } = await response.json();
@@ -29,17 +27,26 @@ export const ConnectionProvider = ({ children }) => {
       setSocket(newSocket);
     };
 
-    setConnection();
+    if (!socket) {
+      setConnection();
+    }
 
     return () => {
-      console.log(socket);
+      if (socket) {
+        socket.disconnect();
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
 
   return (
-    <ConnectionContext.Provider value={socket}>
-      {children}
-    </ConnectionContext.Provider>
+    <React.Fragment>
+      {socket ? (
+        <ConnectionContext.Provider value={socket}>
+          {children}
+        </ConnectionContext.Provider>
+      ) : (
+        "Loading..."
+      )}
+    </React.Fragment>
   );
 };
