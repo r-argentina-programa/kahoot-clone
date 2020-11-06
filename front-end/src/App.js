@@ -15,6 +15,14 @@ import Trivia from './pages/Trivia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
+let BASE_URL;
+
+if (process.env.NODE_ENV === "production") {
+  BASE_URL = 'inmental-kahoot-clone.herokuapp.com';
+} else if (process.env.NODE_ENV === "development") {
+  BASE_URL = 'http://localhost:5000';
+}
+
 function App() {
   const [trivia, setTrivia] = useState(null);
   const [socket, setSocket] = useState(null);
@@ -47,6 +55,7 @@ function App() {
         </Route>
         <Route path="/host/lobby">
           <HostLobby
+            BASE_URL={BASE_URL}
             trivia={trivia}
             setSocket={setSocket}
             setTriviaData={setTriviaData}
@@ -59,6 +68,7 @@ function App() {
       </Switch>
       <Route path="/user/lobby">
         <UserLobby
+          BASE_URL={BASE_URL}
           setSocketUser={setSocketUser}
           socketUser={socketUser}
           setTriviaDataUser={setTriviaDataUser}

@@ -10,17 +10,27 @@ const HostLobby = (props) => {
   const [players, setPlayers] = useState([]);
   const data = useLocation();
   const pin = data.state;
-  const { socket, setTriviaData } = props;
+  const { socket, setTriviaData, BASE_URL } = props;
+  console.log(BASE_URL);
 
   useEffect(() => {
     if (!props.socket) {
       console.log('fetching...');
       fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
-        const socket = socketIO(`/${pin}`);
-        props.setSocket(socket);
+        let newSocketHost;
+        if (BASE_URL === 'http://localhost:5000') {
+          newSocketHost = socketIO(`/${pin}`);
+          console.log('host, development')
+          console.log(newSocketHost);
+        } else {
+          newSocketHost = socketIO(`${BASE_URL}/${pin}`);
+          console.log('host, production')
+          console.log(newSocketHost);
+        }
+        props.setSocket(newSocketHost);
       });
     }
-  }, [pin, props]);
+  }, [pin, props, BASE_URL]);
 
   useEffect(() => {
     if (socket) {
