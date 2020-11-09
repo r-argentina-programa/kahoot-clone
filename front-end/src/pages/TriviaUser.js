@@ -4,13 +4,9 @@ import StopGame from '../components/StopGame';
 import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
 import '../styles/Trivia.css';
-import Button from 'react-bootstrap/esm/Button';
 
 const Trivia = (props) => {
-  const [isClicked0, setIsClicked0] = useState(false);
-  const [isClicked1, setIsClicked1] = useState(false);
-  const [isClicked2, setIsClicked2] = useState(false);
-  const [isClicked3, setIsClicked3] = useState(false);
+  const [isClicked, setIsClicked] = useState('');
   const [isDisabled, setIsDisabled] = useState('');
 
   const onGameEnd = props.onGameEnd;
@@ -23,10 +19,7 @@ const Trivia = (props) => {
         onGameEnd(podium);
       });
     }
-    setIsClicked0(false);
-    setIsClicked1(false);
-    setIsClicked2(false);
-    setIsClicked3(false);
+    setIsClicked(false);
     setIsDisabled('');
     return () => {};
   }, [onGameEnd, socketUser]);
@@ -35,7 +28,21 @@ const Trivia = (props) => {
       <Countdown />
       <br />
       <Questions triviaData={props.triviaData} />
-      <Alert
+      {props.triviaData.options.map((answer, index) => (
+        <Alert
+          className={`answer ${isDisabled} answer0`}
+          onClick={() => {
+            setIsClicked(answer);
+            setIsDisabled('clicked');
+            socketUser.emit('answer', index++);
+            console.log(socketUser);
+          }}
+          variant={isClicked === answer ? 'success' : 'warning'}
+        >
+          {answer}
+        </Alert>
+      ))}
+      {/* <Alert
         className={`answer ${isDisabled} answer0`}
         onClick={() => {
           setIsClicked0(true);
@@ -71,10 +78,9 @@ const Trivia = (props) => {
       >
         {props.triviaData.options[2]}
       </Alert>
-      <Alert
-        className={`answer ${isDisabled} answer3`}
-        onClick={() => {
-          setIsClicked3(true);
+      <Alert        className={`anwer ${isDisabled} answer3`}
+        onClick={() =>{
+          setIsClicked(true);
           setIsDisabled('clicked');
           socketUser.emit('answer', 3);
           console.log(socketUser);
@@ -82,7 +88,7 @@ const Trivia = (props) => {
         variant={isClicked3 ? 'success' : 'warning'}
       >
         {props.triviaData.options[3]}
-      </Alert>
+      </Alert> */}
       <br />
       <StopGame socket={socketHost} />
     </div>

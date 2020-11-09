@@ -27,7 +27,7 @@ const Trivia = (props) => {
     setIsClicked1(false);
     setIsClicked2(false);
     setIsClicked3(false);
-    setIsDisabled('');
+    setIsDisabled('clicked');
     return () => {};
   }, [onGameEnd, socketUser]);
   return (
