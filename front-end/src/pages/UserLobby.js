@@ -7,8 +7,13 @@ import { useLocation, useHistory } from 'react-router-dom';
 const UserLobby = (props) => {
   const history = useHistory();
   const data = useLocation();
-  const pin = data.state.pin;
-  console.log(data.state.pin);
+  const [playerNameState, pinState] = data.state;
+
+  const playerName = playerNameState.playerName;
+  const pin = pinState.pin;
+  console.log(pin);
+  console.log(playerName);
+  console.log(data.state);
   const { setSocketUser, socketUser, BASE_URL } = props;
   console.log(BASE_URL);
 
@@ -18,11 +23,11 @@ const UserLobby = (props) => {
 
       let newSocketUser;
       if (BASE_URL === 'http://localhost:5000') {
-        newSocketUser = socketIO(`/${pin}`);
+        newSocketUser = socketIO(`/${pin}`, { query: `playerName=${playerName}` });
         console.log('user, development');
         console.log(newSocketUser);
       } else {
-        newSocketUser = socketIO(`${BASE_URL}/${pin}`);
+        newSocketUser = socketIO(`${BASE_URL}/${pin}`, { query: `playerName=${playerName}` });
         console.log('user, production');
         console.log(newSocketUser);
       }
@@ -38,7 +43,7 @@ const UserLobby = (props) => {
         history.push('/user/trivia');
       });
     }
-  }, [history, props, setSocketUser, pin, socketUser, BASE_URL]);
+  }, [history, props, setSocketUser, pin, socketUser, BASE_URL, playerName]);
   return (
     <div>
       <div className="container">

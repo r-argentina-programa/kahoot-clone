@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 
 const UserHome = () => {
   const [pin, setPin] = useState('');
+  const [playerName, setPlayerName] = useState('');
 
-  const handleInputChange = (event) => {
+  const handlePINChange = (event) => {
     // console.log(event.target.name)
     // console.log(event.target.value)
     setPin({
@@ -13,17 +14,28 @@ const UserHome = () => {
       [event.target.name]: event.target.value,
     });
   };
-
+  const handlePlayerNameChange = (event) => {
+    setPlayerName({ ...playerName, [event.target.name]: event.target.value });
+  };
   return (
     <div>
       <div>
-        <input
-          type="text"
-          placeholder="Paste your PIN here"
-          className="form-control"
-          onChange={handleInputChange}
-          name="pin"
-        ></input>
+        <div className="container">
+          <input
+            type="text"
+            placeholder="Paste your PIN here"
+            className="form-control"
+            onChange={handlePINChange}
+            name="pin"
+          ></input>
+          <input
+            type="text"
+            placeholder="Select your playerName"
+            className="form-control"
+            onChange={handlePlayerNameChange}
+            name="playerName"
+          ></input>
+        </div>
         <br />
         <br />
         <br />
@@ -32,7 +44,7 @@ const UserHome = () => {
       <Link
         to={{
           pathname: '/user/lobby',
-          state: pin,
+          state: [playerName, pin],
         }}
       >
         <Button type="submit" variant="primary">
