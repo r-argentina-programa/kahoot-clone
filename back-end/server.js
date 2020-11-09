@@ -61,8 +61,18 @@ function connectToTrivia(pin, io, selectedTrivia) {
   namespace.players = {};
 
   function updatePlayerList(namespace, players) {
-    const playerList = Object.keys(namespace.adapter.rooms['gameroom'].sockets);
-    playerList.forEach((elem) => (players[elem] = { score: 0, answered: false }));
+    Object.keys(players).forEach((player) => delete players[player]);
+    const socketList = Object.keys(namespace.adapter.rooms['gameroom'].sockets);
+    const playerList = [];
+
+    socketList.forEach((elem, index) => {
+      players[elem] = {
+        name: namespace.connected[socketList[index]].playerName,
+        score: 0,
+        answered: false,
+      };
+      playerList.push(players[elem].name);
+    });
     namespace.emit('playerlist', playerList);
   }
 
@@ -82,7 +92,7 @@ function connectToTrivia(pin, io, selectedTrivia) {
     let podium = {};
 
     for (player in players) {
-      sortedArray.push([player, players[player].score]);
+      sortedArray.push([players[player].name, players[player].score]);
     }
 
     sortedArray.sort(function (a, b) {
@@ -105,6 +115,7 @@ function connectToTrivia(pin, io, selectedTrivia) {
 
     if (!socket.host) {
       socket.join('gameroom');
+      socket.playerName = socket.request._query['playerName'];
       updatePlayerList(namespace, namespace.players);
     }
 
