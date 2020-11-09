@@ -91,5 +91,3 @@ const Trivia = (props) => {
 };
 
 export default Trivia;
-
-// viste como se conectaron dos mas, hay un problema con los eventos, sep algun useEffect seguro
