@@ -13,6 +13,7 @@ import HostLobby from './pages/HostLobby';
 import UserHome from './pages/UserHome';
 import UserLobby from './pages/UserLobby';
 import Trivia from './pages/Trivia';
+import TriviaUser from './pages/TriviaUser';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -79,7 +80,7 @@ function App() {
         />
       </Route>
       <Route path="/user/trivia">
-        <Trivia
+        <TriviaUser
           socket={socketUser}
           socketUser={socketUser}
           onGameEnd={onGameEnd}
