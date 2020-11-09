@@ -3,8 +3,6 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
 const StopGame = (props) => {
-  const socket = props.socket;
-
   return (
     <Link to="/">
       <Button className="stopGame" variant="danger">
