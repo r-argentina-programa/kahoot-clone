@@ -48,6 +48,7 @@ const UserLobby = (props) => {
     <div>
       <div className="container">
         <Alert variant="primary">The PIN of the room is {pin}</Alert>
+        <Alert variant="primary">Your nick is {playerName}</Alert>
       </div>
       <br />
       <br />
