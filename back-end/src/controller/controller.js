@@ -38,7 +38,7 @@ function configurePlayerParams(socket) {
   socket.answered = false;
 }
 
-function NamespaceConnectionCallback(socket) {
+function namespaceConnectionCallback(socket) {
   console.log('Client connected');
 
   const { nsp: namespace } = socket;
@@ -81,7 +81,7 @@ function setRoutes(app, io) {
     const { pin, selectedTrivia } = req.params;
     const namespace = createNamespace(io, pin);
     configureNamespace(namespace, selectedTrivia);
-    setNamespaceConnection(namespace, NamespaceConnectionCallback);
+    setNamespaceConnection(namespace, namespaceConnectionCallback);
     res.json({ connected: true });
   });
 }
