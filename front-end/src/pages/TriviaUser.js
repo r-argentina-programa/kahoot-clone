@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import Alert from 'react-bootstrap/Alert';
-import StopGame from '../components/StopGame';
-import Questions from '../components/Questions';
-import Countdown from '../components/Countdown';
-import '../styles/Trivia.css';
+import React, { useState, useEffect } from "react";
+import Alert from "react-bootstrap/Alert";
+import StopGame from "../components/StopGame";
+import Questions from "../components/Questions";
+import Countdown from "../components/Countdown";
+import "../styles/Trivia.css";
 
 const Trivia = (props) => {
-  const [isClicked, setIsClicked] = useState('');
-  const [isDisabled, setIsDisabled] = useState('');
+  const [isClicked, setIsClicked] = useState("");
+  const [isDisabled, setIsDisabled] = useState("");
 
   const onGameEnd = props.onGameEnd;
   const { socketUser, socketHost } = props;
-  console.log('trivia', socketHost);
+  console.log("trivia", socketHost);
 
   useEffect(() => {
     if (socketUser) {
-      socketUser.on('podium', (podium) => {
+      socketUser.on("podium", (podium) => {
         onGameEnd(podium);
       });
     }
     setIsClicked(false);
-    setIsDisabled('');
+    setIsDisabled("");
     return () => {};
   }, [onGameEnd, socketUser]);
   return (
@@ -33,11 +33,11 @@ const Trivia = (props) => {
           className={`answer ${isDisabled} answer0`}
           onClick={() => {
             setIsClicked(answer);
-            setIsDisabled('clicked');
-            socketUser.emit('answer', index++);
+            setIsDisabled("clicked");
+            socketUser.emit("answer", index++);
             console.log(socketUser);
           }}
-          variant={isClicked === answer ? 'success' : 'warning'}
+          variant={isClicked === answer ? "success" : "warning"}
         >
           {answer}
         </Alert>
@@ -90,7 +90,11 @@ const Trivia = (props) => {
         {props.triviaData.options[3]}
       </Alert> */}
       <br />
-      <StopGame socket={socketHost} />
+      <StopGame
+        socket={socketHost}
+        setSocketUser={props.setSocketUser}
+        setSocket={props.setSocket}
+      />
     </div>
   );
 };

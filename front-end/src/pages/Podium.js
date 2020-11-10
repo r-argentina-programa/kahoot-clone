@@ -1,8 +1,8 @@
-import React from 'react';
-import Image from 'react-bootstrap/Image';
-import podiumImg from '../assets/podium.jpg';
-import StopGame from '../components/StopGame';
-import '../styles/Podium.css';
+import React from "react";
+import Image from "react-bootstrap/Image";
+import podiumImg from "../assets/podium.jpg";
+import StopGame from "../components/StopGame";
+import "../styles/Podium.css";
 const Podium = (props) => {
   return (
     <div>
@@ -15,7 +15,11 @@ const Podium = (props) => {
       })}
       <Image className="podiumImg" src={podiumImg} fluid></Image>
       <br />
-      <StopGame socket={props.socket} />
+      <StopGame
+        socket={props.socket}
+        setSocketUser={props.setSocketUser}
+        setSocket={props.setSocket}
+      />
     </div>
   );
 };

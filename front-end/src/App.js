@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import { Switch, Route, useHistory } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
 // import socketIO from 'socket.io-client';
 // import Lobby from './pages/Lobby';
 // import Trivia from './pages/Trivia';
-import Home from './pages/Home';
-import Podium from './pages/Podium';
-import CreateTrivia from './components/CreateTrivia';
-import HostHome from './pages/HostHome';
-import HostChooseTrivia from './pages/HostChooseTrivia';
-import HostLobby from './pages/HostLobby';
-import UserHome from './pages/UserHome';
-import UserLobby from './pages/UserLobby';
-import Trivia from './pages/Trivia';
-import TriviaUser from './pages/TriviaUser';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import Home from "./pages/Home";
+import Podium from "./pages/Podium";
+import CreateTrivia from "./components/CreateTrivia";
+import HostHome from "./pages/HostHome";
+import HostChooseTrivia from "./pages/HostChooseTrivia";
+import HostLobby from "./pages/HostLobby";
+import UserHome from "./pages/UserHome";
+import UserLobby from "./pages/UserLobby";
+import Trivia from "./pages/Trivia";
+import TriviaUser from "./pages/TriviaUser";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 let BASE_URL;
 
-if (process.env.NODE_ENV === 'production') {
-  BASE_URL = 'inmental-kahoot-clone.herokuapp.com';
-} else if (process.env.NODE_ENV === 'development') {
-  BASE_URL = 'http://localhost:5000';
+if (process.env.NODE_ENV === "production") {
+  BASE_URL = "inmental-kahoot-clone.herokuapp.com";
+} else if (process.env.NODE_ENV === "development") {
+  BASE_URL = "http://localhost:5000";
 }
 
 function App() {
@@ -33,11 +33,11 @@ function App() {
   const [triviaDataUser, setTriviaDataUser] = useState({ options: [] });
   const [podium, setPodium] = useState([]);
   const history = useHistory();
-  console.log('En App, socketUser:', socketUser);
+  console.log("En App, socketUser:", socketUser);
 
   const onGameEnd = (result) => {
     setPodium(result);
-    history.push('/podium');
+    history.push("/podium");
   };
 
   return (
@@ -47,7 +47,12 @@ function App() {
           <Home />
         </Route>
         <Route path="/podium">
-          <Podium socket={socketUser} ranking={podium} />
+          <Podium
+            socket={socketUser}
+            setSocketUser={setSocketUser}
+            setSocket={setSocket}
+            ranking={podium}
+          />
         </Route>
         <Route exact path="/host">
           <HostHome />
@@ -56,7 +61,9 @@ function App() {
           <CreateTrivia />
         </Route>
         <Route path="/host/chooseTrivia">
-          <HostChooseTrivia onClickTriviaButton={(selectedTrivia) => setTrivia(selectedTrivia)} />
+          <HostChooseTrivia
+            onClickTriviaButton={(selectedTrivia) => setTrivia(selectedTrivia)}
+          />
         </Route>
         <Route path="/host/lobby">
           <HostLobby
@@ -85,10 +92,18 @@ function App() {
           socketUser={socketUser}
           onGameEnd={onGameEnd}
           triviaData={triviaDataUser}
+          setSocketUser={setSocketUser}
+          setSocket={setSocket}
         />
       </Route>
       <Route path="/host/trivia">
-        <Trivia socketHost={socket} onGameEnd={onGameEnd} triviaData={triviaData} />
+        <Trivia
+          socketHost={socket}
+          onGameEnd={onGameEnd}
+          triviaData={triviaData}
+          setSocketUser={setSocketUser}
+          setSocket={setSocket}
+        />
       </Route>
     </div>
   );
