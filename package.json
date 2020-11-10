@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node back-end/src/server.js",
+    "start": "node back-end/server.js",
     "dev": "concurrently \"npm run start-server\" \"npm run start-client\"",
     "server-install": "cd back-end && npm install",
     "client-install": "cd front-end && npm install",
