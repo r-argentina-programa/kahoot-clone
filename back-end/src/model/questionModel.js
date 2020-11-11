@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require("sequelize");
+const { DataTypes, Model } = require('sequelize');
 
 module.exports = class QuestionModel extends Model {
   /**
@@ -19,11 +19,11 @@ module.exports = class QuestionModel extends Model {
         fk_trivia: {
           type: DataTypes.INTEGER,
           allowNull: false,
-          refererences: {
+          references: {
             model: {
-              tableName: "Trivias",
+              tableName: 'Trivias',
             },
-            key: "id",
+            key: 'id',
           },
         },
         description: {
@@ -33,16 +33,16 @@ module.exports = class QuestionModel extends Model {
       },
       {
         sequelize: sequelizeInstance,
-        modelName: "Question",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-        tableName: "Questions",
+        modelName: 'Question',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        tableName: 'Questions',
       }
     );
     return QuestionModel;
   }
+
   static setupAssociations(TriviaModel) {
-    TriviaModel.hasMany(QuestionModel, { foreignKey: "fk_trivia" });
-    QuestionModel.belongsTo(TriviaModel, { foreignKey: "fk_trivia" });
+    QuestionModel.belongsTo(TriviaModel, { foreignKey: 'fk_trivia', as: 'Trivia' });
   }
 };
