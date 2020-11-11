@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require("sequelize");
+const { DataTypes, Model } = require('sequelize');
 
 module.exports = class TriviaModel extends Model {
   /**
@@ -23,10 +23,10 @@ module.exports = class TriviaModel extends Model {
       },
       {
         sequelize: sequelizeInstance,
-        modelName: "Trivia",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-        tableName: "Trivias",
+        modelName: 'Trivia',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        tableName: 'Trivias',
       }
     );
     return TriviaModel;
