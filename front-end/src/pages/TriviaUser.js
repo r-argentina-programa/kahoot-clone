@@ -28,20 +28,22 @@ const Trivia = (props) => {
       <Countdown />
       <br />
       <Questions triviaData={props.triviaData} />
-      {props.triviaData.options.map((answer, index) => (
-        <Alert
-          className={`answer ${isDisabled} answer0`}
-          onClick={() => {
-            setIsClicked(answer);
-            setIsDisabled('clicked');
-            socketUser.emit('answer', index++);
-            console.log(socketUser);
-          }}
-          variant={isClicked === answer ? 'success' : 'warning'}
-        >
-          {answer}
-        </Alert>
-      ))}
+      <div className='answers'>
+        {props.triviaData.options.map((answer, index) => (
+          <Alert
+            className={`answer ${isDisabled} answer${index}`}
+            onClick={() => {
+              setIsClicked(answer);
+              setIsDisabled('clicked');
+              socketUser.emit('answer', index++);
+              console.log(socketUser);
+            }}
+            variant={isClicked === answer ? 'success' : 'warning'}
+          >
+            {answer}
+          </Alert>
+        ))}
+      </div>
       {/* <Alert
         className={`answer ${isDisabled} answer0`}
         onClick={() => {
