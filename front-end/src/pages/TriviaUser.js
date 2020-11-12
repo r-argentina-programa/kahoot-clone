@@ -11,7 +11,6 @@ const Trivia = (props) => {
 
   const onGameEnd = props.onGameEnd;
   const { socketUser, socketHost } = props;
-  console.log('trivia', socketHost);
 
   useEffect(() => {
     if (socketUser) {
@@ -23,74 +22,28 @@ const Trivia = (props) => {
     setIsDisabled('');
     return () => {};
   }, [onGameEnd, socketUser]);
-  return (
+
+  return props.triviaData ? (
     <div>
       <Countdown />
       <br />
       <Questions triviaData={props.triviaData} />
       <div className="answers">
-        {props.triviaData.options.map((answer, index) => (
+        {props.triviaData.options.map((option, index) => (
           <Alert
+            key={`index-${index + 1}`}
             className={`answer ${isDisabled} answer${index}`}
             onClick={() => {
-              setIsClicked(answer);
+              setIsClicked(option.description);
               setIsDisabled('clicked');
-              socketUser.emit('answer', index++);
-              console.log(socketUser);
+              socketUser.emit('answer', option.id);
             }}
-            variant={isClicked === answer ? 'success' : 'warning'}
+            variant={isClicked === option.description ? 'success' : 'warning'}
           >
-            {answer}
+            {option.description}
           </Alert>
         ))}
       </div>
-      {/* <Alert
-        className={`answer ${isDisabled} answer0`}
-        onClick={() => {
-          setIsClicked0(true);
-          setIsDisabled('clicked');
-          socketUser.emit('answer', 0);
-          console.log(socketUser);
-        }}
-        variant={isClicked0 ? 'success' : 'warning'}
-      >
-        {props.triviaData.options[0]}
-      </Alert>
-      <Alert
-        className={`answer ${isDisabled} answer1`}
-        onClick={() => {
-          setIsClicked1(true);
-          setIsDisabled('clicked');
-          socketUser.emit('answer', 1);
-          console.log(socketUser);
-        }}
-        variant={isClicked1 ? 'success' : 'warning'}
-      >
-        {props.triviaData.options[1]}
-      </Alert>
-      <Alert
-        className={`answer ${isDisabled} answer2`}
-        onClick={() => {
-          setIsClicked2(true);
-          setIsDisabled('clicked');
-          socketUser.emit('answer', 2);
-          console.log(socketUser);
-        }}
-        variant={isClicked2 ? 'success' : 'warning'}
-      >
-        {props.triviaData.options[2]}
-      </Alert>
-      <Alert        className={`anwer ${isDisabled} answer3`}
-        onClick={() =>{
-          setIsClicked(true);
-          setIsDisabled('clicked');
-          socketUser.emit('answer', 3);
-          console.log(socketUser);
-        }}
-        variant={isClicked3 ? 'success' : 'warning'}
-      >
-        {props.triviaData.options[3]}
-      </Alert> */}
       <br />
       <StopGame
         socket={socketHost}
@@ -98,6 +51,8 @@ const Trivia = (props) => {
         setSocket={props.setSocket}
       />
     </div>
+  ) : (
+    'Loading trivia...'
   );
 };
 

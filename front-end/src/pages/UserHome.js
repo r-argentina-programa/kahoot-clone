@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 
 const UserHome = () => {
-  const [pin, setPin] = useState('');
-  const [playerName, setPlayerName] = useState('');
+  const [pin, setPin] = useState("");
+  const [playerName, setPlayerName] = useState("");
 
   const handlePINChange = (event) => {
-    // console.log(event.target.name)
-    // console.log(event.target.value)
     setPin({
       ...pin,
       [event.target.name]: event.target.value,
@@ -43,7 +41,7 @@ const UserHome = () => {
       </div>
       <Link
         to={{
-          pathname: '/user/lobby',
+          pathname: "/user/lobby",
           state: [playerName, pin],
         }}
       >

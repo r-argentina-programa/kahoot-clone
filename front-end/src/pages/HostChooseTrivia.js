@@ -6,17 +6,18 @@ import '../styles/HostChooseTrivia.css';
 const HostChooseTrivia = (props) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+  const [triviaList, setTriviaList] = useState([]);
   const [pin, setPin] = useState('');
 
   useEffect(() => {
     fetch('/trivialist')
       .then((res) => res.json())
       .then((result) => {
-        setIsLoaded(true);
+        console.log('data1:', result.triviaList);
 
-        setItems(result.triviaList);
+        setTriviaList(result.triviaList);
         setPin(result.pin);
+        setIsLoaded(true);
       })
       .catch((error) => {
         setIsLoaded(true);
@@ -29,30 +30,28 @@ const HostChooseTrivia = (props) => {
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   } else {
-    const object = items.map((item, i) => (
-      <div className="container-trivia-btn">
-        <Link
-          key={`item-${i}`}
-          to={{
-            pathname: '/host/lobby',
-            state: pin,
-          }}
+    const buttons = triviaList.map((trivia, i) => (
+      <Link
+        key={`item-${i + 1}`}
+        to={{
+          pathname: '/host/lobby',
+          state: pin,
+        }}
+      >
+        <Button
+          key={i + 1}
+          onClick={() => props.onClickTriviaButton(trivia.id)}
+          className="triviaButton"
+          variant="dark"
         >
-          <Button
-            key={i}
-            onClick={() => props.onClickTriviaButton(item)}
-            className={`triviaButton${i}`}
-            variant="dark"
-          >
-            {item}
-          </Button>
-        </Link>
-      </div>
+          {trivia.name}
+        </Button>
+      </Link>
     ));
     return (
       <div>
         <div>
-          <div className="containerTriviaButton">{object}</div>
+          <div className="containerTriviaButton">{buttons}</div>
           <br />
           <br />
           <Alert className="display-pin" variant="dark">

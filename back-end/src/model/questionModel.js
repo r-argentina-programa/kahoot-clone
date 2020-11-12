@@ -42,7 +42,7 @@ module.exports = class QuestionModel extends Model {
     return QuestionModel;
   }
 
-  static setupAssociations(TriviaModel) {
-    QuestionModel.belongsTo(TriviaModel, { foreignKey: 'fk_trivia', as: 'Trivia' });
+  static setupAssociations(AnswerModel) {
+    QuestionModel.hasMany(AnswerModel, { foreignKey: 'fk_question' });
   }
 };
