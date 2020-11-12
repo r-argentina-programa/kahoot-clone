@@ -3,7 +3,7 @@
 /// <reference types="cypress" />
 
 describe('kahoot', () => {
-  it('Gets to the lobby with and displays pin and nick', () => {
+  it('Gets to the lobby and displays pin and nick', () => {
     cy.visit('/');
 
     cy.request('http://localhost:5000/host-game?pin=0').as('game-creation');
@@ -41,7 +41,7 @@ describe('kahoot', () => {
 
     cy.wait(500);
     cy.get('.answer2').click();
-    cy.get('.answers').find('.answer').should('not.have.class', 'disabled');
+    cy.get('.answers').find('.answer').should('have.class', 'clicked');
   });
 
   it('Checks that the amount of answers rendered is dynamic', () => {

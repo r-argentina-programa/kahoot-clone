@@ -13,12 +13,10 @@ const HostChooseTrivia = (props) => {
     fetch('/trivialist')
       .then((res) => res.json())
       .then((result) => {
-
         setIsLoaded(true);
 
         setItems(result.triviaList);
         setPin(result.pin);
-
       })
       .catch((error) => {
         setIsLoaded(true);
@@ -32,22 +30,24 @@ const HostChooseTrivia = (props) => {
     return <div>Loading...</div>;
   } else {
     const object = items.map((item, i) => (
-      <Link
-        key={`item-${i + 1}`}
-        to={{
-          pathname: '/host/lobby',
-          state: pin,
-        }}
-      >
-        <Button
-          key={i + 1}
-          onClick={() => props.onClickTriviaButton(item)}
-          className="triviaButton"
-          variant="dark"
+      <div className="container-trivia-btn">
+        <Link
+          key={`item-${i}`}
+          to={{
+            pathname: '/host/lobby',
+            state: pin,
+          }}
         >
-          {item}
-        </Button>
-      </Link>
+          <Button
+            key={i}
+            onClick={() => props.onClickTriviaButton(item)}
+            className={`triviaButton${i}`}
+            variant="dark"
+          >
+            {item}
+          </Button>
+        </Link>
+      </div>
     ));
     return (
       <div>
@@ -55,7 +55,9 @@ const HostChooseTrivia = (props) => {
           <div className="containerTriviaButton">{object}</div>
           <br />
           <br />
-          <Alert variant="dark">The PIN is {pin}</Alert>
+          <Alert className="display-pin" variant="dark">
+            The PIN is {pin}
+          </Alert>
           <br />
           <br />
           <br />

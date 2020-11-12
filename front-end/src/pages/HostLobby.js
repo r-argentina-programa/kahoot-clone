@@ -20,11 +20,11 @@ const HostLobby = (props) => {
         let newSocketHost;
         if (BASE_URL === 'http://localhost:5000') {
           newSocketHost = socketIO(`/${pin}`);
-          console.log('host, development')
+          console.log('host, development');
           console.log(newSocketHost);
         } else {
           newSocketHost = socketIO(`${BASE_URL}/${pin}`);
-          console.log('host, production')
+          console.log('host, production');
           console.log(newSocketHost);
         }
         props.setSocket(newSocketHost);
@@ -48,7 +48,9 @@ const HostLobby = (props) => {
   return (
     <div>
       <div className="container">
-        <Alert variant="dark">The pin is {pin}</Alert>
+        <Alert className="pin-host-lobby" variant="dark">
+          The PIN is {pin}
+        </Alert>
         <Link to="/host/trivia">
           <Button onClick={() => props.socket.emit('start-game')}>Start Game</Button>
         </Link>

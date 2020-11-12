@@ -78,6 +78,20 @@ app.get('/podium', (req, res) => {
   res.json({ podiumSent: true });
 });
 
+
+//////////////////////// below this is the mock server for the host path
+
+app.get('/trivialist', (req, res) => {
+  const { questionNumber } = req.query;
+
+  namespace.emit('question', {
+    question: trivia[questionNumber].question,
+    options: trivia[questionNumber].options,
+  });
+
+  res.json({ questionSent: true });
+});
+
 /*
 app.get('ruta', (req,res) => {
 	// lo que queres hacer cuando llega un request
