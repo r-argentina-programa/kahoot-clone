@@ -42,8 +42,4 @@ module.exports = class AnswerModel extends Model {
     );
     return AnswerModel;
   }
-
-  static setupAssociations(QuestionModel) {
-    AnswerModel.belongsTo(QuestionModel, { foreignKey: 'fk_question', as: 'Answers' });
-  }
 };
