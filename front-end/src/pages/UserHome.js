@@ -24,14 +24,14 @@ const UserHome = () => {
           <input
             type="text"
             placeholder="Paste your PIN here"
-            className="form-control"
+            className="input-pin"
             onChange={handlePINChange}
             name="pin"
           ></input>
           <input
             type="text"
             placeholder="Select your playerName"
-            className="form-control"
+            className="input-nick"
             onChange={handlePlayerNameChange}
             name="playerName"
           ></input>
@@ -47,7 +47,7 @@ const UserHome = () => {
           state: [playerName, pin],
         }}
       >
-        <Button type="submit" variant="primary">
+        <Button className="btn-submit-data-user" type="submit" variant="primary">
           Send Data
         </Button>
       </Link>
