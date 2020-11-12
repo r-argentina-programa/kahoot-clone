@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Alert from "react-bootstrap/Alert";
 import StopGame from "../components/StopGame";
 import Questions from "../components/Questions";
