@@ -34,14 +34,14 @@ function calculatePodium(players) {
 
 function sendQuestion(namespace) {
   const { trivia, counter, players } = namespace;
-  const questionDescription = trivia.Questions[counter].description;
-  const questionOptions = trivia.Questions[counter].Answers.map((answer) => {
-    return { id: answer.id, description: answer.description };
-  });
 
-  if (counter === trivia.length) {
+  if (counter === trivia.Questions.length) {
     namespace.emit('podium', calculatePodium(players));
   } else {
+    const questionDescription = trivia.Questions[counter].description;
+    const questionOptions = trivia.Questions[counter].Answers.map((answer) => {
+      return { id: answer.id, description: answer.description };
+    });
     namespace.emit('question', {
       question: questionDescription,
       options: questionOptions,

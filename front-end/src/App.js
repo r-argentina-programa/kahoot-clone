@@ -29,11 +29,10 @@ function App() {
   const [trivia, setTrivia] = useState(null);
   const [socket, setSocket] = useState(null);
   const [socketUser, setSocketUser] = useState(null);
-  const [triviaData, setTriviaData] = useState({ options: [] });
+  const [triviaData, setTriviaData] = useState(null);
   const [triviaDataUser, setTriviaDataUser] = useState({ options: [] });
   const [podium, setPodium] = useState([]);
   const history = useHistory();
-  console.log("En App, socketUser:", socketUser);
 
   const onGameEnd = (result) => {
     setPodium(result);
