@@ -31,4 +31,8 @@ module.exports = class TriviaModel extends Model {
     );
     return TriviaModel;
   }
+
+  static setupAssociations(QuestionModel) {
+    TriviaModel.hasMany(QuestionModel, { foreignKey: 'fk_trivia' });
+  }
 };

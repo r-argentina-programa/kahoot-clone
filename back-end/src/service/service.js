@@ -34,13 +34,17 @@ function calculatePodium(players) {
 
 function sendQuestion(namespace) {
   const { trivia, counter, players } = namespace;
+  const questionDescription = trivia.Questions[counter].description;
+  const questionOptions = trivia.Questions[counter].Answers.map((answer) => {
+    return { id: answer.id, description: answer.description };
+  });
 
   if (counter === trivia.length) {
     namespace.emit('podium', calculatePodium(players));
   } else {
     namespace.emit('question', {
-      question: trivia[counter].question,
-      options: trivia[counter].options,
+      question: questionDescription,
+      options: questionOptions,
     });
   }
 }
@@ -53,13 +57,17 @@ function nextQuestion(namespace) {
   sendQuestion(namespace);
 }
 
-function setScore(socket, answer) {
+function setScore(socket, answerId) {
   const { nsp: namespace } = socket;
   const { trivia, counter } = namespace;
 
   if (!socket.answered) {
     socket.answered = true;
-    if (answer === trivia[counter].correct) {
+    const playerAnswer = trivia.Questions[counter].Answers.filter(
+      (answer) => answer.id === answerId
+    )[0];
+
+    if (playerAnswer.is_correct) {
       socket.score++;
     }
   }

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 const { updatePlayerList, nextQuestion, sendQuestion, setScore } = require('../service/service');
-const { getTriviaById, getAll } = require('../repository/repository');
+const { getTriviaById, getAllTrivias } = require('../repository/repository');
 const { getAllSockets, createNamespace } = require('../api/socketIO');
 
 function setNamespaceConnection(namespace, callback) {
@@ -58,8 +58,8 @@ function namespaceConnectionCallback(socket) {
   setSocketListeners(socket);
 }
 
-function configureNamespace(namespace, triviaId) {
-  const trivia = getTriviaById(triviaId);
+async function configureNamespace(namespace, triviaId) {
+  const trivia = await getTriviaById(Number(triviaId));
 
   namespace.counter = 0;
   namespace.players = [];
@@ -71,10 +71,10 @@ function generatePIN() {
 }
 
 function setRoutes(app, io) {
-  app.get('/trivialist', (req, res) => {
-    const trivias = getAll();
+  app.get('/trivialist', async (req, res) => {
+    const trivias = await getAllTrivias();
     const pin = generatePIN();
-    res.json({ triviaList: Object.keys(trivias), pin });
+    res.json({ triviaList: trivias, pin });
   });
 
   app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
