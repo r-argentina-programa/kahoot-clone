@@ -28,7 +28,7 @@ const Trivia = (props) => {
       <Countdown />
       <br />
       <Questions triviaData={props.triviaData} />
-      <div className='answers'>
+      <div className="answers">
         {props.triviaData.options.map((answer, index) => (
           <Alert
             className={`answer ${isDisabled} answer${index}`}
@@ -92,7 +92,11 @@ const Trivia = (props) => {
         {props.triviaData.options[3]}
       </Alert> */}
       <br />
-      <StopGame socket={socketHost} />
+      <StopGame
+        socket={socketHost}
+        setSocketUser={props.setSocketUser}
+        setSocket={props.setSocket}
+      />
     </div>
   );
 };

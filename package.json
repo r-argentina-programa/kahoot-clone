@@ -12,7 +12,9 @@
     "start-client": "cd front-end && npm start",
     "build-client": "cd front-end && npm run build && mv build ../back-end/build",
     "cyrun": "cd front-end && npm run cyrun",
-    "cyopen": "cd front-end && npm run cyopen"
+    "cyopen": "cd front-end && npm run cyopen",
+    "test:dev": "cd back-end && npm run test:dev",
+    "test": "cd back-end && npm run test"
   },
   "repository": {
     "type": "git",
