@@ -10,20 +10,22 @@ const HostChooseTrivia = (props) => {
   const [pin, setPin] = useState('');
 
   useEffect(() => {
-    fetch('/trivialist')
-      .then((res) => res.json())
-      .then((result) => {
-        console.log('data1:', result.triviaList);
-
-        setTriviaList(result.triviaList);
-        setPin(result.pin);
-        setIsLoaded(true);
-      })
-      .catch((error) => {
-        setIsLoaded(true);
-        setError(error);
-      });
-  }, []);
+    if (!isLoaded) {
+      console.log('fetching!');
+      fetch('/trivialist')
+        .then((res) => res.json())
+        .then((result) => {
+          console.log('data1:', result.triviaList);
+          setIsLoaded(true);
+          setTriviaList(result.triviaList);
+          setPin(result.pin);
+        })
+        .catch((error) => {
+          setIsLoaded(true);
+          setError(error);
+        });
+    }
+  }, [isLoaded]);
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -41,7 +43,7 @@ const HostChooseTrivia = (props) => {
         <Button
           key={i + 1}
           onClick={() => props.onClickTriviaButton(trivia.id)}
-          className="triviaButton"
+          className={`triviaButton triviaButton${i}`}
           variant="dark"
         >
           {trivia.name}
