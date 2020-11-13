@@ -23,7 +23,7 @@ function setSocketListeners(socket) {
 
   socket.on('next-question', () => {
     const { nsp: namespace } = socket;
-    nextQuestion(namespace);
+    nextQuestion(namespace, sendQuestion);
   });
 
   socket.on('answer', (answer) => {
@@ -81,7 +81,7 @@ async function configureNamespace(namespace, triviaId) {
   namespace.counter = 0;
   namespace.players = [];
   namespace.trivia = trivia;
-  namespace.timer = 5;
+  namespace.timer = 10;
   namespace.miniPodium = [];
 }
 

@@ -76,13 +76,13 @@ function showScoreboard(namespace) {
   namespace.emit('scoreboard', calculatePodium(namespace.players));
 }
 
-function nextQuestion(namespace) {
+function nextQuestion(namespace, callback) {
   namespace.counter++;
   namespace.players.forEach((player) => {
     player.answered = false;
   });
   clearInterval(namespace.interval);
-  sendQuestion(namespace);
+  callback(namespace);
 }
 
 function setScore(socket, answerId) {
