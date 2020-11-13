@@ -7,7 +7,6 @@ import '../styles/Trivia.css';
 import Button from 'react-bootstrap/esm/Button';
 
 const Trivia = (props) => {
-  const [isDisabled, setIsDisabled] = useState('');
   const onGameEnd = props.onGameEnd;
   const { socketUser, socketHost } = props;
 
@@ -29,17 +28,13 @@ const Trivia = (props) => {
       </Button>
       <Questions triviaData={props.triviaData} />
       <div className="answers">
-        {props.triviaData.options.map((answer, index) => (
+        {props.triviaData.options.map((option, index) => (
           <Alert
-            className={`answer ${isDisabled} answer${index}`}
-            onClick={() => {
-              setIsDisabled('clicked');
-              socketUser.emit('answer', index++);
-              console.log(socketUser);
-            }}
+            key={`button-${index + 1}`}
+            className={`answer answer${index}`}
             variant={'warning'}
           >
-            {answer}
+            {option.description}
           </Alert>
         ))}
       </div>
