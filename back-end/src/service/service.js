@@ -3,6 +3,12 @@
 
 const { getSocketsInRoom } = require('../api/socketIO');
 
+function configureMiniPodium(namespace, options) {
+  namespace.miniPodium = options.map((option) => {
+    return { option: option.id, count: 0 };
+  });
+}
+
 function updatePlayerList(namespace) {
   const socketsInRoom = getSocketsInRoom(namespace);
 
@@ -54,11 +60,20 @@ function sendQuestion(namespace) {
     const questionOptions = trivia.Questions[counter].Answers.map((answer) => {
       return { id: answer.id, description: answer.description };
     });
+    configureMiniPodium(namespace, questionOptions);
     namespace.emit('question', {
       question: questionDescription,
       options: questionOptions,
     });
   }
+}
+
+function sendMiniPodium(namespace) {
+  namespace.emit('mini-podium', namespace.miniPodium);
+}
+
+function showScoreboard(namespace) {
+  namespace.emit('scoreboard', calculatePodium(namespace.players));
 }
 
 function nextQuestion(namespace) {
@@ -79,6 +94,7 @@ function setScore(socket, answerId) {
     const playerAnswer = trivia.Questions[counter].Answers.filter(
       (answer) => answer.id === answerId
     )[0];
+    namespace.miniPodium.filter((option) => option.option === playerAnswer.id)[0].count++;
 
     if (playerAnswer.is_correct) {
       socket.score += namespace.timer;
@@ -89,6 +105,8 @@ function setScore(socket, answerId) {
 module.exports = {
   updatePlayerList,
   nextQuestion,
+  sendMiniPodium,
   sendQuestion,
+  showScoreboard,
   setScore,
 };
