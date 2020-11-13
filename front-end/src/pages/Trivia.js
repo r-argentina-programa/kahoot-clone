@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import Alert from "react-bootstrap/Alert";
-import StopGame from "../components/StopGame";
-import Questions from "../components/Questions";
-import Countdown from "../components/Countdown";
-import "../styles/Trivia.css";
-import Button from "react-bootstrap/esm/Button";
+import React, { useEffect } from 'react';
+import Alert from 'react-bootstrap/Alert';
+import StopGame from '../components/StopGame';
+import Questions from '../components/Questions';
+import Countdown from '../components/Countdown';
+import '../styles/Trivia.css';
+import Button from 'react-bootstrap/esm/Button';
 
 const Trivia = (props) => {
   const onGameEnd = props.onGameEnd;
@@ -12,7 +12,7 @@ const Trivia = (props) => {
 
   useEffect(() => {
     if (socketUser) {
-      socketUser.on("podium", (podium) => {
+      socketUser.on('podium', (podium) => {
         onGameEnd(podium);
       });
     }
@@ -23,15 +23,21 @@ const Trivia = (props) => {
     <div>
       <Countdown />
       <br />
-      <Button onClick={() => socketHost.emit("next-question")}>
+      <Button className="next-question" onClick={() => socketHost.emit('next-question')}>
         Next Question
       </Button>
       <Questions triviaData={props.triviaData} />
-      {props.triviaData.options.map((option, index) => (
-        <Alert key={`index-${index + 1}`} className="answer" variant="warning">
-          {option.description}
-        </Alert>
-      ))}
+      <div className="answers">
+        {props.triviaData.options.map((option, index) => (
+          <Alert
+            key={`button-${index + 1}`}
+            className={`answer answer${index}`}
+            variant={'warning'}
+          >
+            {option.description}
+          </Alert>
+        ))}
+      </div>
       <br />
       <StopGame
         socket={socketHost}
@@ -40,7 +46,7 @@ const Trivia = (props) => {
       />
     </div>
   ) : (
-    "Loading trivia..."
+    'Loading trivia...'
   );
 };
 

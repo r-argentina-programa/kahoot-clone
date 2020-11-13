@@ -45,7 +45,9 @@ const HostLobby = (props) => {
   return (
     <div>
       <div className="container">
-        <Alert variant="dark">The pin is {pin}</Alert>
+        <Alert className="pin-host-lobby" variant="dark">
+          The PIN is {pin}
+        </Alert>
         <Link to="/host/trivia">
           <Button onClick={() => props.socket.emit("start-game")}>
             Start Game

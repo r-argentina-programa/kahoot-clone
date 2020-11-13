@@ -40,8 +40,12 @@ const UserLobby = (props) => {
   return (
     <div>
       <div className="container">
-        <Alert variant="primary">The PIN of the room is {pin}</Alert>
-        <Alert variant="primary">Your nick is {playerName}</Alert>
+        <Alert className="lobby-pin" variant="primary">
+          The PIN of the room is {pin}
+        </Alert>
+        <Alert className="lobby-nick" variant="primary">
+          Your nick is {playerName}
+        </Alert>
       </div>
       <br />
       <br />

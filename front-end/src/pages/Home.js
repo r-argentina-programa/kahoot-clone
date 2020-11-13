@@ -8,10 +8,14 @@ const Home = () => {
   return (
     <div className="container">
       <Link to="/host">
-        <Button variant="primary">I want to host a Trivia</Button>
+        <Button className="join-host" variant="primary">
+          I want to host a Trivia
+        </Button>
       </Link>
       <Link to="/user">
-        <Button variant="primary">I want to join a Trivia</Button>
+        <Button className="join-user" variant="primary">
+          I want to join a Trivia
+        </Button>
       </Link>
     </div>
   );

@@ -6,7 +6,9 @@ const HostHome = () => {
   return (
     <div>
       <Link to="/host/chooseTrivia">
-        <Button variant="info">Create/start trivia</Button>
+        <Button className="to-trivia-select" variant="info">
+          Create/start trivia
+        </Button>
       </Link>
     </div>
   );

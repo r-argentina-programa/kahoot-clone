@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
-import Alert from "react-bootstrap/Alert";
-import "../styles/HostChooseTrivia.css";
+import React, { useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
+import Alert from 'react-bootstrap/Alert';
+import '../styles/HostChooseTrivia.css';
 const HostChooseTrivia = (props) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [triviaList, setTriviaList] = useState([]);
-  const [pin, setPin] = useState("");
+  const [pin, setPin] = useState('');
 
   useEffect(() => {
-    fetch("/trivialist")
+    fetch('/trivialist')
       .then((res) => res.json())
       .then((result) => {
-        console.log("data1:", result.triviaList);
+        console.log('data1:', result.triviaList);
 
         setTriviaList(result.triviaList);
         setPin(result.pin);
@@ -34,14 +34,14 @@ const HostChooseTrivia = (props) => {
       <Link
         key={`item-${i + 1}`}
         to={{
-          pathname: "/host/lobby",
+          pathname: '/host/lobby',
           state: pin,
         }}
       >
         <Button
           key={i + 1}
           onClick={() => props.onClickTriviaButton(trivia.id)}
-          className="triviaButton"
+          className={`triviaButton triviaButton${i}`}
           variant="dark"
         >
           {trivia.name}
@@ -54,7 +54,9 @@ const HostChooseTrivia = (props) => {
           <div className="containerTriviaButton">{buttons}</div>
           <br />
           <br />
-          <Alert variant="dark">The PIN is {pin}</Alert>
+          <Alert className="display-pin" variant="dark">
+            The PIN is {pin}
+          </Alert>
           <br />
           <br />
           <br />

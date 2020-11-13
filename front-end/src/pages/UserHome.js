@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
 const UserHome = () => {
-  const [pin, setPin] = useState("");
-  const [playerName, setPlayerName] = useState("");
+  const [pin, setPin] = useState('');
+  const [playerName, setPlayerName] = useState('');
 
   const handlePINChange = (event) => {
     setPin({
@@ -22,14 +22,14 @@ const UserHome = () => {
           <input
             type="text"
             placeholder="Paste your PIN here"
-            className="form-control"
+            className="input-pin"
             onChange={handlePINChange}
             name="pin"
           ></input>
           <input
             type="text"
             placeholder="Select your playerName"
-            className="form-control"
+            className="input-nick"
             onChange={handlePlayerNameChange}
             name="playerName"
           ></input>
@@ -41,11 +41,11 @@ const UserHome = () => {
       </div>
       <Link
         to={{
-          pathname: "/user/lobby",
+          pathname: '/user/lobby',
           state: [playerName, pin],
         }}
       >
-        <Button type="submit" variant="primary">
+        <Button className="btn-submit-data-user" type="submit" variant="primary">
           Send Data
         </Button>
       </Link>
