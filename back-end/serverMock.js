@@ -7,23 +7,32 @@ const server = app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
 
 const io = socketIO(server); // configuracion de socketio
 let namespace;
-let playerSocket;
 
 const trivia = [
   {
     question: 'Which is the biggest planet in the Solar System?',
-    options: ['Venus', 'JUPITER', 'Mercury', 'Mars'],
-    correct: 1,
+    options: [
+      { id: 1, description: 'Venus' },
+      { id: 2, description: 'JUPITER' },
+      { id: 3, description: 'Mercury' },
+      { id: 4, description: 'Mars' },
+    ],
   },
   {
     question: 'Which is the largest animal?',
-    options: ['Cow', 'Dog', 'Mosquito', 'WHALE'],
-    correct: 3,
+    options: [
+      { id: 1, description: 'cow' },
+      { id: 2, description: 'dog' },
+      { id: 3, description: 'MOSQUITO' },
+      { id: 4, description: 'WHALE' },
+    ],
   },
   {
     question: 'Which is the largest number?',
-    options: ['1', '2'],
-    correct: 2,
+    options: [
+      { id: 1, description: '1' },
+      { id: 2, description: '2' },
+    ],
   },
 ];
 
@@ -36,8 +45,6 @@ app.get('/host-game', (req, res) => {
   namespace.on('connection', (socket) => {
     // escucho conexiones, socket representa un cliente
     console.log('client connected');
-
-    playerSocket = socket;
 
     socket.join('gameroom'); // me uno a un room
   });
@@ -78,8 +85,7 @@ app.get('/podium', (req, res) => {
   res.json({ podiumSent: true });
 });
 
-
-//////////////////////// below this is the mock server for the host path
+// below this is the mock server for the host path
 
 app.get('/trivialist', (req, res) => {
   const { questionNumber } = req.query;
