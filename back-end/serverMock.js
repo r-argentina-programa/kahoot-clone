@@ -6,8 +6,7 @@ const app = express(); // creo la aplicacion
 const server = app.listen(PORT, () => console.log(`Listening to port ${PORT}`)); // inicio el servidor
 
 const io = socketIO(server); // configuracion de socketio
-let userNamespace;
-let hostNamespace;
+let namespace;
 
 const trivia = [
   {
@@ -41,9 +40,9 @@ app.get('/host-game', (req, res) => {
   // seteo una ruta
   const { pin } = req.query;
 
-  userNamespace = io.of(`/${pin}`); // io.of('/my-userNamespace') --> creo un userNamespace
+  namespace = io.of(`/${pin}`); // io.of('/my-namespace') --> creo un namespace
 
-  userNamespace.on('connection', (socket) => {
+  namespace.on('connection', (socket) => {
     // escucho conexiones, socket representa un cliente
     console.log('client connected');
 
@@ -56,7 +55,7 @@ app.get('/host-game', (req, res) => {
 app.get('/start-game', (req, res) => {
   const { questionNumber } = req.query;
 
-  userNamespace.emit('question', {
+  namespace.emit('question', {
     // emit es para emitir un evento
     question: trivia[questionNumber].question,
     options: trivia[questionNumber].options,
@@ -68,7 +67,7 @@ app.get('/start-game', (req, res) => {
 app.get('/next-question', (req, res) => {
   const { questionNumber } = req.query;
 
-  userNamespace.emit('question', {
+  namespace.emit('question', {
     question: trivia[questionNumber].question,
     options: trivia[questionNumber].options,
   });
@@ -77,7 +76,7 @@ app.get('/next-question', (req, res) => {
 });
 
 app.get('/podium', (req, res) => {
-  userNamespace.emit('podium', {
+  namespace.emit('podium', {
     0: { name: 'Nicolas Rivarola', score: 3 },
     1: { name: 'Hernan Peralta', score: 2 },
     2: { name: 'Leonel Gauna', score: 1 },
@@ -89,27 +88,24 @@ app.get('/podium', (req, res) => {
 // below this is the mock server for the host path
 
 app.get('/trivialist', (req, res) => {
-  const triviaData = {
-    triviaList: [
-      { id: 1, name: 'trivia1' },
-      { id: 1, name: 'trivia2' },
-    ],
-    pin: Math.floor(Math.random() * 10),
-  };
-  console.log('trivia pin', triviaData.pin);
-  res.json(triviaData);
-});
+  const { questionNumber } = req.query;
 
-app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
-  console.log('hey');
-  const { pin, selectedTrivia } = req.params;
-  console.log(pin);
-  console.log(selectedTrivia);
-  hostNamespace = io.of(`/${pin}`);
-
-  hostNamespace.on('connection', (socket) => {
-    console.log('host connected');
+  namespace.emit('question', {
+    question: trivia[questionNumber].question,
+    options: trivia[questionNumber].options,
   });
 
-  res.json({ connected: true });
+  res.json({ questionSent: true });
 });
+
+/*
+app.get('ruta', (req,res) => {
+	// lo que queres hacer cuando llega un request
+
+	// req: request del cliente
+	// res: respuesta del servidor
+
+	req.query // objeto que tiene los parametros de la url
+	res.json({}) // mandando al cliente un objeto
+})
+*/
