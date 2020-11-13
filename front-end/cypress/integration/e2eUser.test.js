@@ -27,7 +27,7 @@ describe('kahoot', () => {
     cy.get('@game-started').should((response) => {
       expect(response.body).to.deep.equal({ gameStarted: true });
     });
-    cy.wait(500);
+    cy.wait(3000);
     cy.get('.answer0').should('exist');
     cy.get('.answer3').click();
     cy.get('.question').should('exist');
@@ -39,7 +39,7 @@ describe('kahoot', () => {
       expect(response.body).to.deep.equal({ questionSent: true });
     });
 
-    cy.wait(500);
+    cy.wait(3000);
     cy.get('.answer2').click();
     cy.get('.answers').find('.answer').should('have.class', 'clicked');
   });
@@ -50,7 +50,7 @@ describe('kahoot', () => {
       expect(response.body).to.deep.equal({ questionSent: true });
     });
 
-    cy.wait(500);
+    cy.wait(3000);
     cy.get('.answers').find('.answer').should('have.length', 2);
   });
 

@@ -41,7 +41,7 @@ const HostChooseTrivia = (props) => {
         <Button
           key={i + 1}
           onClick={() => props.onClickTriviaButton(trivia.id)}
-          className="triviaButton"
+          className={`triviaButton triviaButton${i}`}
           variant="dark"
         >
           {trivia.name}
