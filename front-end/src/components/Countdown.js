@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
-const Countdown = () => {
-  const [counter, setCounter] = useState(60);
+const Countdown = (props) => {
+  const [counter, setCounter] = useState(5);
+  const { socket } = props;
 
   useEffect(() => {
-    const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-    return () => clearInterval(timer);
-  }, [counter]);
+    if (socket) {
+      socket.on('timer', (counter) => {
+        setCounter(counter);
+      });
+    }
+  }, [socket]);
 
   return (
     <Alert className="counter" variant="danger">

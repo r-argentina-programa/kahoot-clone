@@ -25,7 +25,7 @@ const Trivia = (props) => {
 
   return props.triviaData ? (
     <div>
-      <Countdown />
+      <Countdown socket={socketUser} />
       <br />
       <Questions triviaData={props.triviaData} />
       <div className="answers">
