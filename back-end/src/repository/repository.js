@@ -8,7 +8,7 @@ async function getAllTrivias() {
 }
 
 async function getTriviaById(id) {
-  const answers = await TriviaModel.findAll({
+  const answers = await TriviaModel.findByPk(id, {
     attributes: ['name'],
     include: [
       {
@@ -27,8 +27,7 @@ async function getTriviaById(id) {
     ],
   });
 
-  const trivia = answers.map((answer) => answer.toJSON());
-  return trivia[0];
+  return answers.toJSON();
 }
 
 module.exports = { getTriviaById, getAllTrivias };
