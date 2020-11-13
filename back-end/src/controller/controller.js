@@ -1,6 +1,13 @@
 /* eslint-disable no-param-reassign */
 
-const { updatePlayerList, nextQuestion, sendQuestion, setScore } = require('../service/service');
+const {
+  updatePlayerList,
+  nextQuestion,
+  sendMiniPodium,
+  sendQuestion,
+  showScoreboard,
+  setScore,
+} = require('../service/service');
 const { getTriviaById, getAllTrivias } = require('../repository/repository');
 const { getAllSockets, createNamespace } = require('../api/socketIO');
 
@@ -21,6 +28,16 @@ function setSocketListeners(socket) {
 
   socket.on('answer', (answer) => {
     setScore(socket, answer);
+  });
+
+  socket.on('show-mini-podium', () => {
+    const { nsp: namespace } = socket;
+    sendMiniPodium(namespace);
+  });
+
+  socket.on('show-scoreboard', () => {
+    const { nsp: namespace } = socket;
+    showScoreboard(namespace);
   });
 
   socket.on('disconnect', () => {
@@ -64,6 +81,8 @@ async function configureNamespace(namespace, triviaId) {
   namespace.counter = 0;
   namespace.players = [];
   namespace.trivia = trivia;
+  namespace.timer = 5;
+  namespace.miniPodium = [];
 }
 
 function generatePIN() {
