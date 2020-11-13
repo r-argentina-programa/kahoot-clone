@@ -23,7 +23,7 @@ function setSocketListeners(socket) {
 
   socket.on('next-question', () => {
     const { nsp: namespace } = socket;
-    nextQuestion(namespace);
+    nextQuestion(namespace, sendQuestion);
   });
 
   socket.on('answer', (answer) => {
