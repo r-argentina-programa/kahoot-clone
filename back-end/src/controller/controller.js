@@ -81,7 +81,7 @@ async function configureNamespace(namespace, triviaId) {
   namespace.counter = 0;
   namespace.players = [];
   namespace.trivia = trivia;
-  namespace.timer = 5;
+  namespace.timer = 10;
   namespace.miniPodium = [];
 }
 
