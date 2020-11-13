@@ -21,7 +21,7 @@ const Trivia = (props) => {
 
   return props.triviaData ? (
     <div>
-      <Countdown />
+      <Countdown socket={socketHost}/>
       <br />
       <Button className="next-question" onClick={() => socketHost.emit('next-question')}>
         Next Question
