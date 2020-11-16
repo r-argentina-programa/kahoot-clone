@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <a
+    href="/host/chooseTrivia"
+    onClick={[Function]}
+  >
+    <button
+      className="to-trivia-select btn btn-info"
+      disabled={false}
+      type="button"
+    >
+      Create/start trivia
+    </button>
+  </a>
+</div>
+`;

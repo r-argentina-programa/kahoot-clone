@@ -11,6 +11,9 @@ const MiniPodium = (props) => {
       socketHost.on('mini-podium', (data) => {
         setMiniPodium(data);
       });
+      socketHost.on('scoreboard', (data) => {
+        console.log('scoreboard:', data);
+      });
     }
   }, [socketHost]);
 
