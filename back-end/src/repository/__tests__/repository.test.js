@@ -24,7 +24,6 @@ beforeEach(async () => {
   const trivias = await TriviaModel.bulkCreate([
     {
       name: 'trivia1',
-      // Questions: [{ Answers: [{ id: 1, description: 'some description', is_correct: true }] }],
     },
     {
       name: 'trivia2',
