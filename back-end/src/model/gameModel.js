@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require("sequelize");
+const { DataTypes, Model } = require('sequelize');
 
 module.exports = class GameModel extends Model {
   /**
@@ -21,9 +21,9 @@ module.exports = class GameModel extends Model {
           allowNull: false,
           refererences: {
             model: {
-              tableName: "Trivias",
+              tableName: 'Trivias',
             },
-            key: "id",
+            key: 'id',
           },
         },
         namespace: {
@@ -33,16 +33,16 @@ module.exports = class GameModel extends Model {
       },
       {
         sequelize: sequelizeInstance,
-        modelName: "Game",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-        tableName: "Games",
+        modelName: 'Game',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        tableName: 'Games',
       }
     );
     return GameModel;
   }
-  static setupAssociations(TriviaModel) {
-    TriviaModel.hasMany(GameModel, { foreignKey: "fk_trivia" });
-    GameModel.belongsTo(TriviaModel, { foreignKey: "fk_trivia" });
+
+  static setupAssociations(PlayerModel) {
+    GameModel.hasMany(PlayerModel, { foreignKey: 'fk_game' });
   }
 };

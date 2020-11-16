@@ -42,4 +42,8 @@ module.exports = class AnswerModel extends Model {
     );
     return AnswerModel;
   }
+
+  static setupAssociations(PlayerAnswerModel) {
+    AnswerModel.hasMany(PlayerAnswerModel, { foreignKey: 'fk_answer' });
+  }
 };
