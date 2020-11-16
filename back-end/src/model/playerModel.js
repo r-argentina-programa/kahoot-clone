@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require("sequelize");
+const { DataTypes, Model } = require('sequelize');
 
 module.exports = class PlayerModel extends Model {
   /**
@@ -21,9 +21,9 @@ module.exports = class PlayerModel extends Model {
           allowNull: false,
           refererences: {
             model: {
-              tableName: "Games",
+              tableName: 'Games',
             },
-            key: "id",
+            key: 'id',
           },
         },
         name: {
@@ -33,16 +33,16 @@ module.exports = class PlayerModel extends Model {
       },
       {
         sequelize: sequelizeInstance,
-        modelName: "Player",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-        tableName: "Players",
+        modelName: 'Player',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        tableName: 'Players',
       }
     );
     return PlayerModel;
   }
-  static setupAssociations(GameModel) {
-    GameModel.hasMany(PlayerModel, { foreignKey: "fk_game" });
-    PlayerModel.belongsTo(GameModel, { foreignKey: "fk_game" });
+
+  static setupAssociations(PlayerAnswerModel) {
+    PlayerModel.hasMany(PlayerAnswerModel, { foreignKey: 'fk_player' });
   }
 };

@@ -4,6 +4,9 @@ const { KahootController, KahootService, KahootRepository } = require('../module
 const AnswerModel = require('../model/answerModel');
 const QuestionModel = require('../model/questionModel');
 const TriviaModel = require('../model/triviaModel');
+const GameModel = require('../model/gameModel');
+const PlayerModel = require('../model/playerModel');
+const PlayerAnswerModel = require('../model/playerAnswerModel');
 
 function configureMainDatabaseAdapter() {
   return new Sequelize(process.env.DATABASE_URL, {
@@ -24,7 +27,9 @@ function addCommonDefinitions(container) {
  * @param {DIContainer} container
  */
 function configureAnswerModel(container) {
-  return AnswerModel.setup(container.get('Sequelize'));
+  AnswerModel.setup(container.get('Sequelize'));
+  AnswerModel.setupAssociations(container.get('PlayerAnswerModel'));
+  return AnswerModel;
 }
 
 /**
@@ -41,8 +46,34 @@ function configureQuestionModel(container) {
  */
 function configureTriviaModel(container) {
   TriviaModel.setup(container.get('Sequelize'));
-  TriviaModel.setupAssociations(container.get('QuestionModel'));
+  TriviaModel.setupAssociations(container.get('QuestionModel'), container.get('GameModel'));
   return TriviaModel;
+}
+
+/**
+ * @param {DIContainer} container
+ */
+function configureGameModel(container) {
+  GameModel.setup(container.get('Sequelize'));
+  GameModel.setupAssociations(container.get('PlayerModel'));
+  return GameModel;
+}
+
+/**
+ * @param {DIContainer} container
+ */
+function configurePlayerModel(container) {
+  PlayerModel.setup(container.get('Sequelize'));
+  PlayerModel.setupAssociations(container.get('PlayerAnswerModel'));
+  return PlayerModel;
+}
+
+/**
+ * @param {DIContainer} container
+ */
+function configurePlayerAnswerModel(container) {
+  PlayerAnswerModel.setup(container.get('Sequelize'));
+  return PlayerAnswerModel;
 }
 
 /**
@@ -60,6 +91,9 @@ function addKahootDefinitions(container) {
     AnswerModel: factory(configureAnswerModel),
     QuestionModel: factory(configureQuestionModel),
     TriviaModel: factory(configureTriviaModel),
+    GameModel: factory(configureGameModel),
+    PlayerModel: factory(configurePlayerModel),
+    PlayerAnswerModel: factory(configurePlayerAnswerModel),
   });
 }
 
