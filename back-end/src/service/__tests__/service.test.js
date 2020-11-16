@@ -128,7 +128,7 @@ describe('Service module test', () => {
       counter: 1,
       interval: 7000,
       players: [{ answered: true }],
-      trivia: { Questions: {} },
+      trivia: { questions: {} },
     };
     kahootService.nextQuestion(namespaceMock, sendQuestionMock);
     expect(namespaceMock.counter).toBe(2);
@@ -148,7 +148,7 @@ describe('Service module test', () => {
       emit: jest.fn(),
       interval: 7000,
       players: [],
-      trivia: { Questions: [{ Answers: [{ description: 'descriptionText' }] }] },
+      trivia: { questions: [{ Answers: [{ description: 'descriptionText' }] }] },
     };
     const questionResponseMock = {
       questions: undefined,
@@ -208,7 +208,7 @@ describe('Service module test', () => {
       answered: false,
       score: 0,
       nsp: {
-        trivia: { Questions: [{ Answers: [{ id: 1, is_correct: true }] }] },
+        trivia: { questions: [{ Answers: [{ id: 1, is_correct: true }] }] },
         counter: 0,
         miniPodium: [{ option: 1, count: 0 }],
         timer: 5,
@@ -225,7 +225,7 @@ describe('Service module test', () => {
       answered: false,
       score: 0,
       nsp: {
-        trivia: { Questions: [{ Answers: [{ id: 1, is_correct: false }] }] },
+        trivia: { questions: [{ Answers: [{ id: 1, is_correct: false }] }] },
         counter: 0,
         miniPodium: [{ option: 1, count: 0 }],
         timer: 5,
@@ -258,7 +258,7 @@ describe('Service module test', () => {
         { playerName: 'player3', score: 1 },
       ],
       counter: 1,
-      trivia: { Questions: [{}] },
+      trivia: { questions: [{}] },
     };
 
     const podiumMock = {
