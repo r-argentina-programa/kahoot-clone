@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Alert from "react-bootstrap/Alert";
-import { Link, useLocation } from "react-router-dom";
-import "../styles/HostLobby.css";
-import socketIO from "socket.io-client";
-import Players from "../components/Players";
-import Button from "react-bootstrap/esm/Button";
+import React, { useState, useEffect } from 'react';
+import Alert from 'react-bootstrap/Alert';
+import { Link, useLocation } from 'react-router-dom';
+import '../styles/HostLobby.css';
+import socketIO from 'socket.io-client';
+import Players from '../components/Players';
+import Button from 'react-bootstrap/esm/Button';
 
 const HostLobby = (props) => {
   const [players, setPlayers] = useState([]);
@@ -13,10 +13,11 @@ const HostLobby = (props) => {
   const { socket, setTriviaData, BASE_URL } = props;
 
   useEffect(() => {
+    console.log('hostsocket', props.socket);
     if (!props.socket) {
       fetch(`/trivia/${pin}/${props.trivia}`).then(() => {
         let newSocketHost;
-        if (BASE_URL === "http://localhost:5000") {
+        if (BASE_URL === 'http://localhost:5000') {
           newSocketHost = socketIO(`/${pin}`);
         } else {
           newSocketHost = socketIO(`${BASE_URL}/${pin}`);
@@ -28,14 +29,12 @@ const HostLobby = (props) => {
 
   useEffect(() => {
     if (socket) {
-      console.log("hey");
-      socket.on("question", (triviaData) => {
-        console.log("HEY");
+      console.log('hey');
+      socket.on('question', (triviaData) => {
         const newTriviaData = triviaData;
-        console.log("triviaData hostlobby", triviaData);
         setTriviaData(newTriviaData);
       });
-      socket.on("playerlist", (players) => {
+      socket.on('playerlist', (players) => {
         const newPlayers = players;
         setPlayers(newPlayers);
       });
@@ -49,7 +48,7 @@ const HostLobby = (props) => {
           The PIN is {pin}
         </Alert>
         <Link to="/host/trivia">
-          <Button onClick={() => props.socket.emit("start-game")}>
+          <Button onClick={() => props.socket.emit('start-game')} className="start-game-btn">
             Start Game
           </Button>
         </Link>

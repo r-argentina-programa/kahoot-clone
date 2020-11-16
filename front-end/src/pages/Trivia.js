@@ -39,7 +39,7 @@ const Trivia = (props) => {
         {props.triviaData.options.map((option, index) => (
           <Alert
             key={`button-${index + 1}`}
-            className={`answer answer${index}`}
+            className={`answer${index} answer`}
             variant={'warning'}
           >
             {option.description}

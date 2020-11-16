@@ -12,8 +12,6 @@ const HostChooseTrivia = (props) => {
     fetch('/trivialist')
       .then((res) => res.json())
       .then((result) => {
-        console.log('data1:', result.triviaList);
-
         setTriviaList(result.triviaList);
         setPin(result.pin);
         setIsLoaded(true);
