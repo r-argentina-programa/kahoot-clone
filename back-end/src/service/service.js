@@ -1,112 +1,136 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 
-const { getSocketsInRoom } = require('../api/socketIO');
-
-function configureMiniPodium(namespace, options) {
-  namespace.miniPodium = options.map((option) => {
-    return { option: option.id, count: 0 };
-  });
-}
-
-function updatePlayerList(namespace) {
-  const socketsInRoom = getSocketsInRoom(namespace);
-
-  namespace.players = socketsInRoom;
-
-  const playerNames = socketsInRoom.map((socket) => socket.playerName);
-
-  namespace.emit('playerlist', playerNames);
-}
-
-function calculatePodium(players) {
-  const sortedArray = [];
-  const podium = {};
-
-  players.forEach((player) => {
-    sortedArray.push([player.playerName, player.score]);
-  });
-
-  sortedArray.sort((a, b) => {
-    return b[1] - a[1];
-  });
-
-  for (let i = 0; i < sortedArray.length; i++) {
-    podium[i] = { name: sortedArray[i][0], score: sortedArray[i][1] };
+module.exports = class KahootService {
+  constructor(kahootRepository) {
+    this.kahootRepository = kahootRepository;
   }
 
-  return podium;
-}
+  async getTriviaById(id) {
+    const trivia = await this.kahootRepository.getTriviaById(id);
+    return trivia;
+  }
 
-function startTimer(namespace) {
-  namespace.timer = 6;
-  namespace.interval = setInterval(() => {
-    namespace.timer--;
-    namespace.emit('timer', namespace.timer);
-    if (namespace.timer === 0) {
-      clearInterval(namespace.interval);
-    }
-  }, 1000);
-}
+  async getAllTrivias() {
+    const trivias = await this.kahootRepository.getAllTrivias();
+    return trivias;
+  }
 
-function sendQuestion(namespace) {
-  const { trivia, counter, players } = namespace;
-
-  if (counter === trivia.Questions.length) {
-    namespace.emit('podium', calculatePodium(players));
-  } else {
-    startTimer(namespace);
-    const questionDescription = trivia.Questions[counter].description;
-    const questionOptions = trivia.Questions[counter].Answers.map((answer) => {
-      return { id: answer.id, description: answer.description };
-    });
-    configureMiniPodium(namespace, questionOptions);
-    namespace.emit('question', {
-      question: questionDescription,
-      options: questionOptions,
+  configureMiniPodium(namespace, options) {
+    namespace.miniPodium = options.map((option) => {
+      return { option: option.id, count: 0 };
     });
   }
-}
 
-function sendMiniPodium(namespace) {
-  namespace.emit('mini-podium', namespace.miniPodium);
-}
+  updatePlayerList(namespace) {
+    const socketsInRoom = this.getSocketsInRoom(namespace);
 
-function showScoreboard(namespace) {
-  namespace.emit('scoreboard', calculatePodium(namespace.players));
-}
+    namespace.players = socketsInRoom;
 
-function nextQuestion(namespace) {
-  namespace.counter++;
-  namespace.players.forEach((player) => {
-    player.answered = false;
-  });
-  clearInterval(namespace.interval);
-  sendQuestion(namespace);
-}
+    const playerNames = socketsInRoom.map((socket) => socket.playerName);
 
-function setScore(socket, answerId) {
-  const { nsp: namespace } = socket;
-  const { trivia, counter } = namespace;
+    namespace.emit('playerlist', playerNames);
+  }
 
-  if (!socket.answered) {
-    socket.answered = true;
-    const playerAnswer = trivia.Questions[counter].Answers.filter(
-      (answer) => answer.id === answerId
-    )[0];
-    namespace.miniPodium.filter((option) => option.option === playerAnswer.id)[0].count++;
+  calculatePodium(players) {
+    const sortedArray = [];
+    const podium = {};
 
-    if (playerAnswer.is_correct) {
-      socket.score += namespace.timer;
+    players.forEach((player) => {
+      sortedArray.push([player.playerName, player.score]);
+    });
+
+    sortedArray.sort((a, b) => {
+      return b[1] - a[1];
+    });
+
+    for (let i = 0; i < sortedArray.length; i++) {
+      podium[i] = { name: sortedArray[i][0], score: sortedArray[i][1] };
+    }
+
+    return podium;
+  }
+
+  startTimer(namespace) {
+    namespace.timer = 6;
+    namespace.interval = setInterval(() => {
+      namespace.timer--;
+      namespace.emit('timer', namespace.timer);
+      if (namespace.timer === 0) {
+        clearInterval(namespace.interval);
+      }
+    }, 1000);
+  }
+
+  sendQuestion(namespace) {
+    const { trivia, counter, players } = namespace;
+
+    if (counter === trivia.Questions.length) {
+      namespace.emit('podium', this.calculatePodium(players));
+    } else {
+      this.startTimer(namespace);
+      const questionDescription = trivia.Questions[counter].description;
+      const questionOptions = trivia.Questions[counter].Answers.map((answer) => {
+        return { id: answer.id, description: answer.description };
+      });
+      this.configureMiniPodium(namespace, questionOptions);
+      namespace.emit('question', {
+        question: questionDescription,
+        options: questionOptions,
+      });
     }
   }
-}
 
-module.exports = {
-  updatePlayerList,
-  nextQuestion,
-  sendMiniPodium,
-  sendQuestion,
-  showScoreboard,
-  setScore,
+  sendMiniPodium(namespace) {
+    namespace.emit('mini-podium', namespace.miniPodium);
+  }
+
+  showScoreboard(namespace) {
+    namespace.emit('scoreboard', this.calculatePodium(namespace.players));
+  }
+
+  nextQuestion(namespace, callback) {
+    namespace.counter++;
+    namespace.players.forEach((player) => {
+      player.answered = false;
+    });
+    clearInterval(namespace.interval);
+    callback(namespace);
+  }
+
+  setScore(socket, answerId) {
+    const { nsp: namespace } = socket;
+    const { trivia, counter } = namespace;
+
+    if (!socket.answered) {
+      socket.answered = true;
+      const playerAnswer = trivia.Questions[counter].Answers.filter(
+        (answer) => answer.id === answerId
+      )[0];
+      namespace.miniPodium.filter((option) => option.option === playerAnswer.id)[0].count++;
+
+      if (playerAnswer.is_correct) {
+        socket.score += namespace.timer;
+      }
+    }
+  }
+
+  getAllSockets(namespace) {
+    return Object.values(namespace.clients().connected);
+  }
+
+  getSocketsInRoom(namespace) {
+    const socketsConnected = Object.values(namespace.clients().connected);
+
+    const room = namespace.adapter.rooms.gameroom;
+
+    if (!room) {
+      return [];
+    }
+
+    const socketsInRoomIds = Object.keys(room.sockets);
+
+    return socketsConnected.filter((socket) => socketsInRoomIds.includes(socket.id));
+  }
 };

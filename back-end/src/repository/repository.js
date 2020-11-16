@@ -1,33 +1,35 @@
-const AnswerModel = require('../model/answerModel');
-const QuestionModel = require('../model/questionModel');
-const TriviaModel = require('../model/triviaModel');
+module.exports = class KahootRepository {
+  constructor(AnswerModel, QuestionModel, TriviaModel) {
+    this.AnswerModel = AnswerModel;
+    this.QuestionModel = QuestionModel;
+    this.TriviaModel = TriviaModel;
+  }
 
-async function getAllTrivias() {
-  const triviasData = await TriviaModel.findAll({ attributes: ['id', 'name'] });
-  return triviasData.map((triviaData) => triviaData.toJSON());
-}
+  async getAllTrivias() {
+    const triviasData = await this.TriviaModel.findAll({ attributes: ['id', 'name'] });
+    return triviasData.map((triviaData) => triviaData.toJSON());
+  }
 
-async function getTriviaById(id) {
-  const answers = await TriviaModel.findByPk(id, {
-    attributes: ['name'],
-    include: [
-      {
-        model: QuestionModel,
-        where: {
-          fk_trivia: id,
-        },
-        attributes: ['description'],
-        include: [
-          {
-            model: AnswerModel,
-            attributes: ['id', 'description', 'is_correct'],
+  async getTriviaById(id) {
+    const triviaData = await this.TriviaModel.findByPk(id, {
+      attributes: ['name'],
+      include: [
+        {
+          model: this.QuestionModel,
+          where: {
+            fk_trivia: id,
           },
-        ],
-      },
-    ],
-  });
+          attributes: ['description'],
+          include: [
+            {
+              model: this.AnswerModel,
+              attributes: ['id', 'description', 'is_correct'],
+            },
+          ],
+        },
+      ],
+    });
 
-  return answers.toJSON();
-}
-
-module.exports = { getTriviaById, getAllTrivias };
+    return triviaData.toJSON();
+  }
+};
