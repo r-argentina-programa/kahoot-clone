@@ -1,3 +1,5 @@
+const { fromDbToEntity: fromTriviaDbToEntity } = require('../mapper/triviaMapper');
+
 module.exports = class KahootRepository {
   constructor(AnswerModel, QuestionModel, TriviaModel) {
     this.AnswerModel = AnswerModel;
@@ -7,29 +9,30 @@ module.exports = class KahootRepository {
 
   async getAllTrivias() {
     const triviasData = await this.TriviaModel.findAll({ attributes: ['id', 'name'] });
-    return triviasData.map((triviaData) => triviaData.toJSON());
+    const trivias = triviasData.map((trivia) => fromTriviaDbToEntity(trivia));
+    return trivias;
   }
 
   async getTriviaById(id) {
     const triviaData = await this.TriviaModel.findByPk(id, {
-      attributes: ['name'],
+      attributes: ['id', 'name'],
       include: [
         {
           model: this.QuestionModel,
           where: {
             fk_trivia: id,
           },
-          attributes: ['description'],
+          attributes: ['id', 'fk_trivia', 'description'],
           include: [
             {
               model: this.AnswerModel,
-              attributes: ['id', 'description', 'is_correct'],
+              attributes: ['id', 'description', 'fk_question', 'is_correct'],
             },
           ],
         },
       ],
     });
-
-    return triviaData.toJSON();
+    const newTrivia = fromTriviaDbToEntity(triviaData);
+    return newTrivia;
   }
 };

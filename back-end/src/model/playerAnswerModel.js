@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require("sequelize");
+const { DataTypes, Model } = require('sequelize');
 
 module.exports = class PlayerAnswerModel extends Model {
   /**
@@ -21,9 +21,9 @@ module.exports = class PlayerAnswerModel extends Model {
           allowNull: false,
           refererences: {
             model: {
-              tableName: "Players",
+              tableName: 'Players',
             },
-            key: "id",
+            key: 'id',
           },
         },
         fk_answer: {
@@ -31,9 +31,9 @@ module.exports = class PlayerAnswerModel extends Model {
           allowNull: false,
           references: {
             model: {
-              tableName: "Answers",
+              tableName: 'Answers',
             },
-            key: "id",
+            key: 'id',
           },
         },
         score: {
@@ -43,18 +43,12 @@ module.exports = class PlayerAnswerModel extends Model {
       },
       {
         sequelize: sequelizeInstance,
-        modelName: "PlayerAnswer",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-        tableName: "PlayerAnswers",
+        modelName: 'PlayerAnswer',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        tableName: 'PlayerAnswers',
       }
     );
     return PlayerAnswerModel;
-  }
-  static setupAssociations(PlayerModel, AnswerModel) {
-    //PlayerModel.hasMany(PlayerAnswerModel, {foreignKey: "id"})
-    PlayerAnswerModel.belongsTo(PlayerModel, { foreignKey: "fk_player" });
-    // AnswerModel.hasMany(PlayerAnswerModel, { foreignKey: "id" });
-    PlayerAnswerModel.belongsTo(AnswerModel, { foreignKey: "fk_answer" });
   }
 };

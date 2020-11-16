@@ -66,12 +66,12 @@ module.exports = class KahootService {
   sendQuestion(namespace) {
     const { trivia, counter, players } = namespace;
 
-    if (counter === trivia.Questions.length) {
+    if (counter === trivia.questions.length) {
       namespace.emit('podium', this.calculatePodium(players));
     } else {
       this.startTimer(namespace);
-      const questionDescription = trivia.Questions[counter].description;
-      const questionOptions = trivia.Questions[counter].Answers.map((answer) => {
+      const questionDescription = trivia.questions[counter].description;
+      const questionOptions = trivia.questions[counter].Answers.map((answer) => {
         return { id: answer.id, description: answer.description };
       });
       this.configureMiniPodium(namespace, questionOptions);
@@ -105,7 +105,7 @@ module.exports = class KahootService {
 
     if (!socket.answered) {
       socket.answered = true;
-      const playerAnswer = trivia.Questions[counter].Answers.filter(
+      const playerAnswer = trivia.questions[counter].Answers.filter(
         (answer) => answer.id === answerId
       )[0];
       namespace.miniPodium.filter((option) => option.option === playerAnswer.id)[0].count++;
