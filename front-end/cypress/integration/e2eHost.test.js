@@ -1,3 +1,4 @@
+/* eslint-disable jest/valid-expect-in-promise */
 /* eslint-disable cypress/no-unnecessary-waiting */
 /* eslint-disable jest/valid-expect */
 /// <reference types="cypress" />
@@ -40,7 +41,7 @@ describe('Kahoot host path', () => {
     });
   });
 
-  /* it('Checks that the PIN is the same before and after choosing the trivia', () => {
+  it('Checks that the PIN is the same before and after choosing the trivia', () => {
     cy.wait(500);
     cy.get('.display-pin')
       .invoke('text')
@@ -52,14 +53,14 @@ describe('Kahoot host path', () => {
             expect(text1).to.eq(text2);
           });
       });
-  }); */
+  });
 
-  /* it('Joins the trivia and checks that the host cant answer', () => {
+  it('Joins the trivia and checks that the host cant answer', () => {
     cy.get('button').click();
     cy.get('.answers').find('.answer').should('have.class', 'clicked');
-  }); */
+  });
 
-  /* it('Checks that the answers change when clicking "Next Question"', () => {
+  it('Checks that the answers change when clicking "Next Question"', () => {
     cy.get('.answer0')
       .invoke('text')
       .then((text1) => {
@@ -70,11 +71,11 @@ describe('Kahoot host path', () => {
             expect(text1).not.to.equal(text2);
           });
       });
-  }); */
+  });
 
-  /* it('Goes to the final question and then to the root', () => {
+  it('Goes to the final question and then to the root', () => {
     cy.get('.next-question').click();
     cy.get('.stopGame').click();
     cy.location('href').should('equal', 'http://localhost:3000/');
-  }); */
+  });
 });

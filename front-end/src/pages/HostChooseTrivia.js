@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import Alert from 'react-bootstrap/Alert';
 import '../styles/HostChooseTrivia.css';
 const HostChooseTrivia = (props) => {
   const [error, setError] = useState(null);
@@ -52,11 +51,6 @@ const HostChooseTrivia = (props) => {
       <div>
         <div>
           <div className="containerTriviaButton">{buttons}</div>
-          <br />
-          <br />
-          <Alert className="display-pin" variant="dark">
-            The PIN is {pin}
-          </Alert>
           <br />
           <br />
           <br />

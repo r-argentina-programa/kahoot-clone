@@ -3,7 +3,7 @@ import Alert from 'react-bootstrap/Alert';
 import StopGame from '../components/StopGame';
 import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
-import '../styles/Trivia.css';
+import '../styles/TriviaUser.css';
 
 const Trivia = (props) => {
   const [isClicked, setIsClicked] = useState('');
@@ -37,6 +37,7 @@ const Trivia = (props) => {
               setIsClicked(option.description);
               setIsDisabled('clicked');
               socketUser.emit('answer', option.id);
+              socketUser.emit('show-mini-podium');
             }}
             variant={isClicked === option.description ? 'success' : 'warning'}
           >

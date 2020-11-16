@@ -1,9 +1,26 @@
 {
   "name": "kahoot-clone",
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/cypress/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^4.5.3",
     "react": "^17.0.1",
@@ -43,8 +60,10 @@
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
-    "@testing-library/react": "^11.1.0",
+    "@cypress/code-coverage": "^3.8.3",
+    "@testing-library/react": "^11.1.2",
     "cypress": "^5.6.0",
-    "eslint-plugin-cypress": "^2.11.2"
+    "eslint-plugin-cypress": "^2.11.2",
+    "react-test-renderer": "^17.0.1"
   }
 }
