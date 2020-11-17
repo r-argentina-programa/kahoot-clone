@@ -11,22 +11,21 @@ const MiniPodium = (props) => {
       socketHost.on('mini-podium', (data) => {
         setMiniPodium(data);
       });
-      socketHost.on('scoreboard', (data) => {
-        console.log('scoreboard:', data);
-      });
     }
   }, [socketHost]);
 
   return (
     <div>
       <Jumbotron className="counter" variant="danger">
-        {miniPodium
-          ? miniPodium.map((obj, index) => (
-              <p key={`item${index}`}>
-                Question {obj.option} chosen by: {obj.count} players
-              </p>
-            ))
-          : 'Loading...'}
+        {miniPodium ? (
+          miniPodium.map((obj, index) => (
+            <p key={`item${index}`}>
+              Question {obj.option} chosen by: {obj.count} players
+            </p>
+          ))
+        ) : (
+          <div>'Loading...'</div>
+        )}
       </Jumbotron>
     </div>
   );

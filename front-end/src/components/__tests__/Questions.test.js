@@ -5,8 +5,8 @@ import { render, screen } from '@testing-library/react';
 it('renders correctly', () => {
   const QuestionsMock = {
     pin: 1,
-    question: ['Hi', 'Bye', 'Please hire me Martin', 'Just a joke :P'],
+    question: ['Hi', 'Bye', 'Blue', 'Red'],
   };
   render(<Questions triviaData={QuestionsMock} />);
-  screen.debug();
+  screen.getAllByText(/Hi/);
 });
