@@ -1,5 +1,6 @@
 const { default: DIContainer, object, get, factory } = require('rsdi');
 const { Sequelize } = require('sequelize');
+const session = require('express-session');
 const { KahootController, KahootService, KahootRepository } = require('../module');
 const AnswerModel = require('../model/answerModel');
 const QuestionModel = require('../model/questionModel');
@@ -14,12 +15,25 @@ function configureMainDatabaseAdapter() {
   });
 }
 
+function configureSession() {
+  const SECONDS_IN_A_WEEK = 604800000;
+
+  const sessionOptions = {
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: SECONDS_IN_A_WEEK },
+  };
+  return session(sessionOptions);
+}
+
 /**
  * @param {DIContainer} container
  */
 function addCommonDefinitions(container) {
   container.addDefinitions({
     Sequelize: factory(configureMainDatabaseAdapter),
+    Session: factory(configureSession),
   });
 }
 
@@ -86,7 +100,10 @@ function addKahootDefinitions(container) {
     KahootRepository: object(KahootRepository).construct(
       get('AnswerModel'),
       get('QuestionModel'),
-      get('TriviaModel')
+      get('TriviaModel'),
+      get('GameModel'),
+      get('PlayerModel'),
+      get('PlayerAnswerModel')
     ),
     AnswerModel: factory(configureAnswerModel),
     QuestionModel: factory(configureQuestionModel),
