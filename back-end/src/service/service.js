@@ -106,9 +106,10 @@ module.exports = class KahootService {
     if (!socket.answered) {
       socket.answered = true;
       const playerAnswer = trivia.questions[counter].Answers.filter(
+      const playerAnswer = trivia.questions[counter].Answers.find(
         (answer) => answer.id === answerId
-      )[0];
-      namespace.miniPodium.filter((option) => option.option === playerAnswer.id)[0].count++;
+      );
+      namespace.miniPodium.find((option) => option.option === playerAnswer.id).count++;
 
       if (playerAnswer.is_correct) {
         socket.score += namespace.timer;
