@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="container"
+>
+  <a
+    href="/host"
+    onClick={[Function]}
+  >
+    <button
+      className="join-host btn btn-primary"
+      disabled={false}
+      type="button"
+    >
+      I want to host a Trivia
+    </button>
+  </a>
+  <a
+    href="/user"
+    onClick={[Function]}
+  >
+    <button
+      className="join-user btn btn-primary"
+      disabled={false}
+      type="button"
+    >
+      I want to join a Trivia
+    </button>
+  </a>
+</div>
+`;

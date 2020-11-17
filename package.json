@@ -11,10 +11,12 @@
     "start-server": "nodemon -e js,jsx,html back-end/server.js",
     "start-client": "cd front-end && npm start",
     "build-client": "cd front-end && npm run build && mv build ../back-end/build",
+    "start-server-mock": "cd back-end && nodemon serverMock.js",
     "cyrun": "cd front-end && npm run cyrun",
     "cyopen": "cd front-end && npm run cyopen",
-    "test:dev": "cd back-end && npm run test:dev",
-    "test": "cd back-end && npm run test"
+    "test:back:dev": "cd back-end && npm run test:dev",
+    "test:back": "cd back-end && npm run test",
+    "test:front": "cd front-end && npm run test a"
   },
   "repository": {
     "type": "git",

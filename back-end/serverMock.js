@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
+const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
 
@@ -7,7 +9,8 @@ const app = express();
 const server = app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
 
 const io = socketIO(server);
-let userNamespace;
+app.use(express.static(path.join(__dirname, 'build')));
+let namespace;
 
 const trivia = [
   {
@@ -40,9 +43,9 @@ const trivia = [
 app.get('/host-game', (req, res) => {
   const { pin } = req.query;
 
-  userNamespace = io.of(`/${pin}`);
+  namespace = io.of(`/${pin}`);
 
-  userNamespace.on('connection', (socket) => {
+  namespace.on('connection', (socket) => {
     console.log('client connected');
 
     socket.join('gameroom');
@@ -52,9 +55,10 @@ app.get('/host-game', (req, res) => {
 });
 
 app.get('/start-game', (req, res) => {
+  console.log('emiting a game!');
   const { questionNumber } = req.query;
 
-  userNamespace.emit('question', {
+  namespace.emit('question', {
     question: trivia[questionNumber].question,
     options: trivia[questionNumber].options,
   });
@@ -65,7 +69,7 @@ app.get('/start-game', (req, res) => {
 app.get('/next-question', (req, res) => {
   const { questionNumber } = req.query;
 
-  userNamespace.emit('question', {
+  namespace.emit('question', {
     question: trivia[questionNumber].question,
     options: trivia[questionNumber].options,
   });
@@ -74,7 +78,7 @@ app.get('/next-question', (req, res) => {
 });
 
 app.get('/podium', (req, res) => {
-  userNamespace.emit('podium', {
+  namespace.emit('podium', {
     0: { name: 'Nicolas Rivarola', score: 3 },
     1: { name: 'Hernan Peralta', score: 2 },
     2: { name: 'Leonel Gauna', score: 1 },
@@ -96,16 +100,52 @@ app.get('/trivialist', (req, res) => {
   res.json(triviaData);
 });
 
-/* app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
-  console.log('hey');
-  const { pin, selectedTrivia } = req.params;
-  console.log(pin);
-  console.log(selectedTrivia);
-  hostNamespace = io.of(`/${pin}`);
+app.get('/trivia/:pin/:selectedTrivia', (req, res) => {
+  const { pin } = req.params;
 
-  hostNamespace.on('connection', (socket) => {
-    console.log('host connected');
+  namespace = io.of(`/${pin}`);
+  namespace.counter = 0;
+
+  namespace.on('connection', (socket) => {
+    console.log('client connected');
+
+    if (Object.values(namespace.clients().connected).length === 1) {
+      console.log('host joined!');
+      socket.host = true;
+    }
+
+    if (!socket.host) {
+      console.log('player joined!');
+      socket.join('gameroom');
+    }
+
+    socket.on('start-game', () => {
+      namespace.emit('question', {
+        question: trivia[namespace.counter].question,
+        options: trivia[namespace.counter].options,
+      });
+    });
+
+    socket.on('next-question', () => {
+      namespace.counter += 1;
+      namespace.emit('question', {
+        question: trivia[namespace.counter].question,
+        options: trivia[namespace.counter].options,
+      });
+    });
+
+    socket.on('disconnect', () => {
+      console.log('client disconnected');
+    });
   });
 
   res.json({ connected: true });
-}); */
+});
+
+app.get('/answers', (req, res) => {
+  namespace.emit('mini-podium', [
+    { option: 1, count: 1 },
+    { option: 2, count: 0 },
+  ]);
+  res.json({ miniPodiumSent: true });
+});

@@ -1,11 +1,3 @@
-.answer {
-  cursor: pointer;
-}
-
-.clicked {
-  pointer-events: none;
-}
-
 .container {
   display: flex;
   justify-content: space-evenly;
