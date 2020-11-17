@@ -27,6 +27,12 @@ module.exports = {
         type: Sequelize.DataTypes.BOOLEAN,
         allowNull: false,
       },
+      created_at: {
+        type: Sequelize.DataTypes.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DataTypes.DATE,
+      },
     });
   },
   /** @param {import('sequelize').QueryInterface} queryInterface */
