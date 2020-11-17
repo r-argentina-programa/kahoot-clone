@@ -11,5 +11,7 @@ it('renders correctly', () => {
       <StartGame socket={socket} />
     </BrowserRouter>
   );
+  expect(screen.getByText('Start Game')).toBeInTheDocument();
+  expect(screen.getByText('Start Game')).toHaveAttribute('type', 'button');
   screen.getByText('Start Game').click();
 });

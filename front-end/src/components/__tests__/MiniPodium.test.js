@@ -7,6 +7,7 @@ import { act } from 'react-dom/test-utils';
 describe('<MiniPodium />', () => {
   it('Renders loading text correctly', () => {
     render(<MiniPodium socketHost={null} />);
+    expect(screen.queryByText(/Loading/)).toBeInTheDocument();
   });
 
   it('Renders data correctly', () => {
@@ -21,5 +22,7 @@ describe('<MiniPodium />', () => {
     act(() => {
       socket.socketClient.emit('mini-podium', mockData);
     });
+    expect(screen.getByText('Question 1', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('Question 2', { exact: false })).toBeInTheDocument();
   });
 });

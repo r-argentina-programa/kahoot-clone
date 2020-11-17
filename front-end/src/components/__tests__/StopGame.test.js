@@ -12,4 +12,5 @@ it('renders correctly', () => {
     </BrowserRouter>
   );
   screen.getByText('Go back to the Lobby').click();
+  
 });
