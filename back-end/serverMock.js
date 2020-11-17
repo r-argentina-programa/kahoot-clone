@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
+const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
 
@@ -8,6 +9,7 @@ const app = express();
 const server = app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
 
 const io = socketIO(server);
+app.use(express.static(path.join(__dirname, 'build')));
 let namespace;
 
 const trivia = [
@@ -53,6 +55,7 @@ app.get('/host-game', (req, res) => {
 });
 
 app.get('/start-game', (req, res) => {
+  console.log('emiting a game!');
   const { questionNumber } = req.query;
 
   namespace.emit('question', {
