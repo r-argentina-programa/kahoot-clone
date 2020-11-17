@@ -18,6 +18,8 @@ describe('<Countdown />', () => {
     act(() => {
       socket.socketClient.emit('timer', mockData);
     });
+
+    expect(screen.getByText(/You have/)).toBeInTheDocument();
   });
 
   it('Shows you ran out of time', async () => {
@@ -29,5 +31,6 @@ describe('<Countdown />', () => {
     act(() => {
       socket.socketClient.emit('timer', mockData);
     });
+    expect(screen.getByText('You dont have any more time')).toBeInTheDocument();
   });
 });

@@ -5,8 +5,8 @@ import { render, screen } from '@testing-library/react';
 it('renders correctly', () => {
   const QuestionsMock = {
     pin: 1,
-    question: ['Hi', 'Bye', 'Blue', 'Red'],
+    question: ['hi'],
   };
   render(<Questions triviaData={QuestionsMock} />);
-  screen.getAllByText(/Hi/);
+  expect(screen.getByText('hi')).toBeInTheDocument();
 });
