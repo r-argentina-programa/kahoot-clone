@@ -35,10 +35,13 @@ describe('<TriviaUserUser />', () => {
   });
 
   it('Makes sure next-question is emitted when clicking "Next" button', () => {
-    const socket = new socketMock();
+    const socketHost = new socketMock();
+    const socketUser = new socketMock();
     const onGameEnd = jest.fn();
     const setSocketUser = jest.fn();
     const setSocket = jest.fn();
+    const podiumMock = [{ name: 'Nicolas', score: 30 }];
+
     const triviaData = {
       question: 'Which is the biggest planet in the Solar System?',
       options: [
@@ -47,11 +50,12 @@ describe('<TriviaUserUser />', () => {
         { id: 3, description: 'Mars' },
       ],
     };
+
     render(
       <BrowserRouter>
         <TriviaUser
-          socketHost={socket}
-          socketUser={socket}
+          socketHost={socketHost}
+          socketUser={socketUser}
           onGameEnd={onGameEnd}
           setSocketUser={setSocketUser}
           triviaData={triviaData}
@@ -59,20 +63,22 @@ describe('<TriviaUserUser />', () => {
         />
       </BrowserRouter>
     );
+
     screen.debug();
+
     expect(screen.getByText('JUPITER')).toBeInTheDocument();
+
     screen.getByText('JUPITER').click();
-    socket.on('answer', (data) => {
+
+    socketHost.on('answer', (data) => {
       expect(data).toBeTruthy();
       expect(data).toBeDefined();
     });
 
-    socket.emit('podium', (data) => {
-      expect(onGameEnd).toHaveBeenCalledTimes(1);
-    });
+    socketUser.socketClient.emit('podium', podiumMock);
 
-    socket.socketClient.on('podium', (data) => {
-      expect(onGameEnd()).toHaveBeenCalledTimes(1);
-    });
+    expect(onGameEnd).toHaveBeenCalledTimes(1);
   });
 });
+
+//
