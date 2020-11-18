@@ -1,8 +1,8 @@
 module.exports = class Player {
-  constructor({ id, name, socket, gameId }) {
+  constructor({ id, gameId, name, sessionId }) {
     this.id = id;
-    this.name = name;
-    this.socket = socket;
     this.gameId = gameId;
+    this.name = name;
+    this.sessionId = sessionId;
   }
 };
