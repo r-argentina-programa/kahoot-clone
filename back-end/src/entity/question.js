@@ -1,7 +1,7 @@
 module.exports = class Question {
-  constructor({ id, fk_trivia: triviaId, description, Answers: answers }) {
+  constructor({ id, questionId, description, mappedAnswers: answers }) {
     this.id = id;
-    this.triviaId = triviaId;
+    this.questionId = questionId;
     this.description = description;
     this.answers = answers;
   }
