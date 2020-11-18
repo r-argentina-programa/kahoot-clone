@@ -20,8 +20,6 @@ function configureSession() {
 
   const sessionOptions = {
     secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
     cookie: { maxAge: SECONDS_IN_A_WEEK },
   };
   return session(sessionOptions);

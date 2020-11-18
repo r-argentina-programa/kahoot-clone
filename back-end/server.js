@@ -15,6 +15,11 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.urlencoded({ extended: true }));
 
 const container = configureDI();
-app.use(container.get('Session'));
+const sessionMiddleware = container.get('Session');
+app.use(sessionMiddleware);
+
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {}, next);
+});
 
 initKahootModule(app, io, container);
