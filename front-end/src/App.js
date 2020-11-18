@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
-// import { useHistory } from 'react-router-dom';
-// import socketIO from 'socket.io-client';
-// import Lobby from './pages/Lobby';
-// import Trivia from './pages/Trivia';
 import Home from './pages/Home';
 import Podium from './pages/Podium';
 import HostHome from './pages/HostHome';

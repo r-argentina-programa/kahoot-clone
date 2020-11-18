@@ -1,24 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Alert from 'react-bootstrap/Alert';
 import StopGame from '../components/StopGame';
 import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
 import '../styles/Trivia.css';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 import Minipodium from '../components/MiniPodium';
 
 const Trivia = (props) => {
-  const onGameEnd = props.onGameEnd;
-  const { socketUser, socketHost } = props;
-  console.log(props.triviaData);
-  useEffect(() => {
-    if (socketUser) {
-      socketUser.on('podium', (podium) => {
-        onGameEnd(podium);
-      });
-    }
-    return () => {};
-  }, [onGameEnd, socketUser]);
+  const { socketHost } = props;
 
   return props.triviaData ? (
     <div>
