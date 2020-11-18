@@ -47,18 +47,7 @@ const HostChooseTrivia = (props) => {
     ));
     return (
       <div>
-        <div>
-          <div className="containerTriviaButton">{buttons}</div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <Link to="/host/lobby">
-            <Button className="triviaButton" variant="dark">
-              To the lobby (for development purposes)
-            </Button>
-          </Link>
-        </div>
+        <div className="containerTriviaButton">{buttons}</div>
       </div>
     );
   }
