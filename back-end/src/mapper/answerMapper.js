@@ -9,8 +9,8 @@ function fromDataToEntity({ id, description, questionId, isCorrect }) {
   });
 }
 
-function fromDbToEntity(modelInstance) {
-  return new Answer(modelInstance.toJSON());
+function fromDbToEntity(answer) {
+  return new Answer(answer);
 }
 
 module.exports = {
