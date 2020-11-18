@@ -10,7 +10,7 @@ import Minipodium from '../components/MiniPodium';
 const Trivia = (props) => {
   const onGameEnd = props.onGameEnd;
   const { socketUser, socketHost } = props;
-
+  console.log(props.triviaData);
   useEffect(() => {
     if (socketUser) {
       socketUser.on('podium', (podium) => {
