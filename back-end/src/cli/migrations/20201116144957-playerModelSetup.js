@@ -24,6 +24,10 @@ module.exports = {
         type: Sequelize.DataTypes.TEXT,
         allowNull: false,
       },
+      session_id: {
+        type: Sequelize.DataTypes.TEXT,
+        allowNull: false,
+      },
       created_at: {
         type: Sequelize.DataTypes.DATE,
       },

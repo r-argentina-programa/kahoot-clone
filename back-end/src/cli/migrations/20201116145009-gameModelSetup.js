@@ -24,6 +24,10 @@ module.exports = {
         type: Sequelize.DataTypes.TEXT,
         allowNull: false,
       },
+      ongoing: {
+        type: Sequelize.DataTypes.BOOLEAN,
+        allowNull: false,
+      },
       created_at: {
         type: Sequelize.DataTypes.DATE,
       },
