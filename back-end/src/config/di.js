@@ -1,6 +1,7 @@
 const { default: DIContainer, object, get, factory } = require('rsdi');
 const { Sequelize } = require('sequelize');
 const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { KahootController, KahootService, KahootRepository } = require('../module');
 const AnswerModel = require('../model/answerModel');
 const QuestionModel = require('../model/questionModel');
@@ -15,10 +16,12 @@ function configureMainDatabaseAdapter() {
   });
 }
 
-function configureSession() {
+function configureSession(container) {
   const SECONDS_IN_A_WEEK = 604800000;
+  const sequelize = container.get('Sequelize');
 
   const sessionOptions = {
+    store: new SequelizeStore({ db: sequelize }),
     secret: process.env.SESSION_SECRET,
     cookie: { maxAge: SECONDS_IN_A_WEEK },
   };
