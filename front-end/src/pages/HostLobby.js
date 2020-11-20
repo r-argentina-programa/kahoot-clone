@@ -45,8 +45,8 @@ const HostLobby = (props) => {
 
   return (
     <React.Fragment>
-      <div className="container h-center">
-        <Alert className="pin-host-lobby" variant="dark">
+      <div className="container">
+        <Alert className="pin-host-lobby" variant="dark" style={{ margin: '0' }}>
           The PIN is {pin}
         </Alert>
         <Link to="/host/trivia">
@@ -55,9 +55,7 @@ const HostLobby = (props) => {
           </Button>
         </Link>
       </div>
-      <div>
-        <Players players={players} />
-      </div>
+      <Players players={players} />
     </React.Fragment>
   );
 };
