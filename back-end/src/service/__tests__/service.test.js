@@ -43,7 +43,7 @@ describe('Service module test', () => {
     };
 
     kahootService.startTimer(namespaceMock);
-    expect(namespaceMock.timer).toBe(6);
+    expect(namespaceMock.timer).toBe(20);
     expect(namespaceMock.interval).toEqual(expect.any(Number));
   });
 
@@ -53,7 +53,7 @@ describe('Service module test', () => {
     };
     jest.useFakeTimers();
     kahootService.startTimer(namespaceMock);
-    jest.advanceTimersByTime(6000);
+    jest.advanceTimersByTime(20000);
     expect(namespaceMock.timer).toBe(0);
     expect(clearInterval).toHaveBeenCalledTimes(1);
   });
