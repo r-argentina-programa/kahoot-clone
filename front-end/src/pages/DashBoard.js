@@ -35,20 +35,61 @@ const DashBoard = () => {
 
   return (
     <div>
-      <div>Statistics</div>
+      <h1>Statistics</h1>
+
+      <h3>Most Played Trivias</h3>
+
+      <table style={{ margin: "0 auto" }}>
+        <thead>
+          <tr>
+            <th>Trivia Id</th>
+            <th>Times Played</th>
+          </tr>
+        </thead>
+        <tbody>
+          {mostPlayedTrivias &&
+            mostPlayedTrivias.map((trivia, index) => (
+              <tr key={`index-${index}`}>
+                <td>{trivia.fk_trivia}</td>
+                <td>{trivia.trivias_played}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+
+      <h3>Most Difficult Questions</h3>
+
+      <table style={{ margin: "0 auto" }}>
+        <thead>
+          <tr>
+            <th>Question Id</th>
+            <th>Description</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {mostDifficultQuestions &&
+            mostDifficultQuestions.map((question, index) => (
+              <tr key={`index-${index}`}>
+                <td>{question.fk_question}</td>
+                <td>{question.description}</td>
+                <td>{question.score}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+
       <div>
-        Most Played Trivias: {mostPlayedTrivias ? mostPlayedTrivias : "0"}
+        <strong>Total Players:</strong>{" "}
+        {totalPlayers ? totalPlayers : "No players yet"}
       </div>
       <div>
-        Most Difficult Questions:{" "}
-        {mostDifficultQuestions ? mostDifficultQuestions : "0"}
+        <strong>Average Players Per Trivia:</strong>{" "}
+        {averagePlayersPerTrivia ? averagePlayersPerTrivia : "No players yet"}
       </div>
-      <div>Total Players: {totalPlayers ? totalPlayers : "0"}</div>
       <div>
-        Average Players Per Trivia:{" "}
-        {averagePlayersPerTrivia ? averagePlayersPerTrivia : "0"}
+        <strong>Total Games:</strong> {totalGames ? totalGames : "No games yet"}
       </div>
-      <div>Total Games: {totalGames ? totalGames : "0"}</div>
     </div>
   );
 };
