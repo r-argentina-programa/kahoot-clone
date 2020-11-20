@@ -44,7 +44,7 @@ const HostLobby = (props) => {
   }, [socket, setTriviaData]);
 
   return (
-    <div>
+    <React.Fragment>
       <div className="container">
         <Alert className="pin-host-lobby" variant="dark">
           The PIN is {pin}
@@ -62,7 +62,7 @@ const HostLobby = (props) => {
       <div>
         <Players players={players} />
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

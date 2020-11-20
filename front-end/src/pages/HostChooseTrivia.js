@@ -45,11 +45,7 @@ const HostChooseTrivia = (props) => {
         </Button>
       </Link>
     ));
-    return (
-      <div>
-        <div className="containerTriviaButton">{buttons}</div>
-      </div>
-    );
+    return <div className="containerTriviaButton">{buttons}</div>;
   }
 };
 

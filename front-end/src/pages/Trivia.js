@@ -1,47 +1,51 @@
 import React from 'react';
-import Alert from 'react-bootstrap/Alert';
 import StopGame from '../components/StopGame';
 import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
 import '../styles/Trivia.css';
 import Button from 'react-bootstrap/Button';
 import Minipodium from '../components/MiniPodium';
-
+import Container from 'react-bootstrap/Container';
 const Trivia = (props) => {
   const { socketHost } = props;
 
   return props.triviaData ? (
     <div>
-      <Countdown socket={socketHost} />
+      <Container>
+        <Countdown socket={socketHost} />
+      </Container>
       <br />
-      <Button className="next-question" onClick={() => socketHost.emit('next-question')}>
-        Next
-      </Button>
-      <div className="container">
+
+      <Container className="bg-light question-and-minipodium d-flex flex-nowrap justify-content-around">
         <div className="item1">
           <Questions className="item1" triviaData={props.triviaData} />
         </div>
         <div className="item1">
           <Minipodium socketHost={socketHost} />
         </div>
-      </div>
-      <div className="answers">
-        {props.triviaData.options.map((option, index) => (
-          <Alert
-            key={`button-${index + 1}`}
-            className={`answer${index} answer`}
-            variant={'warning'}
-          >
-            {option.description}
-          </Alert>
-        ))}
-      </div>
+      </Container>
       <br />
-      <StopGame
-        socket={socketHost}
-        setSocketUser={props.setSocketUser}
-        setSocket={props.setSocket}
-      />
+      <h3>Answers</h3>
+      <Container className="answers d-flex flex-wrap">
+        {props.triviaData.options.map((option, index) => (
+          <h3 key={`button-${index}`} className={`answer${index} answer`}>
+            {option.description}
+          </h3>
+        ))}
+      </Container>
+      <br />
+      <br />
+      <Container className="d-flex justify-content-center">
+        <Button className="next-question" onClick={() => socketHost.emit('next-question')}>
+          Next
+        </Button>
+        <StopGame
+          className="m-6"
+          socket={socketHost}
+          setSocketUser={props.setSocketUser}
+          setSocket={props.setSocket}
+        />
+      </Container>
     </div>
   ) : (
     'Loading trivia...'

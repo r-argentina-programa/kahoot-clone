@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 import StopGame from '../components/StopGame';
 import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
 import '../styles/TriviaUser.css';
+import Container from 'react-bootstrap/Container';
 
 const Trivia = (props) => {
   const [isClicked, setIsClicked] = useState('');
@@ -28,10 +29,10 @@ const Trivia = (props) => {
       <Countdown socket={socketUser} />
       <br />
       <Questions triviaData={props.triviaData} />
-      <div className="answers">
+      <Container className="answers d-flex flex-wrap">
         {props.triviaData.options.map((option, index) => (
-          <Alert
-            key={`index-${index + 1}`}
+          <h3
+            key={`index-${index}`}
             className={`answer ${isDisabled} answer${index}`}
             onClick={() => {
               setIsClicked(option.description);
@@ -42,10 +43,9 @@ const Trivia = (props) => {
             variant={isClicked === option.description ? 'success' : 'warning'}
           >
             {option.description}
-          </Alert>
+          </h3>
         ))}
-      </div>
-      <br />
+      </Container>
       <StopGame
         socket={socketHost}
         setSocketUser={props.setSocketUser}

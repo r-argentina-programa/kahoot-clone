@@ -1,8 +1,34 @@
-.container {
-  display: flex;
-  justify-content: space-evenly;
+.answers {
+  background-color: lightgray;
 }
 
-.item1 {
-  margin: 20px;
+.clicked {
+  pointer-events: none;
+}
+.answer {
+  width: 49%;
+  margin: 5px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.answer0 {
+  background-color: red;
+  color: white;
+}
+
+.answer1 {
+  background-color: goldenrod;
+  color: white;
+}
+
+.answer2 {
+  background-color: lightgreen;
+  color: white;
+}
+
+.answer3 {
+  background-color: blue;
+  color: white;
 }

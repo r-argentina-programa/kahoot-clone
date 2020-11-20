@@ -20,11 +20,11 @@ const MiniPodium = (props) => {
         {miniPodium ? (
           miniPodium.map((obj, index) => (
             <p key={`item${index}`}>
-              Question {obj.option} chosen by: {obj.count} players
+              Question {obj.option} was chosen by: {obj.count} players
             </p>
           ))
         ) : (
-          <div>'Loading...'</div>
+          <div>Waiting...</div>
         )}
       </Jumbotron>
     </div>

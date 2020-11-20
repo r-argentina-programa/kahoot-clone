@@ -1,16 +1,43 @@
-.answer {
-  cursor: pointer;
-}
-
-.clicked {
-  pointer-events: none;
-}
-
-.container {
-  display: flex;
-  justify-content: space-evenly;
+.answers {
+  background-color: lightgray;
 }
 
 .item1 {
-  margin: 20px;
+  margin: 10px;
+}
+
+.question-and-minipodium {
+  justify-content: space-between;
+}
+
+.answer {
+  width: 50%;
+  height: auto;
+  cursor: pointer;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.answer0 {
+  background-color: red;
+  color: white;
+  text-align: center;
+}
+
+.answer1 {
+  background-color: goldenrod;
+  color: white;
+  text-align: center;
+}
+
+.answer2 {
+  background-color: lightgreen;
+  color: white;
+  text-align: center;
+}
+
+.answer3 {
+  background-color: blue;
+  color: white;
+  text-align: center;
 }
