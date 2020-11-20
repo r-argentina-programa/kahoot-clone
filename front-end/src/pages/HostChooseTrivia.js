@@ -39,28 +39,13 @@ const HostChooseTrivia = (props) => {
           key={i + 1}
           onClick={() => props.onClickTriviaButton(trivia.id)}
           className={`triviaButton triviaButton${i}`}
-          variant="dark"
+          variant="primary"
         >
           {trivia.name}
         </Button>
       </Link>
     ));
-    return (
-      <div>
-        <div>
-          <div className="containerTriviaButton">{buttons}</div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <Link to="/host/lobby">
-            <Button className="triviaButton" variant="dark">
-              To the lobby (for development purposes)
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
+    return <div className="containerTriviaButton">{buttons}</div>;
   }
 };
 

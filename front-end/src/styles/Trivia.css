@@ -1,16 +1,46 @@
-.answer {
-  cursor: pointer;
-}
-
-.clicked {
-  pointer-events: none;
-}
-
-.container {
-  display: flex;
-  justify-content: space-evenly;
+.answers {
+  background-color: lightgray;
 }
 
 .item1 {
-  margin: 20px;
+  margin: 10px;
+}
+
+.question-and-minipodium {
+  justify-content: space-between;
+}
+
+.answer-trivia {
+  width: 50%;
+  height: auto;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.answer-trivia0 {
+  background-color: red;
+  color: white;
+  text-align: center;
+  pointer-events: none;
+}
+
+.answer-trivia1 {
+  background-color: goldenrod;
+  color: white;
+  text-align: center;
+  pointer-events: none;
+}
+
+.answer-trivia2 {
+  background-color: lightgreen;
+  color: white;
+  text-align: center;
+  pointer-events: none;
+}
+
+.answer-trivia3 {
+  background-color: blue;
+  color: white;
+  text-align: center;
+  pointer-events: none;
 }

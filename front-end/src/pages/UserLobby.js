@@ -39,7 +39,7 @@ const UserLobby = (props) => {
   }, [history, props, setSocketUser, pin, socketUser, BASE_URL, playerName]);
   return (
     <div>
-      <div className="container">
+      <div className="container h-center v-center">
         <Alert className="lobby-pin" variant="primary">
           The PIN of the room is {pin}
         </Alert>

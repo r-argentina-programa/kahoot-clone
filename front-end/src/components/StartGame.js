@@ -4,13 +4,11 @@ import { Link } from 'react-router-dom';
 
 const StartGame = (props) => {
   return (
-    <div>
-      <Link to="/Trivia">
-        <Button className="startGame" onClick={() => props.socket.emit('new game')}>
-          Start Game
-        </Button>
-      </Link>
-    </div>
+    <Link to="/Trivia">
+      <Button className="startGame" onClick={() => props.socket.emit('new game')}>
+        Start Game
+      </Button>
+    </Link>
   );
 };
 
