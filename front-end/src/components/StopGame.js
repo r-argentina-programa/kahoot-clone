@@ -9,9 +9,15 @@ const StopGame = (props) => {
         className="stopGame"
         variant="danger"
         onClick={() => {
-          props.socket.disconnect();
-          props.setSocketUser(null);
-          props.setSocket(null);
+          if (props.socket) {
+            props.socket.disconnect();
+            props.setSocket(null);
+          }
+
+          if (props.socketUser) {
+            props.socketUser.disconnect();
+            props.setSocketUser(null);
+          }
         }}
       >
         Go back to the Lobby

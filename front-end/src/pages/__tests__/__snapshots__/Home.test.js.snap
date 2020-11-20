@@ -28,5 +28,17 @@ exports[`renders correctly 1`] = `
       I want to join a Trivia
     </button>
   </a>
+  <a
+    href="/admin/stats"
+    onClick={[Function]}
+  >
+    <button
+      className="join-user btn btn-primary"
+      disabled={false}
+      type="button"
+    >
+      Statistics
+    </button>
+  </a>
 </div>
 `;

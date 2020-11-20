@@ -17,6 +17,7 @@ const Podium = (props) => {
       <br />
       <StopGame
         socket={props.socket}
+        socketUser={props.socketUser}
         setSocketUser={props.setSocketUser}
         setSocket={props.setSocket}
       />
