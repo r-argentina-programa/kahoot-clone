@@ -21,26 +21,31 @@
   background-color: red;
   color: white;
   text-align: center;
-  pointer-events: none;
 }
 
 .answer-trivia1 {
   background-color: goldenrod;
   color: white;
   text-align: center;
-  pointer-events: none;
 }
 
 .answer-trivia2 {
   background-color: lightgreen;
   color: white;
   text-align: center;
-  pointer-events: none;
 }
 
 .answer-trivia3 {
   background-color: blue;
   color: white;
   text-align: center;
+}
+
+.selected {
+  background: yellow;
+  color: black;
+}
+
+.clicked {
   pointer-events: none;
 }

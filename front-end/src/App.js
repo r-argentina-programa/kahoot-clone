@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
-import Home from './pages/Home';
-import Podium from './pages/Podium';
-import HostHome from './pages/HostHome';
-import HostChooseTrivia from './pages/HostChooseTrivia';
-import HostLobby from './pages/HostLobby';
-import UserHome from './pages/UserHome';
-import UserLobby from './pages/UserLobby';
-import Trivia from './pages/Trivia';
-import TriviaUser from './pages/TriviaUser';
-import DashBoard from './pages/DashBoard';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import React, { useState } from "react";
+import { Switch, Route, useHistory } from "react-router-dom";
+import Home from "./pages/Home";
+import Podium from "./pages/Podium";
+import HostHome from "./pages/HostHome";
+import HostChooseTrivia from "./pages/HostChooseTrivia";
+import HostLobby from "./pages/HostLobby";
+import UserHome from "./pages/UserHome";
+import UserLobby from "./pages/UserLobby";
+import Trivia from "./pages/Trivia";
+import TriviaUser from "./pages/TriviaUser";
+import DashBoard from "./pages/DashBoard";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 let BASE_URL;
 
-if (process.env.NODE_ENV === 'production') {
-  BASE_URL = 'inmental-kahoot-clone.herokuapp.com';
-} else if (process.env.NODE_ENV === 'development') {
-  BASE_URL = 'http://localhost:5000';
+if (process.env.NODE_ENV === "production") {
+  BASE_URL = "inmental-kahoot-clone.herokuapp.com";
+} else if (process.env.NODE_ENV === "development") {
+  BASE_URL = "http://localhost:5000";
 }
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
 
   const onGameEnd = (result) => {
     setPodium(result);
-    history.push('/podium');
+    history.push("/podium");
   };
 
   return (
@@ -43,7 +43,8 @@ function App() {
         </Route>
         <Route path="/podium">
           <Podium
-            socket={socketUser}
+            socket={socket}
+            socketUser={socketUser}
             setSocketUser={setSocketUser}
             setSocket={setSocket}
             ranking={podium}
@@ -53,7 +54,9 @@ function App() {
           <HostHome />
         </Route>
         <Route path="/host/chooseTrivia">
-          <HostChooseTrivia onClickTriviaButton={(selectedTrivia) => setTrivia(selectedTrivia)} />
+          <HostChooseTrivia
+            onClickTriviaButton={(selectedTrivia) => setTrivia(selectedTrivia)}
+          />
         </Route>
         <Route path="/host/lobby">
           <HostLobby

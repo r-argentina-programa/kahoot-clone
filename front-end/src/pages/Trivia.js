@@ -1,13 +1,21 @@
-import React from 'react';
-import StopGame from '../components/StopGame';
-import Questions from '../components/Questions';
-import Countdown from '../components/Countdown';
-import '../styles/Trivia.css';
-import Button from 'react-bootstrap/Button';
-import Minipodium from '../components/MiniPodium';
-import Container from 'react-bootstrap/Container';
+import React, { useEffect } from "react";
+import StopGame from "../components/StopGame";
+import Questions from "../components/Questions";
+import Countdown from "../components/Countdown";
+import "../styles/Trivia.css";
+import Button from "react-bootstrap/Button";
+import Minipodium from "../components/MiniPodium";
+import Container from "react-bootstrap/Container";
 const Trivia = (props) => {
-  const { socketHost } = props;
+  const { socketHost, onGameEnd } = props;
+
+  useEffect(() => {
+    if (socketHost) {
+      socketHost.on("podium", (podium) => {
+        onGameEnd(podium);
+      });
+    }
+  }, [socketHost, onGameEnd]);
 
   return props.triviaData ? (
     <div>
@@ -28,7 +36,10 @@ const Trivia = (props) => {
       <h3>Answers</h3>
       <Container className="answers d-flex flex-wrap">
         {props.triviaData.options.map((option, index) => (
-          <h3 key={`button-${index}`} className={`answer-trivia${index} answer-trivia`}>
+          <h3
+            key={`button-${index}`}
+            className={`answer-trivia${index} answer-trivia`}
+          >
             {option.description}
           </h3>
         ))}
@@ -36,7 +47,10 @@ const Trivia = (props) => {
       <br />
       <br />
       <Container className="d-flex h-center">
-        <Button className="next-question" onClick={() => socketHost.emit('next-question')}>
+        <Button
+          className="next-question"
+          onClick={() => socketHost.emit("next-question")}
+        >
           Next
         </Button>
         <StopGame
@@ -48,7 +62,7 @@ const Trivia = (props) => {
       </Container>
     </div>
   ) : (
-    'Loading trivia...'
+    "Loading trivia..."
   );
 };
 
