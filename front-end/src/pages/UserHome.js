@@ -17,18 +17,19 @@ const UserHome = () => {
   };
   return (
     <React.Fragment>
-      <div className="container">
+      <div className="container h-center">
         <input
+          variant="primary"
           type="text"
           placeholder="Paste your PIN here"
-          className="input-pin"
+          className="input-pin bg-light"
           onChange={handlePINChange}
           name="pin"
         ></input>
         <input
           type="text"
           placeholder="Select your playerName"
-          className="input-nick"
+          className="input-nick bg-light"
           onChange={handlePlayerNameChange}
           name="playerName"
         ></input>

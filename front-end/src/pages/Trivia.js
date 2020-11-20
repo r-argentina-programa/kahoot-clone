@@ -28,14 +28,14 @@ const Trivia = (props) => {
       <h3>Answers</h3>
       <Container className="answers d-flex flex-wrap">
         {props.triviaData.options.map((option, index) => (
-          <h3 key={`button-${index}`} className={`answer${index} answer`}>
+          <h3 key={`button-${index}`} className={`answer-trivia${index} answer-trivia`}>
             {option.description}
           </h3>
         ))}
       </Container>
       <br />
       <br />
-      <Container className="d-flex justify-content-center">
+      <Container className="d-flex h-center">
         <Button className="next-question" onClick={() => socketHost.emit('next-question')}>
           Next
         </Button>

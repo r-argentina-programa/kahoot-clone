@@ -10,34 +10,37 @@
   justify-content: space-between;
 }
 
-.answer {
+.answer-trivia {
   width: 50%;
   height: auto;
   cursor: pointer;
   border-radius: 10px;
-  pointer-events: none;
 }
 
-.answer0 {
+.answer-trivia0 {
   background-color: red;
   color: white;
   text-align: center;
+  pointer-events: none;
 }
 
-.answer1 {
+.answer-trivia1 {
   background-color: goldenrod;
   color: white;
   text-align: center;
+  pointer-events: none;
 }
 
-.answer2 {
+.answer-trivia2 {
   background-color: lightgreen;
   color: white;
   text-align: center;
+  pointer-events: none;
 }
 
-.answer3 {
+.answer-trivia3 {
   background-color: blue;
   color: white;
   text-align: center;
+  pointer-events: none;
 }

@@ -5,7 +5,7 @@ import '../styles/Home.css';
 import { Link } from 'react-router-dom';
 const Home = () => {
   return (
-    <div className="container">
+    <div className="container h-center">
       <Link to="/host">
         <Button className="join-host" variant="primary">
           I want to host a Trivia

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
 import StopGame from '../components/StopGame';
 import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
@@ -39,6 +38,7 @@ const Trivia = (props) => {
               setIsDisabled('clicked');
               socketUser.emit('answer', option.id);
               socketUser.emit('show-mini-podium');
+              console.log('asd');
             }}
             variant={isClicked === option.description ? 'success' : 'warning'}
           >

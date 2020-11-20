@@ -6,7 +6,7 @@ import '../styles/HostHome.css';
 
 const HostHome = () => {
   return (
-    <Container className="container">
+    <Container className="container centered">
       <Link to="/host/chooseTrivia">
         <Button className="to-trivia-select" variant="info">
           Create/start trivia
