@@ -53,7 +53,7 @@ module.exports = class KahootService {
   }
 
   startTimer(namespace) {
-    namespace.timer = 6;
+    namespace.timer = 20;
     namespace.interval = setInterval(() => {
       namespace.timer--;
       namespace.emit('timer', namespace.timer);
