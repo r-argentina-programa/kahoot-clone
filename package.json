@@ -16,7 +16,8 @@
     "cyopen": "cd front-end && npm run cyopen",
     "test:back:dev": "cd back-end && npm run test:dev",
     "test:back": "cd back-end && npm run test",
-    "test:front": "cd front-end && npm run test a"
+    "test:front": "cd front-end && npm run test a",
+    "schema:sync": "cd back-end/src/cli && node init.db.js"
   },
   "repository": {
     "type": "git",

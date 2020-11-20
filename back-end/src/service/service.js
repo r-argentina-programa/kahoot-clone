@@ -63,15 +63,16 @@ module.exports = class KahootService {
     }, 1000);
   }
 
-  sendQuestion(namespace) {
+  async sendQuestion(namespace) {
     const { trivia, counter, players } = namespace;
 
     if (counter === trivia.questions.length) {
       namespace.emit('podium', this.calculatePodium(players));
+      await this.kahootRepository.setGameToEnded(namespace.gameId);
     } else {
       this.startTimer(namespace);
       const questionDescription = trivia.questions[counter].description;
-      const questionOptions = trivia.questions[counter].Answers.map((answer) => {
+      const questionOptions = trivia.questions[counter].answers.map((answer) => {
         return { id: answer.id, description: answer.description };
       });
       this.configureMiniPodium(namespace, questionOptions);
@@ -99,20 +100,25 @@ module.exports = class KahootService {
     callback(namespace);
   }
 
-  setScore(socket, answerId) {
+  async setScore(socket, answerId) {
     const { nsp: namespace } = socket;
     const { trivia, counter } = namespace;
 
     if (!socket.answered) {
       socket.answered = true;
-      const playerAnswer = trivia.questions[counter].Answers.filter(
+      const playerAnswer = trivia.questions[counter].answers.find(
         (answer) => answer.id === answerId
-      )[0];
-      namespace.miniPodium.filter((option) => option.option === playerAnswer.id)[0].count++;
-
-      if (playerAnswer.is_correct) {
+      );
+      namespace.miniPodium.find((option) => option.option === playerAnswer.id).count++;
+      if (playerAnswer.isCorrect) {
         socket.score += namespace.timer;
       }
+
+      await this.kahootRepository.savePlayerAnswer({
+        playerId: socket.playerId,
+        answerId: playerAnswer.id,
+        score: socket.score,
+      });
     }
   }
 
@@ -122,7 +128,6 @@ module.exports = class KahootService {
 
   getSocketsInRoom(namespace) {
     const socketsConnected = Object.values(namespace.clients().connected);
-
     const room = namespace.adapter.rooms.gameroom;
 
     if (!room) {
@@ -130,7 +135,39 @@ module.exports = class KahootService {
     }
 
     const socketsInRoomIds = Object.keys(room.sockets);
-
     return socketsConnected.filter((socket) => socketsInRoomIds.includes(socket.id));
+  }
+
+  async saveGame(triviaId, namespaceName, ongoing) {
+    const game = { triviaId, namespaceName, ongoing };
+    const savedGame = await this.kahootRepository.saveGame(game);
+    return savedGame;
+  }
+
+  async savePlayers(socketList, gameId, sessionId) {
+    socketList.forEach(async (socket) => {
+      const savedPlayer = await this.kahootRepository.savePlayer({
+        gameId,
+        playerName: socket.playerName,
+        sessionId,
+      });
+      socket.playerId = savedPlayer.id;
+    });
+  }
+
+  async getStats() {
+    const mostPlayedTrivias = await this.kahootRepository.getMostPlayedTrivias();
+    const mostDifficultQuestions = await this.kahootRepository.getmostDifficultQuestions();
+    const totalPlayers = await this.kahootRepository.getTotalPlayers();
+    const totalTriviaNumber = await this.kahootRepository.getTotalTriviaNumber();
+    const averagePlayersPerTrivia = totalPlayers / totalTriviaNumber;
+    const totalGames = await this.kahootRepository.getTotalGames();
+    return {
+      mostPlayedTrivias,
+      mostDifficultQuestions,
+      totalPlayers,
+      averagePlayersPerTrivia,
+      totalGames,
+    };
   }
 };

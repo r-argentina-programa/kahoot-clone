@@ -1,5 +1,8 @@
+const path = require('path');
 const { default: DIContainer, object, get, factory } = require('rsdi');
 const { Sequelize } = require('sequelize');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { KahootController, KahootService, KahootRepository } = require('../module');
 const AnswerModel = require('../model/answerModel');
 const QuestionModel = require('../model/questionModel');
@@ -11,7 +14,25 @@ const PlayerAnswerModel = require('../model/playerAnswerModel');
 function configureMainDatabaseAdapter() {
   return new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   });
+}
+
+function configureSession(container) {
+  const SECONDS_IN_A_WEEK = 604800000;
+  const sequelize = container.get('Sequelize');
+
+  const sessionOptions = {
+    store: new SequelizeStore({ db: sequelize }),
+    secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: SECONDS_IN_A_WEEK },
+  };
+  return session(sessionOptions);
 }
 
 /**
@@ -20,6 +41,8 @@ function configureMainDatabaseAdapter() {
 function addCommonDefinitions(container) {
   container.addDefinitions({
     Sequelize: factory(configureMainDatabaseAdapter),
+    Session: factory(configureSession),
+    path,
   });
 }
 
@@ -81,12 +104,15 @@ function configurePlayerAnswerModel(container) {
  */
 function addKahootDefinitions(container) {
   container.addDefinitions({
-    KahootController: object(KahootController).construct(get('KahootService')),
+    KahootController: object(KahootController).construct(get('KahootService'), get('path')),
     KahootService: object(KahootService).construct(get('KahootRepository')),
     KahootRepository: object(KahootRepository).construct(
       get('AnswerModel'),
       get('QuestionModel'),
-      get('TriviaModel')
+      get('TriviaModel'),
+      get('GameModel'),
+      get('PlayerModel'),
+      get('PlayerAnswerModel')
     ),
     AnswerModel: factory(configureAnswerModel),
     QuestionModel: factory(configureQuestionModel),

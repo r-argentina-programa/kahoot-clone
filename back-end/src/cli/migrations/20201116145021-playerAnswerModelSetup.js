@@ -33,6 +33,12 @@ module.exports = {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: false,
       },
+      created_at: {
+        type: Sequelize.DataTypes.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DataTypes.DATE,
+      },
     });
   },
 
