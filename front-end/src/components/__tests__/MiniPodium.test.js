@@ -7,7 +7,7 @@ import { act } from 'react-dom/test-utils';
 describe('<MiniPodium />', () => {
   it('Renders loading text correctly', () => {
     render(<MiniPodium socketHost={null} />);
-    expect(screen.queryByText(/Loading/)).toBeInTheDocument();
+    expect(screen.queryByText(/Waiting/)).toBeInTheDocument();
   });
 
   it('Renders data correctly', () => {

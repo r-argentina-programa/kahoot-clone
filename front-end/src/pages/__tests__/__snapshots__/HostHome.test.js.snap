@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<div>
+<div
+  className="container centered container"
+>
   <a
     href="/host/chooseTrivia"
     onClick={[Function]}
@@ -14,5 +16,6 @@ exports[`renders correctly 1`] = `
       Create/start trivia
     </button>
   </a>
+   
 </div>
 `;
