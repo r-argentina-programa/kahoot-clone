@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
 const Countdown = (props) => {
-  const [counter, setCounter] = useState(5);
+  const [counter, setCounter] = useState(20);
   const { socket } = props;
 
   useEffect(() => {
