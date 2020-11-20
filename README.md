@@ -1,5 +1,7 @@
 # kahoot-clone
 
+[![Codeship Status for r-argentina-programa/kahoot-clone](https://app.codeship.com/projects/9e17c857-673d-4351-bf94-bcc5eddc00cc/status?branch=master)](https://app.codeship.com/projects/415564)
+
 Kahoot clone using React, Node.js and Socket.io.
 
 ## Installation
