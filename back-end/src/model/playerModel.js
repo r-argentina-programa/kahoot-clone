@@ -30,6 +30,10 @@ module.exports = class PlayerModel extends Model {
           type: DataTypes.TEXT,
           allowNull: false,
         },
+        session_id: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
       },
       {
         sequelize: sequelizeInstance,

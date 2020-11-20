@@ -3,6 +3,15 @@ const KahootService = require('../service');
 const kahootRepositoryMock = {
   getAllTrivias: jest.fn(),
   getTriviaById: jest.fn(),
+  saveGame: jest.fn(),
+  savePlayer: jest.fn(),
+  savePlayerAnswer: jest.fn(),
+  setGameToEnded: jest.fn(),
+  getMostPlayedTrivias: jest.fn(),
+  getTotalTriviaNumber: jest.fn(),
+  getmostDifficultQuestions: jest.fn(),
+  getTotalPlayers: jest.fn(),
+  getTotalGames: jest.fn(),
 };
 
 const kahootService = new KahootService(kahootRepositoryMock);
@@ -148,7 +157,7 @@ describe('Service module test', () => {
       emit: jest.fn(),
       interval: 7000,
       players: [],
-      trivia: { questions: [{ Answers: [{ description: 'descriptionText' }] }] },
+      trivia: { questions: [{ answers: [{ description: 'descriptionText' }] }] },
     };
     const questionResponseMock = {
       questions: undefined,
@@ -208,7 +217,7 @@ describe('Service module test', () => {
       answered: false,
       score: 0,
       nsp: {
-        trivia: { questions: [{ Answers: [{ id: 1, is_correct: true }] }] },
+        trivia: { questions: [{ answers: [{ id: 1, isCorrect: true }] }] },
         counter: 0,
         miniPodium: [{ option: 1, count: 0 }],
         timer: 5,
@@ -217,6 +226,23 @@ describe('Service module test', () => {
     kahootService.setScore(socketMock, 1);
     expect(socketMock.nsp.miniPodium[0].count).toBe(1);
     expect(socketMock.score).toBe(5);
+    expect(socketMock.answered).toBe(true);
+  });
+
+  test("setScore doesn't sets the score if the player has not answered yet and sends the incorrect option", () => {
+    const socketMock = {
+      answered: false,
+      score: 0,
+      nsp: {
+        trivia: { questions: [{ answers: [{ id: 1, isCorrect: false }] }] },
+        counter: 0,
+        miniPodium: [{ option: 1, count: 0 }],
+        timer: 5,
+      },
+    };
+    kahootService.setScore(socketMock, 1);
+    expect(socketMock.nsp.miniPodium[0].count).toBe(1);
+    expect(socketMock.score).toBe(0);
     expect(socketMock.answered).toBe(true);
   });
 
@@ -269,5 +295,61 @@ describe('Service module test', () => {
 
     kahootService.sendQuestion(namespaceMock);
     expect(namespaceMock.emit).toHaveBeenCalledWith('podium', podiumMock);
+  });
+
+  test('saveGame saves the game', async () => {
+    const triviaId = 1;
+    const namespaceName = 'someName';
+    const ongoing = true;
+
+    await kahootService.saveGame(triviaId, namespaceName, ongoing);
+
+    expect(kahootRepositoryMock.saveGame).toHaveBeenCalledTimes(1);
+    expect(kahootRepositoryMock.saveGame).toHaveBeenCalledWith({
+      triviaId,
+      namespaceName,
+      ongoing,
+    });
+  });
+
+  test('savePlayers saves the player', async () => {
+    const socketListMock = [{ playerName: 'hernan' }];
+    const gameIdMock = 1;
+    const sessionIdMock = '';
+
+    kahootRepositoryMock.savePlayer.mockReturnValueOnce({ id: 1 });
+
+    await kahootService.savePlayers(socketListMock, gameIdMock, sessionIdMock);
+
+    expect(kahootRepositoryMock.savePlayer).toHaveBeenCalledTimes(1);
+    expect(kahootRepositoryMock.savePlayer).toHaveBeenCalledWith({
+      gameId: gameIdMock,
+      playerName: socketListMock[0].playerName,
+      sessionId: sessionIdMock,
+    });
+    expect(socketListMock[0].playerId).toBe(1);
+  });
+
+  test('getStats sends the statistics', async () => {
+    const totalPlayersMock = 6;
+    const getTotalTriviaNumberMock = 3;
+
+    kahootRepositoryMock.getTotalPlayers.mockResolvedValue(totalPlayersMock);
+    kahootRepositoryMock.getTotalTriviaNumber.mockResolvedValue(getTotalTriviaNumberMock);
+
+    const stats = await kahootService.getStats();
+
+    expect(kahootRepositoryMock.getMostPlayedTrivias).toHaveBeenCalledTimes(1);
+    expect(kahootRepositoryMock.getmostDifficultQuestions).toHaveBeenCalledTimes(1);
+    expect(kahootRepositoryMock.getTotalPlayers).toHaveBeenCalledTimes(1);
+    expect(kahootRepositoryMock.getTotalTriviaNumber).toHaveBeenCalledTimes(1);
+    expect(kahootRepositoryMock.getTotalGames).toHaveBeenCalledTimes(1);
+    expect(stats).toEqual({
+      mostPlayedTrivias: undefined,
+      mostDifficultQuestions: undefined,
+      totalPlayers: 6,
+      averagePlayersPerTrivia: 2,
+      totalGames: undefined,
+    });
   });
 });

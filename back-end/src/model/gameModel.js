@@ -30,6 +30,10 @@ module.exports = class GameModel extends Model {
           type: DataTypes.TEXT,
           allowNull: false,
         },
+        ongoing: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+        },
       },
       {
         sequelize: sequelizeInstance,

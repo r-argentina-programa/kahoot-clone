@@ -10,9 +10,15 @@ const kahootServiceMock = {
   showScoreboard: jest.fn(),
   updatePlayerList: jest.fn(),
   getAllSockets: jest.fn(),
+  saveGame: jest.fn(),
+  savePlayers: jest.fn(),
+  getStats: jest.fn(),
+};
+const pathMock = {
+  join: jest.fn(),
 };
 
-const kahootController = new KahootController(kahootServiceMock);
+const kahootController = new KahootController(kahootServiceMock, pathMock);
 
 describe('Tests KahootController', () => {
   afterEach(() => {
@@ -29,13 +35,15 @@ describe('Tests KahootController', () => {
 
     kahootController.configureRoutes(appMock, ioMock);
 
-    expect(appMock.get).toHaveBeenCalledTimes(2);
+    expect(appMock.get).toHaveBeenCalledTimes(4);
     expect(appMock.get).toHaveBeenNthCalledWith(1, '/trivialist', expect.any(Function));
     expect(appMock.get).toHaveBeenNthCalledWith(
       2,
       '/trivia/:pin/:selectedTrivia',
       expect.any(Function)
     );
+    expect(appMock.get).toHaveBeenNthCalledWith(3, '/stats', expect.any(Function));
+    expect(appMock.get).toHaveBeenNthCalledWith(4, '/*', expect.any(Function));
   });
 
   test('/trivialist route returns a trivia list with a game pin', async () => {
@@ -63,6 +71,53 @@ describe('Tests KahootController', () => {
     expect(resMock.json).toHaveBeenCalledWith({ triviaList: trivias, pin: expect.any(Number) });
   });
 
+  test('/stats route returns a specific object', async () => {
+    const appMock = {
+      get: jest.fn(),
+    };
+    const ioMock = {};
+    const reqMock = {};
+    const resMock = {
+      json: jest.fn(),
+    };
+
+    kahootController.configureRoutes(appMock, ioMock);
+
+    const routeCallback = appMock.get.mock.calls[2][1];
+
+    kahootServiceMock.getStats.mockReturnValueOnce({ stat1: 'stat1', stat2: 'stat2' });
+
+    await routeCallback(reqMock, resMock);
+
+    expect(kahootServiceMock.getStats).toHaveBeenCalledTimes(1);
+    expect(resMock.json).toHaveBeenCalledWith({ stat1: 'stat1', stat2: 'stat2' });
+  });
+
+  test('/* route sends a specific file', async () => {
+    const appMock = {
+      get: jest.fn(),
+    };
+    const ioMock = {};
+    const reqMock = {};
+    const resMock = {
+      sendFile: jest.fn(),
+    };
+
+    kahootController.configureRoutes(appMock, ioMock);
+
+    const routeCallback = appMock.get.mock.calls[3][1];
+
+    await routeCallback(reqMock, resMock);
+
+    expect(resMock.sendFile).toHaveBeenCalledTimes(1);
+    expect(kahootController.path.join).toHaveBeenCalledTimes(1);
+    expect(kahootController.path.join).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.any(String),
+      expect.any(String)
+    );
+  });
+
   test('setNamespaceConnection sets the connection to the namespace', () => {
     const namespaceMock = {
       on: jest.fn(),
@@ -75,6 +130,7 @@ describe('Tests KahootController', () => {
 
   test('setSocketListeners configures the socket events', () => {
     const socketMock = {
+      namespace: {},
       on: jest.fn(),
     };
     kahootController.setSocketListeners(socketMock);
@@ -104,11 +160,11 @@ describe('Tests KahootController', () => {
     kahootServiceMock.getAllSockets = () => {
       return [{ on: jest.fn() }];
     };
-    const socketMock = { nsp: {} };
+    const socketMock = { nsp: {}, request: { session: { save: jest.fn() } } };
 
     kahootController.namespaceConnectionCallback(socketMock);
     expect(socketMock.host).toBe(true);
-
+    expect(socketMock.request.session.save).toHaveBeenCalledTimes(1);
     kahootController.setSocketListeners = preMockSetSockets;
   });
 
@@ -120,12 +176,15 @@ describe('Tests KahootController', () => {
     };
     const socketMock = {
       join: jest.fn(),
+      request: { session: { save: jest.fn() } },
     };
 
     kahootController.namespaceConnectionCallback(socketMock);
     expect(socketMock.join).toHaveBeenCalledWith('gameroom');
     expect(kahootController.setSocketListeners).toHaveBeenCalledTimes(1);
+    expect(kahootServiceMock.updatePlayerList).toHaveBeenCalledTimes(1);
     expect(kahootController.configurePlayerParams).toHaveBeenCalledTimes(1);
+    expect(socketMock.request.session.save).toHaveBeenCalledTimes(1);
 
     kahootController.setSocketListeners = preMockSetSockets;
   });
@@ -142,26 +201,41 @@ describe('Tests KahootController', () => {
     expect(namespaceMock.miniPodium).toEqual([]);
   });
 
-  test('socket event on start-game ', () => {
+  test('socket event on start-game ', async () => {
+    const namespaceMock = { trivia: { id: '1' }, name: 'someName', players: ['hernan'] };
     const socketMock = {
-      nsp: {},
+      nsp: namespaceMock,
       on: jest.fn(),
+      request: {
+        session: {
+          id: 'someSession',
+        },
+      },
     };
-    kahootController.setSocketListeners(socketMock);
-    const startGameCallback = socketMock.on.mock.calls[0][1];
-    startGameCallback();
-    expect(kahootServiceMock.sendQuestion).toHaveBeenCalledWith(socketMock.nsp);
-  });
 
-  test('socket event on start-game ', () => {
-    const socketMock = {
-      nsp: {},
-      on: jest.fn(),
-    };
     kahootController.setSocketListeners(socketMock);
+
     const startGameCallback = socketMock.on.mock.calls[0][1];
-    startGameCallback();
-    expect(kahootServiceMock.sendQuestion).toHaveBeenCalledWith(socketMock.nsp);
+
+    kahootServiceMock.saveGame.mockResolvedValueOnce({ id: '1' });
+
+    await startGameCallback();
+
+    expect(socketMock.on).toHaveBeenNthCalledWith(1, 'start-game', expect.any(Function));
+    expect(kahootServiceMock.saveGame).toHaveBeenCalledTimes(1);
+    expect(kahootServiceMock.saveGame).toHaveBeenCalledWith(
+      namespaceMock.trivia.id,
+      namespaceMock.name,
+      true
+    );
+    expect(kahootServiceMock.savePlayers).toHaveBeenCalledTimes(1);
+    expect(kahootServiceMock.savePlayers).toHaveBeenCalledWith(
+      namespaceMock.players,
+      '1',
+      socketMock.request.session.id
+    );
+    expect(kahootServiceMock.sendQuestion).toHaveBeenCalledTimes(1);
+    expect(kahootServiceMock.sendQuestion).toHaveBeenCalledWith(namespaceMock);
   });
 
   test('socket event on next-question ', () => {

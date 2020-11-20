@@ -1,4 +1,5 @@
 const Trivia = require('../entity/trivia');
+const { fromDbToEntity: fromDbToQuestionEntity } = require('./questionMapper');
 
 function fromDataToEntity({ id, name, questions }) {
   return new Trivia({
@@ -9,7 +10,13 @@ function fromDataToEntity({ id, name, questions }) {
 }
 
 function fromDbToEntity(modelInstance) {
-  return new Trivia(modelInstance.toJSON());
+  const trivia = modelInstance.toJSON();
+  if (trivia.Questions) {
+    const { id, name, Questions: questions } = trivia;
+    const mappedQuestions = questions.map((question) => fromDbToQuestionEntity(question));
+    return new Trivia({ id, name, mappedQuestions });
+  }
+  return new Trivia(trivia);
 }
 
 module.exports = {
