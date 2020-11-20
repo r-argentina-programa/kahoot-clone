@@ -1,6 +1,6 @@
-import StartGame from '../components/StartGame';
-import Players from '../components/Players';
-import StopGame from '../components/StopGame';
+import StartGame from '../src/components/StartGame';
+import Players from '../src/components/Players';
+import StopGame from '../src/components/StopGame';
 import React from 'react';
 
 const Lobby = (props) => {

@@ -5,6 +5,7 @@ import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
 import '../styles/Trivia.css';
 import Button from 'react-bootstrap/esm/Button';
+import Minipodium from '../components/MiniPodium';
 
 const Trivia = (props) => {
   const onGameEnd = props.onGameEnd;
@@ -21,17 +22,24 @@ const Trivia = (props) => {
 
   return props.triviaData ? (
     <div>
-      <Countdown socket={socketHost}/>
+      <Countdown socket={socketHost} />
       <br />
       <Button className="next-question" onClick={() => socketHost.emit('next-question')}>
-        Next Question
+        Next
       </Button>
-      <Questions triviaData={props.triviaData} />
+      <div className="container">
+        <div className="item1">
+          <Questions className="item1" triviaData={props.triviaData} />
+        </div>
+        <div className="item1">
+          <Minipodium socketHost={socketHost} />
+        </div>
+      </div>
       <div className="answers">
         {props.triviaData.options.map((option, index) => (
           <Alert
             key={`button-${index + 1}`}
-            className={`answer answer${index}`}
+            className={`answer${index} answer`}
             variant={'warning'}
           >
             {option.description}
