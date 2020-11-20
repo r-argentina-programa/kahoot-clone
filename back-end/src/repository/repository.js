@@ -1,5 +1,8 @@
 const { Sequelize, QueryTypes } = require('sequelize');
 const { fromDbToEntity: fromTriviaDbToEntity } = require('../mapper/triviaMapper');
+const { fromDbToEntity: fromGameDbToEntity } = require('../mapper/gameMapper');
+const { fromDbToEntity: fromPlayerDbToEntity } = require('../mapper/playerMapper');
+const { fromDbToEntity: fromPlayerAnswerDbToEntity } = require('../mapper/playerAnswerMapper');
 
 module.exports = class KahootRepository {
   /**
@@ -44,8 +47,7 @@ module.exports = class KahootRepository {
         },
       ],
     });
-    const newTrivia = fromTriviaDbToEntity(triviaData);
-    return newTrivia;
+    return fromTriviaDbToEntity(triviaData);
   }
 
   async saveGame(game) {
@@ -54,7 +56,7 @@ module.exports = class KahootRepository {
       namespace: game.namespaceName,
       ongoing: game.ongoing,
     });
-    return gameData;
+    return fromGameDbToEntity(gameData);
   }
 
   async savePlayer({ gameId, playerName, sessionId }) {
@@ -63,7 +65,7 @@ module.exports = class KahootRepository {
       name: playerName,
       session_id: sessionId,
     });
-    return player;
+    return fromPlayerDbToEntity(player);
   }
 
   async savePlayerAnswer({ playerId, answerId, score }) {
@@ -72,14 +74,14 @@ module.exports = class KahootRepository {
       fk_answer: answerId,
       score,
     });
-    return playerAnswer;
+    return fromPlayerAnswerDbToEntity(playerAnswer);
   }
 
   async setGameToEnded(gameId) {
     const game = await this.GameModel.findByPk(gameId);
     game.ongoing = false;
     const gameEnded = await game.save();
-    return gameEnded;
+    return fromGameDbToEntity(gameEnded);
   }
 
   async getMostPlayedTrivias() {
