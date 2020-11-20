@@ -1,10 +1,11 @@
 const Game = require('../entity/game');
 
-function fromDataToEntity({ id, triviaId, namespace }) {
+function fromDataToEntity(id, triviaId, namespace, ongoing) {
   return new Game({
     id,
     triviaId,
     namespace,
+    ongoing,
   });
 }
 
