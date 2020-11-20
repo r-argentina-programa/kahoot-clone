@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 const DashBoard = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -91,6 +93,10 @@ const DashBoard = () => {
             <strong>Total Games:</strong>{" "}
             {totalGames ? totalGames : "No games yet"}
           </div>
+          <br />
+          <Link to="/">
+            <Button>Back</Button>
+          </Link>
         </div>
       ) : (
         "Loading..."
