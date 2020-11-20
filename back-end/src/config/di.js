@@ -1,3 +1,4 @@
+const path = require('path');
 const { default: DIContainer, object, get, factory } = require('rsdi');
 const { Sequelize } = require('sequelize');
 const session = require('express-session');
@@ -35,6 +36,7 @@ function addCommonDefinitions(container) {
   container.addDefinitions({
     Sequelize: factory(configureMainDatabaseAdapter),
     Session: factory(configureSession),
+    path,
   });
 }
 
@@ -96,7 +98,7 @@ function configurePlayerAnswerModel(container) {
  */
 function addKahootDefinitions(container) {
   container.addDefinitions({
-    KahootController: object(KahootController).construct(get('KahootService')),
+    KahootController: object(KahootController).construct(get('KahootService'), get('path')),
     KahootService: object(KahootService).construct(get('KahootRepository')),
     KahootRepository: object(KahootRepository).construct(
       get('AnswerModel'),
