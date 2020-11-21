@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
+
+import "startbootstrap-freelancer/dist/css/styles.css";
+
+import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
-import Podium from "./pages/Podium";
 import HostHome from "./pages/HostHome";
 import HostChooseTrivia from "./pages/HostChooseTrivia";
 import HostLobby from "./pages/HostLobby";
-import UserHome from "./pages/UserHome";
-import UserLobby from "./pages/UserLobby";
+import Podium from "./pages/Podium";
 import Trivia from "./pages/Trivia";
 import TriviaUser from "./pages/TriviaUser";
-import DashBoard from "./pages/DashBoard";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import UserHome from "./pages/UserHome";
+import UserLobby from "./pages/UserLobby";
 
 let BASE_URL;
 
