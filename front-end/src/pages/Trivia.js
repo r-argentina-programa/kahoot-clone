@@ -5,7 +5,7 @@ import Questions from '../components/Questions';
 import Countdown from '../components/Countdown';
 import '../styles/Trivia.css';
 import Minipodium from '../components/MiniPodium';
-import Container from 'react-bootstrap/Container';
+
 const Trivia = (props) => {
   const { socketHost, onGameEnd } = props;
 
