@@ -11,14 +11,14 @@ describe('<UserHome />', () => {
       </BrowserRouter>
     );
 
-    const pin = screen.getByPlaceholderText('Paste your PIN here');
-    const nick = screen.getByPlaceholderText('Select your playerName');
+    const pin = screen.getByPlaceholderText('Paste the PIN that the host gave you');
+    const nick = screen.getByPlaceholderText('Please select your nick');
 
     fireEvent.change(pin, { target: { value: '5' } });
     fireEvent.change(nick, { target: { value: 'asdqwe' } });
 
-    screen.getByText('Send Data').click();
-    
+    screen.getByText('Go to the waiting room').click();
+
     expect(pin.value).toEqual('5');
     expect(nick.value).toEqual('asdqwe');
   });

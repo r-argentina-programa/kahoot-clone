@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Jumbotron from 'react-bootstrap/Jumbotron';
+import Alert from 'react-bootstrap/Alert';
 
 const MiniPodium = (props) => {
   const [miniPodium, setMiniPodium] = useState(null);
@@ -16,17 +16,17 @@ const MiniPodium = (props) => {
 
   return (
     <div>
-      <Jumbotron className="counter" variant="danger">
+      <Alert className="counter bg-secondary text-white-50 text-center">
         {miniPodium ? (
           miniPodium.map((obj, index) => (
-            <p key={`item${index}`}>
+            <p className="" key={`item${index}`}>
               Question {obj.option} was chosen by: {obj.count} players
             </p>
           ))
         ) : (
           <div>Waiting...</div>
         )}
-      </Jumbotron>
+      </Alert>
     </div>
   );
 };

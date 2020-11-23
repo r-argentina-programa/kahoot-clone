@@ -7,8 +7,8 @@
     "url": "https://github.com/r-argentina-programa/kahoot-clone"
   },
   "scripts": {
-    "migrations": "sequelize-cli db:migrate --config=./src/cli/config.js --migrations-path=./src/cli/migrations --env=production",
-    "seeds": "sequelize-cli db:seed:all --config=./src/cli/config.js --seeders-path=./src/cli/seeders --env=production",
+    "migrations": "sequelize-cli db:migrate --config=./src/cli/config.js --migrations-path=./src/cli/migrations --env=development",
+    "seeds": "sequelize-cli db:seed:all --config=./src/cli/config.js --seeders-path=./src/cli/seeders --env=development",
     "test": "jest --coverage",
     "test:dev": "jest --watch"
   },

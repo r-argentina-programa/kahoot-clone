@@ -1,44 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<div
-  className="container h-center"
+<body
+  className="bg-primary"
 >
-  <a
-    href="/host"
-    onClick={[Function]}
+  <header
+    className="masthead bg-primary text-white text-center"
   >
-    <button
-      className="join-host btn btn-primary"
-      disabled={false}
-      type="button"
+    <div
+      className="container d-flex align-items-center flex-column"
     >
-      I want to host a Trivia
-    </button>
-  </a>
-  <a
-    href="/user"
-    onClick={[Function]}
-  >
-    <button
-      className="join-user btn btn-primary"
-      disabled={false}
-      type="button"
-    >
-      I want to join a Trivia
-    </button>
-  </a>
-  <a
-    href="/admin/stats"
-    onClick={[Function]}
-  >
-    <button
-      className="join-user btn btn-primary"
-      disabled={false}
-      type="button"
-    >
-      Statistics
-    </button>
-  </a>
-</div>
+      <h1
+        className="masthead-heading text-uppercase mb-0"
+      >
+        Kahoot! Clone
+      </h1>
+      <div
+        className="divider-custom divider-light"
+      >
+        <div
+          className="divider-custom-line"
+        />
+        <div
+          className="divider-custom-icon"
+        >
+          <i
+            className="fas fa-star"
+          />
+        </div>
+        <div
+          className="divider-custom-line"
+        />
+      </div>
+      <div
+        className="masthead-subheading font-weight-light mb-0"
+      >
+        <a
+          className="btn"
+          href="/host/chooseTrivia"
+          onClick={[Function]}
+        >
+          <button
+            className="join-host btn btn-secondary"
+            disabled={false}
+            type="button"
+          >
+            I want to host a Trivia
+          </button>
+        </a>
+        <a
+          className="btn"
+          href="/user"
+          onClick={[Function]}
+        >
+          <button
+            className="join-user btn btn-secondary"
+            disabled={false}
+            type="button"
+          >
+            I want to join a Trivia
+          </button>
+        </a>
+        <a
+          className="btn"
+          href="/admin/stats"
+          onClick={[Function]}
+        >
+          <button
+            className="join-user btn btn-info"
+            disabled={false}
+            type="button"
+          >
+            Statistics
+          </button>
+        </a>
+      </div>
+    </div>
+  </header>
+</body>
 `;
