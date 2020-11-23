@@ -14,7 +14,7 @@ const Countdown = (props) => {
   }, [socket]);
 
   return (
-    <Alert className="counter" variant="danger">
+    <Alert className="counter bg-warning border-dark">
       {counter ? `You have ${counter} seconds left` : 'You dont have any more time'}
     </Alert>
   );

@@ -1,44 +1,9 @@
-.answers {
-  background-color: lightgray;
-}
-
 .item1 {
   margin: 10px;
 }
 
 .question-and-minipodium {
   justify-content: space-between;
-}
-
-.answer-trivia {
-  width: 50%;
-  height: auto;
-  cursor: pointer;
-  border-radius: 10px;
-}
-
-.answer-trivia0 {
-  background-color: red;
-  color: white;
-  text-align: center;
-}
-
-.answer-trivia1 {
-  background-color: goldenrod;
-  color: white;
-  text-align: center;
-}
-
-.answer-trivia2 {
-  background-color: lightgreen;
-  color: white;
-  text-align: center;
-}
-
-.answer-trivia3 {
-  background-color: blue;
-  color: white;
-  text-align: center;
 }
 
 .selected {
@@ -48,4 +13,20 @@
 
 .clicked {
   pointer-events: none;
+}
+
+#answer0 {
+  background-color: red;
+}
+
+#answer1 {
+  background-color: blue;
+}
+
+#answer2 {
+  background-color: goldenrod;
+}
+
+#answer3 {
+  background-color: forestgreen;
 }

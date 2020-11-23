@@ -1,38 +1,19 @@
-.answers {
-  background-color: lightgray;
+.clicked {
+  pointer-events: none;
 }
 
-.answer {
-  width: 49%;
-  margin: 5px;
-  height: 30px;
-  border-radius: 10px;
-}
-
-.answer0 {
+#answer0 {
   background-color: red;
-  color: white;
-  pointer-events: all;
-  cursor: pointer;
 }
 
-.answer1 {
-  background-color: goldenrod;
-  color: white;
-  pointer-events: all;
-  cursor: pointer;
-}
-
-.answer2 {
-  background-color: lightgreen;
-  color: white;
-  pointer-events: all;
-  cursor: pointer;
-}
-
-.answer3 {
+#answer1 {
   background-color: blue;
-  color: white;
-  pointer-events: all;
-  cursor: pointer;
+}
+
+#answer2 {
+  background-color: goldenrod;
+}
+
+#answer3 {
+  background-color: forestgreen;
 }

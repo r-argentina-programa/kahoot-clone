@@ -11,7 +11,7 @@ const HostHome = () => {
         <Button className="to-trivia-select" variant="info">
           Create/start trivia
         </Button>
-      </Link>{' '}
+      </Link>
     </Container>
   );
 };

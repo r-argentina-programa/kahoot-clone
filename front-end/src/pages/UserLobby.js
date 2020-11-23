@@ -38,32 +38,33 @@ const UserLobby = (props) => {
     }
   }, [history, props, setSocketUser, pin, socketUser, BASE_URL, playerName]);
   return (
-    <div>
-      <div className="container h-center v-center">
-        <Alert className="lobby-pin" variant="primary">
-          The PIN of the room is {pin}
-        </Alert>
-        <Alert className="lobby-nick" variant="primary">
-          Your nick is {playerName}
-        </Alert>
+    <body className="bg-primary">
+      <div>
+        <div className="container h-center v-center">
+          <Alert className="lobby-pin border-dark" variant="primary">
+            The PIN of the room is {pin}
+          </Alert>
+          <Alert className="lobby-nick border-dark" variant="primary">
+            Your nick is {playerName}
+          </Alert>
+        </div>
+        <br />
+        <div className="container">
+          <Card className="bg-secondary" style={{ width: '18rem' }}>
+            <Card.Body>
+              <Card.Title className="text-white">Welcome to Kahoot!</Card.Title>
+              <Card.Subtitle className="mb-2 text-info">
+                Waiting for the host to start
+              </Card.Subtitle>
+              <Card.Text className="text-white">
+                The game will start when the host decides to, meanwhile you can give the PIN to your
+                friends so they can play with you!
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </div>
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <div className="container">
-        <Card style={{ width: '18rem' }}>
-          <Card.Body>
-            <Card.Title>Welcome to Kahoot!</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">Waiting for the host to start</Card.Subtitle>
-            <Card.Text>
-              The game will start when the host decides to, meanwhile you can give the PIN to your
-              friends so they can play with you!
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </div>
-    </div>
+    </body>
   );
 };
 

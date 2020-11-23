@@ -1,17 +1,16 @@
-import ListGroup from 'react-bootstrap/ListGroup';
 import React from 'react';
 
 const Players = (props) => {
   return (
-    <div>
-      <ListGroup>
-        {props.players.map((player, index) => (
-          <ListGroup.Item key={`player-${index + 1}`} variant={'dark'}>
+    <React.Fragment>
+      {props.players.map((player, index) => (
+        <div className="border-dark">
+          <h4 className="text-white" key={`player-${index + 1}`}>
             {player}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </div>
+          </h4>
+        </div>
+      ))}
+    </React.Fragment>
   );
 };
 

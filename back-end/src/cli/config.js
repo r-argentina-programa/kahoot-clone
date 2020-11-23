@@ -2,8 +2,8 @@ require('dotenv').config();
 
 module.exports = {
   development: {
-    dialect: 'sqlite',
-    storage: './dbtest.db',
+    dialect: 'postgres',
+    url: process.env.DATABASE_URL,
   },
   production: {
     dialect: 'postgres',
