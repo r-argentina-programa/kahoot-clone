@@ -44,9 +44,10 @@ const HostChooseTrivia = (props) => {
               key={i + 1}
               onClick={() => props.onClickTriviaButton(trivia.id)}
               className={`img-fluid triviaButton triviaButton${i}`}
-              alt="asd"
+              alt=""
             />
           </Link>
+          <h2>{trivia.name}</h2>
         </div>
       </div>
     ));
@@ -68,7 +69,9 @@ const HostChooseTrivia = (props) => {
                     <div className="divider-custom-line"></div>
                   </div>
                   <div className="justify-content-center">
-                    <div className="containerTriviaButton">{buttons}</div>
+                    <div className="containerTriviaButton d-flex flex-wrap align-self-center">
+                      {buttons}
+                    </div>
                   </div>
                 </div>
               </section>
