@@ -19,37 +19,39 @@ const Trivia = (props) => {
 
   return props.triviaData ? (
     <React.Fragment>
-      <body className="bg-primary">
+      <body id="page-top" className="bg-primary">
         <div>
-          <Container>
+          <div className="text-center text-white bg-secondary text-uppercase">
             <Countdown socket={socketHost} />
-          </Container>
+          </div>
 
-          <Alert className="container bg-secondary shadow-lg question-and-minipodium d-flex flex-nowrap justify-align-content-stretch text-center align-items-center text-uppercase text-secondary">
+          <Alert className="container bg-primary question-and-minipodium d-flex flex-nowrap  text-center text-uppercase text-secondary">
             <Alert className="item1 bg-secondary shadow-lg">
-              <Questions className="item1" triviaData={props.triviaData} />
+              <Questions className="item1 shadow-lg" triviaData={props.triviaData} />
             </Alert>
-            <div className="item1 bg-secondary shadow-lg">
-              <Minipodium socketHost={socketHost} />
-            </div>
+            <Alert className="item1 bg-secondary shadow-lg">
+              <Minipodium className="shadow-lg" socketHost={socketHost} />
+            </Alert>
           </Alert>
           <div className="container">
             <h3>Answers</h3>
           </div>
 
-          <div className="container bg-primary answers d-flex flex-fill flex-wrap align-items-center justify-content-around">
+          <div className="container bg-primary answers d-flex justify-content-between flex-wrap">
             {props.triviaData.options.map((option, index) => (
               <button
                 id={`answer${index}`}
                 key={`button-${index}`}
-                className={`answer-trivia${index} border-dark text-white text-center answer-trivia d-flex flex-wrap w-50 p-3`}
+                className={`answer-trivia${index} text-white text-center answer-trivia d-flex flex-wrap w-50 border p-3`}
               >
                 {option.description}
               </button>
             ))}
           </div>
-
-          <Container className="d-flex h-center">
+          <div className="bg-primary">
+            <br />
+          </div>
+          <div className="text-center text-white bg-primary text-uppercase">
             <button
               className="next-question btn btn-secondary border-light"
               onClick={() => socketHost.emit('next-question')}
@@ -57,12 +59,12 @@ const Trivia = (props) => {
               Next
             </button>
             <StopGame
-              className="m-6"
+              className="m-3"
               socket={socketHost}
               setSocketUser={props.setSocketUser}
               setSocket={props.setSocket}
             />
-          </Container>
+          </div>
         </div>
       </body>
     </React.Fragment>

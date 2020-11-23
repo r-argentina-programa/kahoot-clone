@@ -44,8 +44,9 @@ const HostChooseTrivia = (props) => {
               key={i + 1}
               onClick={() => props.onClickTriviaButton(trivia.id)}
               className={`img-fluid triviaButton triviaButton${i}`}
-              alt="asd"
+              alt=""
             />
+            <h2>{trivia.name}</h2>
           </Link>
         </div>
       </div>

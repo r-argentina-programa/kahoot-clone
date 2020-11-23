@@ -26,14 +26,16 @@ const Trivia = (props) => {
 
   return props.triviaData ? (
     <body className="bg-primary">
-      <Container>
+      <div className="text-center text-white bg-secondary text-uppercase">
         <Countdown socket={socketUser} />
-      </Container>
+      </div>
+
       <Container className="d-flex align-items-center justify-content-center text-center">
         <Alert className="item1 d-flex align-items-center justify-content-center bg-secondary text-center shadow-lg">
           <Questions triviaData={props.triviaData} />
         </Alert>
       </Container>
+
       <div className="divider-custom divider">
         <div className="divider-custom-line"></div>
         <div className="divider-custom-icon">
@@ -41,12 +43,12 @@ const Trivia = (props) => {
         </div>
         <div className="divider-custom-line"></div>
       </div>
-      <div className="answers container bg-primary answers d-flex flex-fill flex-wrap align-items-center justify-content-around">
+      <div className="container bg-primary answers d-flex justify-content-between flex-wrap">
         {props.triviaData.options.map((option, index) => (
           <button
             id={`answer${index}`}
             key={`index-${index}`}
-            className={`answer-trivia answer-trivia${index} border-dark text-white text-center answer-trivia d-flex flex-wrap w-50 p-3 ${isDisabled} ${
+            className={`answer-trivia${index}  text-white text-center answer-trivia d-flex flex-wrap w-50 border p-3 ${isDisabled} ${
               isClicked === option.description ? 'selected' : ''
             }`}
             onClick={() => {
