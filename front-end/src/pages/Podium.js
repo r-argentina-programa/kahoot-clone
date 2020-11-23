@@ -1,6 +1,4 @@
 import React from 'react';
-import Image from 'react-bootstrap/Image';
-import podiumImg from '../assets/podium.jpg';
 import StopGame from '../components/StopGame';
 import '../styles/Podium.css';
 import Container from 'react-bootstrap/Container';
