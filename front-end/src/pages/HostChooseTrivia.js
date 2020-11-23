@@ -46,8 +46,8 @@ const HostChooseTrivia = (props) => {
               className={`img-fluid triviaButton triviaButton${i}`}
               alt=""
             />
-            <h2>{trivia.name}</h2>
           </Link>
+          <h2>{trivia.name}</h2>
         </div>
       </div>
     ));
@@ -69,7 +69,9 @@ const HostChooseTrivia = (props) => {
                     <div className="divider-custom-line"></div>
                   </div>
                   <div className="justify-content-center">
-                    <div className="containerTriviaButton">{buttons}</div>
+                    <div className="containerTriviaButton d-flex flex-wrap align-self-center">
+                      {buttons}
+                    </div>
                   </div>
                 </div>
               </section>
