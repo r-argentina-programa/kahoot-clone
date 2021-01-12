@@ -4,6 +4,9 @@
 
 Kahoot clone using React, Node.js and Socket.io.
 
+![Imagen 1 del kahoot clone](https://imgur.com/E3fNak1)
+
+
 ## Installation
 
 ```
